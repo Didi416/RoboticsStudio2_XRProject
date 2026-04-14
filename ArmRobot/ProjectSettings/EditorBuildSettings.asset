@@ -5,6 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/ArticulationRobot.unity
+    guid: 94fa6bc4b68eb4fd0b73c109f3ff4e02
   - enabled: 0
     path: Assets/Scenes/RobotWithHand.unity
     guid: ba85471f9074a496ca00dc9fb80078d0

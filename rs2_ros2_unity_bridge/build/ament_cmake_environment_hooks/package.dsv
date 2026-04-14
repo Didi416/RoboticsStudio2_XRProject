@@ -1,0 +1,4 @@
+source;share/rs2_ros2_unity_bridge/local_setup.bash
+source;share/rs2_ros2_unity_bridge/local_setup.dsv
+source;share/rs2_ros2_unity_bridge/local_setup.sh
+source;share/rs2_ros2_unity_bridge/local_setup.zsh
