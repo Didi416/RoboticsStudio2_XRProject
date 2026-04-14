@@ -1,0 +1,11 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/ur3e_rtde_bridge.dir/src/ur3e_rtde_bridge.cpp.o"
+  "CMakeFiles/ur3e_rtde_bridge.dir/src/ur3e_rtde_bridge.cpp.o.d"
+  "ur3e_rtde_bridge"
+  "ur3e_rtde_bridge.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/ur3e_rtde_bridge.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

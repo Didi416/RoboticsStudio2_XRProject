@@ -1,0 +1,30 @@
+moveit_servo:
+  # Robot config
+  move_group_name: ur_manipulator
+  planning_frame: base_link
+  ee_frame_name: tool0
+
+  # Controller to publish to
+  command_out_topic: /scaled_joint_trajectory_controller/joint_trajectory
+  command_out_type: trajectory_msgs/JointTrajectory
+
+  # Input topics Unity will publish to
+  cartesian_command_in_topic: /servo_node/delta_twist_cmds
+  joint_command_in_topic: /servo_node/delta_joint_cmds
+
+  # Smoothing — use Ruckig for smoothest motion on real robot
+  smoothing_filter_plugin_name: "online_signal_smoothing::RuckigFilterPlugin"
+
+  # Safety
+  check_collisions: true
+  collision_check_rate: 10.0
+  self_collision_proximity_threshold: 0.01
+  scene_collision_proximity_threshold: 0.02
+
+  # Singularity handling — slows down near singularities
+  lower_singularity_threshold: 17.0
+  hard_stop_singularity_threshold: 30.0
+
+  # Publishing rate
+  publish_period: 0.034  # ~30Hz
+  
