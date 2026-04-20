@@ -1,30 +1,117 @@
-moveit_servo:
-  # Robot config
-  move_group_name: ur_manipulator
-  planning_frame: base_link
-  ee_frame_name: tool0
+# moveit_servo:
+#   # Robot config
+#   move_group_name: ur_manipulator
+#   planning_frame: base_link
+#   ee_frame_name: tool0
 
-  # Controller to publish to
-  command_out_topic: /scaled_joint_trajectory_controller/joint_trajectory
-  command_out_type: trajectory_msgs/JointTrajectory
+#   # Controller to publish to
+#   command_out_topic: /scaled_joint_trajectory_controller/joint_trajectory
+#   command_out_type: trajectory_msgs/JointTrajectory
 
-  # Input topics Unity will publish to
-  cartesian_command_in_topic: /servo_node/delta_twist_cmds
-  joint_command_in_topic: /servo_node/delta_joint_cmds
+#   # Input topics Unity will publish to
+#   cartesian_command_in_topic: /servo_node/delta_twist_cmds
+#   joint_command_in_topic: /servo_node/delta_joint_cmds
 
-  # Smoothing — use Ruckig for smoothest motion on real robot
-  smoothing_filter_plugin_name: "online_signal_smoothing::RuckigFilterPlugin"
+#   # Smoothing — use Ruckig for smoothest motion on real robot
+#   smoothing_filter_plugin_name: "online_signal_smoothing::RuckigFilterPlugin"
 
-  # Safety
-  check_collisions: true
-  collision_check_rate: 10.0
-  self_collision_proximity_threshold: 0.01
-  scene_collision_proximity_threshold: 0.02
+#   # Safety
+#   check_collisions: true
+#   collision_check_rate: 10.0
+#   self_collision_proximity_threshold: 0.01
+#   scene_collision_proximity_threshold: 0.02
 
-  # Singularity handling — slows down near singularities
-  lower_singularity_threshold: 17.0
-  hard_stop_singularity_threshold: 30.0
+#   # Singularity handling — slows down near singularities
+#   lower_singularity_threshold: 17.0
+#   hard_stop_singularity_threshold: 30.0
 
-  # Publishing rate
-  publish_period: 0.034  # ~30Hz
+#   # Publishing rate
+#   publish_period: 0.034  # ~30Hz
   
+# moveit_servo_config.yaml
+# MoveIt2 Servo configuration tuned for UR3e + XR teleoperation
+#
+# Place this in: config/moveit_servo_config.yaml
+# Loaded by the launch file via the ServoNode composable node.
+
+###############################################################################
+# Servo Node Core
+###############################################################################
+use_gazebo: false 
+
+## ROS topics
+status_topic: ~/status               # publishes servo status flags
+command_in_topic: /servo_node/delta_twist_cmds   # our XR node feeds this
+command_out_topic: /servo_node/command           # internal servo output
+
+## MoveIt planning scene / robot description
+robot_description: robot_description
+robot_description_semantic: robot_description_semantic
+
+## Planning group (must match your SRDF)
+move_group_name: ur_manipulator
+
+## End-effector frame
+ee_frame_name: tool0
+
+## World / base frame
+planning_frame: base_link
+
+###############################################################################
+# Twist command settings
+###############################################################################
+command_in_type: "speed_units"       # "unitless" or "speed_units"
+scale:
+  linear: 0.4                        # m/s  – safe max for UR3e
+  rotational: 0.8                    # rad/s
+
+###############################################################################
+# Output command settings
+###############################################################################
+command_out_type: trajectory_msgs/JointTrajectory
+publish_period: 0.034                # ~30 Hz  (servo loop rate)
+low_latency_mode: false
+
+## The servo node will publish to this topic; the ros2_control JTC picks it up
+command_out_type: trajectory_msgs/JointTrajectory
+joint_topic: /scaled_joint_trajectory_controller/joint_trajectory
+
+## Publish joint positions AND velocities so the controller can interpolate
+publish_joint_positions: true
+publish_joint_velocities: true
+publish_joint_accelerations: false
+
+###############################################################################
+# Collision checking
+###############################################################################
+check_collisions: true
+collision_check_rate: 10.0           # Hz
+self_collision_proximity_threshold: 0.01   # metres
+scene_collision_proximity_threshold: 0.02
+
+###############################################################################
+# Singularity / joint limits
+###############################################################################
+lower_singularity_threshold: 17.0   # condition number; start decelerating
+hard_stop_singularity_threshold: 30.0
+joint_limit_margin: 0.1             # radians buffer inside URDF limits
+leaving_singularity_threshold_multiplier: 2.0
+
+###############################################################################
+# Smoothing
+###############################################################################
+use_smoothing: true
+smoothing_filter_plugin_name: "online_signal_smoothing::ButterworthFilterPlugin"
+
+###############################################################################
+# UR3e joint names  (must match your URDF / ros2_control config)
+###############################################################################
+# These are referenced internally by MoveIt; normally auto-resolved from
+# the SRDF planning group. List here only if you hit ordering issues.
+# joints:
+#   - shoulder_pan_joint
+#   - shoulder_lift_joint
+#   - elbow_joint
+#   - wrist_1_joint
+#   - wrist_2_joint
+#   - wrist_3_joint
