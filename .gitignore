@@ -37,3 +37,6 @@ desktop.ini
 # Unity crash reports
 sysinfo.txt
 crashlytics-build.properties
+
+# ROS Packages
+build/
