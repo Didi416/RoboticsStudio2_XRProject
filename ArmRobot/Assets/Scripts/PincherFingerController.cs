@@ -13,10 +13,23 @@ public class PincherFingerController : MonoBehaviour
 
     // INIT
 
+    // void Start()
+    // {
+    //     openPosition = transform.localPosition;
+    //     articulation = GetComponent<ArticulationBody>();
+    //     SetLimits();
+    // }
     void Start()
     {
         openPosition = transform.localPosition;
         articulation = GetComponent<ArticulationBody>();
+        
+        if (articulation == null)
+        {
+            Debug.LogError("No ArticulationBody found on " + gameObject.name, gameObject);
+            return;
+        }
+        
         SetLimits();
     }
 
@@ -49,17 +62,32 @@ public class PincherFingerController : MonoBehaviour
 
     // CONTROL
 
+    // public void UpdateGrip(float grip)
+    // {
+    //     float targetZ = ZDriveTarget(grip);
+    //     var drive = articulation.zDrive;
+    //     drive.target = targetZ;
+    //     articulation.zDrive = drive;
+    // }
+    
     public void UpdateGrip(float grip)
     {
+        if (articulation == null) return; // ADD THIS
         float targetZ = ZDriveTarget(grip);
         var drive = articulation.zDrive;
         drive.target = targetZ;
         articulation.zDrive = drive;
     }
 
-    public void ForceOpen(Transform transform)
+    // public void ForceOpen(Transform transform)
+    // {
+    //     transform.localPosition = openPosition;
+    //     UpdateGrip(0.0f);
+    // }
+
+    public void ForceOpen(Transform targetTransform)
     {
-        transform.localPosition = openPosition;
+        targetTransform.localPosition = openPosition;
         UpdateGrip(0.0f);
     }
 
