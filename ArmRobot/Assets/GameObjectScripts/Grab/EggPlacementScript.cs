@@ -24,9 +24,25 @@ public class EggPlacementScript : MonoBehaviour
     private UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grabInteractable;
     private Color originalColor;
 
+    // void Start()
+    // {
+    //     grabInteractable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+    //     grabInteractable.selectEntered.AddListener(OnGrabbed);
+    //     grabInteractable.selectExited.AddListener(OnReleased);
+
+    //     if (objectRenderer != null)
+    //         originalColor = objectRenderer.material.color;
+    // }
     void Start()
     {
         grabInteractable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        
+        if (grabInteractable == null)
+        {
+            Debug.LogError("XR Grab Interactable not found on " + gameObject.name);
+            return;
+        }
+        
         grabInteractable.selectEntered.AddListener(OnGrabbed);
         grabInteractable.selectExited.AddListener(OnReleased);
 
