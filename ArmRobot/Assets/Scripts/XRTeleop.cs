@@ -44,10 +44,17 @@
 //     [Header("ROS Topics")]
 //     [Tooltip("Must match servo_command_topic source in xr_servo_node")]
 //     public string targetPoseTopic    = "/xr_target_pose";
+<<<<<<< HEAD
 //     public string jointStateTopic    = "/joint_states";
 
 //     [Header("XR Rig")]
 //     [Tooltip("Right Controller anchor (XRController or TrackedPoseDriver host)")]
+=======
+//     // public string jointStateTopic    = "/joint_states";
+
+//     [Header("XR Rig")]
+//     [Tooltip("Right Controller anchor)")]
+>>>>>>> 1745aa8439b3c8c2fb0a5fe23e33a5ee1bd3abe8
 //     public Transform rightHandAnchor;
 
 //     [Header("Robot Digital Twin")]
@@ -121,7 +128,11 @@
 //         ros_.RegisterPublisher<PoseStampedMsg>(targetPoseTopic);
 
 //         // Register subscriber for joint states → drive digital twin
+<<<<<<< HEAD
 //         ros_.Subscribe<JointStateMsg>(jointStateTopic, OnJointState);
+=======
+//         // ros_.Subscribe<JointStateMsg>(jointStateTopic, OnJointState);
+>>>>>>> 1745aa8439b3c8c2fb0a5fe23e33a5ee1bd3abe8
 
 //         rosReady_ = true;
 //     }
