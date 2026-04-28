@@ -1,0 +1,69 @@
+# moveit_servo_ur3e.yaml
+#
+# Drop this into your MoveIt 2 launch config.
+# Tells Servo where to listen for commands and how aggressively to move.
+#
+# Reference: https://moveit.picknik.ai/main/doc/examples/realtime_servo/realtime_servo_tutorial.html
+
+moveit_servo:
+  # ── Input command topics ──────────────────────────────────────────
+  # Our ROS 2 bridge publishes JointJog here
+  joint_command_in_topic: /servo_node/delta_joint_cmds
+
+  # If you want to drive by Cartesian EE velocity instead (alternative mode):
+  # cartesian_command_in_topic: /servo_node/delta_twist_cmds
+
+  # ── Output ───────────────────────────────────────────────────────
+  # Servo sends a JointTrajectory to this controller action server.
+  # The ur_robot_driver exposes exactly this interface.
+  command_out_topic: /scaled_joint_trajectory_controller/joint_trajectory
+  command_out_type: trajectory_msgs/JointTrajectory
+
+  # The action server that executes the trajectory on the real robot
+  robot_hw_action_server: /scaled_joint_trajectory_controller/follow_joint_trajectory
+
+  # ── Planning group ────────────────────────────────────────────────
+  # Must match the group name in your URDF/SRDF (ur3e_moveit_config typically calls it "ur_manipulator")
+  move_group_name: ur_manipulator
+
+  # ── Rate and smoothing ────────────────────────────────────────────
+  # How often Servo publishes trajectory points to the controller
+  publish_period: 0.008   # seconds = 125 Hz
+
+  # Low-pass filter cutoff for outgoing commands.
+  # Higher = more responsive but potentially jerkier.
+  # Lower = smoother but adds latency.
+  # 15 Hz is a good starting point for VR teleoperation.
+  low_pass_filter_coeff: 15.0
+
+  # ── Safety limits ─────────────────────────────────────────────────
+  # Servo will stop publishing commands if the robot approaches these thresholds.
+
+  # Fraction of the joint velocity limit to use as the operating ceiling.
+  # 0.5 = use at most 50% of the UR3e's rated joint speed.
+  joint_limit_margain: 0.1        # stop this fraction before the hard joint limit
+  override_velocity_scaling_factor: 0.5   # scale all velocities to 50%
+
+  # Stop the robot if it gets within this distance (metres) of a collision
+  collision_check_rate: 10.0      # Hz — how often to run collision queries
+  collision_distance_threshold: 0.005   # 5 mm safety bubble
+
+  # ── Singularity handling ──────────────────────────────────────────
+  # The robot will slow down as it approaches a kinematic singularity.
+  # Set to false if you want raw speed (not recommended for VR).
+  check_singularity: true
+  hard_stop_singularity_threshold: 30.0  # condition number threshold for hard stop
+  lower_singularity_threshold:     17.0  # start slowing down here
+
+  # ── Frame names ───────────────────────────────────────────────────
+  planning_frame: base_link     # robot base — all commands are in this frame
+  ee_frame_name:  tool0         # end-effector — used for Cartesian mode
+
+  # ── Misc ──────────────────────────────────────────────────────────
+  # How long (seconds) without a command before Servo considers the stream dead
+  # and stops sending trajectory points (robot holds position)
+  incoming_command_timeout: 0.1
+
+  # If true, Servo will republish robot state for RViz even when no commands arrive
+  publish_joint_positions: true
+  publish_joint_velocities: true
