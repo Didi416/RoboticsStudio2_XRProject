@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.Geometry;
 using RosMessageTypes.Std;
+using RosMessageTypes.Trajectory;
 using CommonUsages = UnityEngine.XR.CommonUsages;
 
 public class XRTwistPublisher : MonoBehaviour
@@ -27,7 +28,7 @@ public class XRTwistPublisher : MonoBehaviour
 
     [Header("Scaling")]
     [Tooltip("Multiplies linear velocity sent to Servo (tune to taste)")]
-    public float linearScale  = 3.0f;
+    public float linearScale  = 0.5f;
     [Tooltip("Multiplies angular velocity sent to Servo")]
     public float angularScale = 2.5f;
 
@@ -38,6 +39,14 @@ public class XRTwistPublisher : MonoBehaviour
     [Header("Simulated speed")]
     public float simLinearSpeed  = 0.3f;
     public float simAngularSpeed = 45f;        // degrees/s
+
+    [Header("Gripper")]
+    public string gripperOpenTopic   = "/finger_width_controller/commands";
+    public float  gripperOpenWidth   = 0.100f;   // metres — fully open (from your SRDF)
+    public float  gripperClosedWidth = 0.0f;     // metres — fully closed
+    public float  gripperMoveTime    = 1.0f;     // seconds to open/close
+    private bool  gripperOpen_       = true;     // track current state for toggle
+    private bool  xButtonPrev_       = false;    // edge detection for XR button
 
     // ── Private ──────────────────────────────────────────────────────────────
     private ROSConnection ros_;
@@ -76,7 +85,10 @@ public class XRTwistPublisher : MonoBehaviour
     {
         if (inputMode == InputMode.SimulatedController){
             SampleKeyboard();
-            Debug.Log("Publishing simulated twist");
+            Debug.Log("Sampling simulated twist");
+        }
+        if (inputMode == InputMode.XRHeadset){
+            CheckGripperButton();
         }
     }
 
@@ -97,29 +109,85 @@ public class XRTwistPublisher : MonoBehaviour
     {
         // Linear: arrow keys + comma/period
         Vector3 linVel = Vector3.zero;
-        if (Keyboard.current.periodKey.isPressed)     linVel += Vector3.forward;
-        if (Keyboard.current.commaKey.isPressed)      linVel += Vector3.back;
-        if (Keyboard.current.leftArrowKey.isPressed)  linVel += Vector3.left;
-        if (Keyboard.current.rightArrowKey.isPressed) linVel += Vector3.right;
-        if (Keyboard.current.upArrowKey.isPressed)    linVel += Vector3.up;
-        if (Keyboard.current.downArrowKey.isPressed)  linVel += Vector3.down;
+        if (!Keyboard.current.leftShiftKey.isPressed && Keyboard.current.leftArrowKey.isPressed)     linVel += Vector3.forward;
+        if (!Keyboard.current.leftShiftKey.isPressed && Keyboard.current.rightArrowKey.isPressed)      linVel += Vector3.back;
+        if (!Keyboard.current.leftShiftKey.isPressed && Keyboard.current.commaKey.isPressed)  linVel += Vector3.left;
+        if (!Keyboard.current.leftShiftKey.isPressed && Keyboard.current.periodKey.isPressed) linVel += Vector3.right;
+        if (!Keyboard.current.leftShiftKey.isPressed && Keyboard.current.upArrowKey.isPressed)    linVel += Vector3.up;
+        if (!Keyboard.current.leftShiftKey.isPressed && Keyboard.current.downArrowKey.isPressed)  linVel += Vector3.down;
         linVel *= simLinearSpeed;
 
-        // Angular: WASD = pitch/yaw, QE = roll
+        // Angular: rpy
         Vector3 angVel = Vector3.zero;
-        if (Keyboard.current.wKey.isPressed) angVel += Vector3.right  *  simAngularSpeed;
-        if (Keyboard.current.sKey.isPressed) angVel += Vector3.right  * -simAngularSpeed;
-        if (Keyboard.current.aKey.isPressed) angVel += Vector3.up     * -simAngularSpeed;
-        if (Keyboard.current.dKey.isPressed) angVel += Vector3.up     *  simAngularSpeed;
-        if (Keyboard.current.qKey.isPressed) angVel += Vector3.forward*  simAngularSpeed;
-        if (Keyboard.current.eKey.isPressed) angVel += Vector3.forward* -simAngularSpeed;
+        if (Keyboard.current.leftShiftKey.isPressed && Keyboard.current.upArrowKey.isPressed) angVel += Vector3.right  *  simAngularSpeed;
+        if (Keyboard.current.leftShiftKey.isPressed && Keyboard.current.downArrowKey.isPressed) angVel += Vector3.right  * -simAngularSpeed;
+        if (Keyboard.current.leftShiftKey.isPressed && Keyboard.current.leftArrowKey.isPressed) angVel += Vector3.up     * -simAngularSpeed;
+        if (Keyboard.current.leftShiftKey.isPressed && Keyboard.current.rightArrowKey.isPressed) angVel += Vector3.up     *  simAngularSpeed;
+        if (Keyboard.current.leftShiftKey.isPressed && Keyboard.current.periodKey.isPressed) angVel += Vector3.forward*  simAngularSpeed;
+        if (Keyboard.current.leftShiftKey.isPressed && Keyboard.current.commaKey.isPressed) angVel += Vector3.forward* -simAngularSpeed;
         angVel *= Mathf.Deg2Rad; // Servo expects rad/s
+
+        // if (!Keyboard.current.leftShiftKey.isPressed && Keyboard.current.gKey.isPressed) angVel += Vector3.right  *  simAngularSpeed;
+        // if (!Keyboard.current.leftShiftKey.isPressed && Keyboard.current.rKey.isPressed) angVel += Vector3.right  * -simAngularSpeed;
+
+        if (Keyboard.current.gKey.wasPressedThisFrame){
+            ToggleGripper();
+        }
 
         pendingLinVel_ = linVel;
         pendingAngVel_ = angVel;
     }
 
     // ── XR (Quest 2) mode ────────────────────────────────────────────────────
+
+void CheckGripperButton()
+{
+    // Using left controller primary button (X on Quest 2 left controller)
+    // If you only have right controller, use secondaryButton (B) instead
+    // and make sure leftDevice_ is cached similarly to rightDevice_
+    rightDevice_.TryGetFeatureValue(CommonUsages.secondaryButton, out bool bButton);
+
+    // Edge detection — only fire once per press not every frame held
+    bool justPressed = bButton && !xButtonPrev_;
+    xButtonPrev_ = bButton;
+
+    if (justPressed)
+        ToggleGripper();
+}
+
+void ToggleGripper()
+{
+    gripperOpen_ = !gripperOpen_;
+    float targetWidth = gripperOpen_ ? gripperOpenWidth : gripperClosedWidth;
+    SendGripperTrajectory(targetWidth);
+    Debug.Log($"[Gripper] {(gripperOpen_ ? "Opening" : "Closing")} to {targetWidth}m");
+}
+
+void SendGripperTrajectory(float width)
+{
+    // finger_width is a single joint that controls the OnRobot RG2 gap width
+    // Values from your SRDF: open=0.100, closed=0.0
+    var point = new JointTrajectoryPointMsg
+    {
+        positions      = new double[] { width },
+        velocities     = new double[] { 0.0 },
+        accelerations  = new double[] { 0.0 },
+        time_from_start = new RosMessageTypes.BuiltinInterfaces.DurationMsg
+        {
+            sec     = (int)gripperMoveTime,
+            nanosec = 0
+        }
+    };
+
+    var traj = new JointTrajectoryMsg
+    {
+        header      = new HeaderMsg { frame_id = "" },
+        joint_names = new string[] { "finger_width" },
+        points      = new JointTrajectoryPointMsg[] { point }
+    };
+
+    ros_.Publish(gripperOpenTopic, traj);
+}
 
     void PublishXR()
     {
@@ -132,6 +200,7 @@ public class XRTwistPublisher : MonoBehaviour
             // Send zero twist so Servo knows to stop
             PublishTwist(Vector3.zero, Vector3.zero);
             firstFrame_ = true;   // reset delta on next grab
+            // Debug.Log("Grip lower than threshold, not publishing");
             return;
         }
 
@@ -172,29 +241,40 @@ public class XRTwistPublisher : MonoBehaviour
 
         prevPos_ = pos;
         prevRot_ = rot;
+        // Debug.Log("Publishing XR Twist)");
 
         PublishTwist(linVel, angVel);
     }
 
     // ── Coordinate conversion + publish ──────────────────────────────────────
 
+    RosMessageTypes.BuiltinInterfaces.TimeMsg GetUnixTime()
+    {
+        double unixTime = (System.DateTime.UtcNow - new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc)).TotalSeconds;
+
+        return new RosMessageTypes.BuiltinInterfaces.TimeMsg
+        {
+            sec     = (int)unixTime,
+            nanosec = (uint)((unixTime % 1.0f) * 1e9f)
+        };
+    }
     void PublishTwist(Vector3 linUnity, Vector3 angUnity)
     {
         // Unity (left-handed, Y-up) → ROS (right-handed, Z-up)
         // Matches your existing pos conversion: (z, -x, y)
-        Vector3 linROS = new Vector3( linUnity.z, -linUnity.x,  linUnity.y);
-        Vector3 angROS = new Vector3( angUnity.z, -angUnity.x,  angUnity.y);
-
+        Vector3 linROS = new Vector3(linUnity.z, -linUnity.x,  linUnity.y);
+        Vector3 angROS = new Vector3(angUnity.z, -angUnity.x, angUnity.y);
+        if (inputMode == InputMode.XRHeadset){
+            angROS = new Vector3(-angUnity.x, angUnity.z, -angUnity.y);
+            linROS = new Vector3(-linUnity.x, -linUnity.z,  linUnity.y);
+        }
+        
         var msg = new TwistStampedMsg
         {
             header = new HeaderMsg
             {
                 frame_id = frameId,
-                stamp    = new RosMessageTypes.BuiltinInterfaces.TimeMsg
-                {
-                    sec     = (int)(Time.realtimeSinceStartup),
-                    nanosec = (uint)((Time.realtimeSinceStartup % 1f) * 1e9f)
-                }
+                stamp    = GetUnixTime()
             },
             twist = new TwistMsg
             {
@@ -220,3 +300,4 @@ public class XRTwistPublisher : MonoBehaviour
         if (rightDevice_ == d) rightDevice_ = default;
     }
 }
+

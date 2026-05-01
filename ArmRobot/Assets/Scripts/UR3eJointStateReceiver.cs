@@ -12,7 +12,7 @@ public class UR3eJointStateReceiver : MonoBehaviour
     // public string poseTopic = "/ik_target";
     public string jointStateTopic = "/joint_states";
 
-    public Transform ikTarget;                  // the VR target
+    public Transform ikTarget;
     
     [Tooltip("ArticulationBodies in order: shoulder_pan, shoulder_lift, elbow, wrist_1, wrist_2, wrist_3")]
     public ArticulationBody[] joints = new ArticulationBody[6];
@@ -43,9 +43,6 @@ public class UR3eJointStateReceiver : MonoBehaviour
     public InputMode inputMode = InputMode.SimulatedController;
 
     public float simulatedSpeed = 0.3f;
-    // Simulated controller state
-    // Vector3 _simPosition;
-    // Quaternion _simRotation;
 
     void Start()
     {
@@ -69,23 +66,13 @@ public class UR3eJointStateReceiver : MonoBehaviour
             d.forceLimit = float.MaxValue;
             joints[i].xDrive = d;
         };
-
-        // Register the ROS subscriber
-        // ROSConnection.GetOrCreateInstance().Subscribe<JointStateMsg>(jointStateTopic, OnJointStateReceived);
         
         ros = ROSConnection.GetOrCreateInstance();
-        // ros.RegisterPublisher<PoseMsg>(poseTopic);
         ros.Subscribe<JointStateMsg>(jointStateTopic, OnJointStateReceived);
-
-        // ikTarget = GameObject.Find("HandE").transform;
-
-        // _simPosition = ikTarget.position;
-        // _simRotation = ikTarget.rotation;
     }
 
     void FixedUpdate()
     {
-        // PublishIKTarget();
         float[] angles = null;
         lock (_lock)
         {
