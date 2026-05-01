@@ -14,10 +14,11 @@ Launch Teleop with URSim:
 ```
 ros2 run ur_client_library start_ursim.sh -m ur3e
 ```
+URSIM launch
 ```
 ros2 launch rs2_ros2_unity_bridge ur_test.launch.py ur_type:=ur3e robot_ip:=192.168.56.101 launch_rviz:=true 
-(change port to 50001 if ti reads Addres already in use in terminal)
 ```
+(change port to 50001 if ti reads Addres already in use in terminal)
 ```
 ros2 launch rs2_ros2_unity_bridge ur_moveit_test.launch.py ur_type:=ur3e launch_rviz:=true
 ```
@@ -32,5 +33,5 @@ ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=127.0.0.
 ```
 ```
 ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=172.19.116.163 
-(for VR Headset connection)
 ```
+(for VR Headset connection)

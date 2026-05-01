@@ -11,8 +11,6 @@ public class UR3eJointStateReceiver : MonoBehaviour
 {
     // public string poseTopic = "/ik_target";
     public string jointStateTopic = "/joint_states";
-
-    public Transform ikTarget;
     
     [Tooltip("ArticulationBodies in order: shoulder_pan, shoulder_lift, elbow, wrist_1, wrist_2, wrist_3")]
     public ArticulationBody[] joints = new ArticulationBody[6];
