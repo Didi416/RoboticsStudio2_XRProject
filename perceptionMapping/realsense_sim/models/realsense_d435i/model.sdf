@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="realsense_d435i">
+    <static>true</static>
+
+    <link name="camera_link">
+
+      <!-- Physical body of the camera (small box) -->
+      <visual name="body_visual">
+        <geometry>
+          <box><size>0.025 0.090 0.025</size></box>
+        </geometry>
+        <material>
+          <ambient>0.1 0.1 0.1 1</ambient>
+          <diffuse>0.2 0.2 0.2 1</diffuse>
+        </material>
+      </visual>
+      <collision name="body_collision">
+        <geometry>
+          <box><size>0.025 0.090 0.025</size></box>
+        </geometry>
+      </collision>
+
+      <!--
+        RGBD camera sensor — D435i specifications:
+          Horizontal FOV : 87 degrees = 1.5184 radians
+          Resolution     : 640 x 480
+          Depth range    : 0.1m to 10.0m
+          Frame rate     : 30 Hz
+      -->
+      <sensor name="realsense_d435i" type="rgbd_camera">
+        <always_on>true</always_on>
+        <update_rate>30</update_rate>
+        <topic>realsense</topic>
+
+        <camera name="realsense_d435i">
+          <!-- D435i horizontal FOV: 87 degrees -->
+          <horizontal_fov>1.5184</horizontal_fov>
+
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>RGB_INT8</format>
+          </image>
+
+          <!-- Colour clip range -->
+          <clip>
+            <near>0.1</near>
+            <far>10.0</far>
+          </clip>
+
+          <!-- Depth sensor settings -->
+          <depth_camera>
+            <output>depths</output>
+            <clip>
+              <near>0.1</near>
+              <far>10.0</far>
+            </clip>
+          </depth_camera>
+
+          <!-- Gaussian noise to mimic real sensor noise -->
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.005</stddev>
+          </noise>
+
+          <!-- Sets the optical frame ID published in image headers -->
+          <optical_frame_id>camera_color_optical_frame</optical_frame_id>
+        </camera>
+
+        <ignition_frame_id>camera_color_optical_frame</ignition_frame_id>
+      </sensor>
+
+    </link>
+  </model>
+</sdf>

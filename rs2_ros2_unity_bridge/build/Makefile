@@ -198,152 +198,41 @@ rs2_ros2_unity_bridge_uninstall/fast:
 .PHONY : rs2_ros2_unity_bridge_uninstall/fast
 
 #=============================================================================
-# Target rules for targets named test_ik_node
+# Target rules for targets named xr_teleop
 
 # Build rule for target.
-test_ik_node: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_ik_node
-.PHONY : test_ik_node
+xr_teleop: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 xr_teleop
+.PHONY : xr_teleop
 
 # fast build rule for target.
-test_ik_node/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_node.dir/build.make CMakeFiles/test_ik_node.dir/build
-.PHONY : test_ik_node/fast
+xr_teleop/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/xr_teleop.dir/build.make CMakeFiles/xr_teleop.dir/build
+.PHONY : xr_teleop/fast
 
-#=============================================================================
-# Target rules for targets named ur3e_bridge
-
-# Build rule for target.
-ur3e_bridge: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ur3e_bridge
-.PHONY : ur3e_bridge
-
-# fast build rule for target.
-ur3e_bridge/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_bridge.dir/build.make CMakeFiles/ur3e_bridge.dir/build
-.PHONY : ur3e_bridge/fast
-
-#=============================================================================
-# Target rules for targets named ur3e_pose_bridge
-
-# Build rule for target.
-ur3e_pose_bridge: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ur3e_pose_bridge
-.PHONY : ur3e_pose_bridge
-
-# fast build rule for target.
-ur3e_pose_bridge/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_pose_bridge.dir/build.make CMakeFiles/ur3e_pose_bridge.dir/build
-.PHONY : ur3e_pose_bridge/fast
-
-#=============================================================================
-# Target rules for targets named test_joint_state
-
-# Build rule for target.
-test_joint_state: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_joint_state
-.PHONY : test_joint_state
-
-# fast build rule for target.
-test_joint_state/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_joint_state.dir/build.make CMakeFiles/test_joint_state.dir/build
-.PHONY : test_joint_state/fast
-
-src/test_ik_node.o: src/test_ik_node.cpp.o
-.PHONY : src/test_ik_node.o
+src/xr_teleop_node.o: src/xr_teleop_node.cpp.o
+.PHONY : src/xr_teleop_node.o
 
 # target to build an object file
-src/test_ik_node.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_node.dir/build.make CMakeFiles/test_ik_node.dir/src/test_ik_node.cpp.o
-.PHONY : src/test_ik_node.cpp.o
+src/xr_teleop_node.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/xr_teleop.dir/build.make CMakeFiles/xr_teleop.dir/src/xr_teleop_node.cpp.o
+.PHONY : src/xr_teleop_node.cpp.o
 
-src/test_ik_node.i: src/test_ik_node.cpp.i
-.PHONY : src/test_ik_node.i
-
-# target to preprocess a source file
-src/test_ik_node.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_node.dir/build.make CMakeFiles/test_ik_node.dir/src/test_ik_node.cpp.i
-.PHONY : src/test_ik_node.cpp.i
-
-src/test_ik_node.s: src/test_ik_node.cpp.s
-.PHONY : src/test_ik_node.s
-
-# target to generate assembly for a file
-src/test_ik_node.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_node.dir/build.make CMakeFiles/test_ik_node.dir/src/test_ik_node.cpp.s
-.PHONY : src/test_ik_node.cpp.s
-
-src/test_joint_publisher.o: src/test_joint_publisher.cpp.o
-.PHONY : src/test_joint_publisher.o
-
-# target to build an object file
-src/test_joint_publisher.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_joint_state.dir/build.make CMakeFiles/test_joint_state.dir/src/test_joint_publisher.cpp.o
-.PHONY : src/test_joint_publisher.cpp.o
-
-src/test_joint_publisher.i: src/test_joint_publisher.cpp.i
-.PHONY : src/test_joint_publisher.i
+src/xr_teleop_node.i: src/xr_teleop_node.cpp.i
+.PHONY : src/xr_teleop_node.i
 
 # target to preprocess a source file
-src/test_joint_publisher.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_joint_state.dir/build.make CMakeFiles/test_joint_state.dir/src/test_joint_publisher.cpp.i
-.PHONY : src/test_joint_publisher.cpp.i
+src/xr_teleop_node.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/xr_teleop.dir/build.make CMakeFiles/xr_teleop.dir/src/xr_teleop_node.cpp.i
+.PHONY : src/xr_teleop_node.cpp.i
 
-src/test_joint_publisher.s: src/test_joint_publisher.cpp.s
-.PHONY : src/test_joint_publisher.s
-
-# target to generate assembly for a file
-src/test_joint_publisher.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_joint_state.dir/build.make CMakeFiles/test_joint_state.dir/src/test_joint_publisher.cpp.s
-.PHONY : src/test_joint_publisher.cpp.s
-
-src/ur3e_bridge.o: src/ur3e_bridge.cpp.o
-.PHONY : src/ur3e_bridge.o
-
-# target to build an object file
-src/ur3e_bridge.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_bridge.dir/build.make CMakeFiles/ur3e_bridge.dir/src/ur3e_bridge.cpp.o
-.PHONY : src/ur3e_bridge.cpp.o
-
-src/ur3e_bridge.i: src/ur3e_bridge.cpp.i
-.PHONY : src/ur3e_bridge.i
-
-# target to preprocess a source file
-src/ur3e_bridge.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_bridge.dir/build.make CMakeFiles/ur3e_bridge.dir/src/ur3e_bridge.cpp.i
-.PHONY : src/ur3e_bridge.cpp.i
-
-src/ur3e_bridge.s: src/ur3e_bridge.cpp.s
-.PHONY : src/ur3e_bridge.s
+src/xr_teleop_node.s: src/xr_teleop_node.cpp.s
+.PHONY : src/xr_teleop_node.s
 
 # target to generate assembly for a file
-src/ur3e_bridge.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_bridge.dir/build.make CMakeFiles/ur3e_bridge.dir/src/ur3e_bridge.cpp.s
-.PHONY : src/ur3e_bridge.cpp.s
-
-src/ur3e_pose_bridge.o: src/ur3e_pose_bridge.cpp.o
-.PHONY : src/ur3e_pose_bridge.o
-
-# target to build an object file
-src/ur3e_pose_bridge.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_pose_bridge.dir/build.make CMakeFiles/ur3e_pose_bridge.dir/src/ur3e_pose_bridge.cpp.o
-.PHONY : src/ur3e_pose_bridge.cpp.o
-
-src/ur3e_pose_bridge.i: src/ur3e_pose_bridge.cpp.i
-.PHONY : src/ur3e_pose_bridge.i
-
-# target to preprocess a source file
-src/ur3e_pose_bridge.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_pose_bridge.dir/build.make CMakeFiles/ur3e_pose_bridge.dir/src/ur3e_pose_bridge.cpp.i
-.PHONY : src/ur3e_pose_bridge.cpp.i
-
-src/ur3e_pose_bridge.s: src/ur3e_pose_bridge.cpp.s
-.PHONY : src/ur3e_pose_bridge.s
-
-# target to generate assembly for a file
-src/ur3e_pose_bridge.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_pose_bridge.dir/build.make CMakeFiles/ur3e_pose_bridge.dir/src/ur3e_pose_bridge.cpp.s
-.PHONY : src/ur3e_pose_bridge.cpp.s
+src/xr_teleop_node.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/xr_teleop.dir/build.make CMakeFiles/xr_teleop.dir/src/xr_teleop_node.cpp.s
+.PHONY : src/xr_teleop_node.cpp.s
 
 # Help Target
 help:
@@ -360,22 +249,10 @@ help:
 	@echo "... test"
 	@echo "... rs2_ros2_unity_bridge_uninstall"
 	@echo "... uninstall"
-	@echo "... test_ik_node"
-	@echo "... test_joint_state"
-	@echo "... ur3e_bridge"
-	@echo "... ur3e_pose_bridge"
-	@echo "... src/test_ik_node.o"
-	@echo "... src/test_ik_node.i"
-	@echo "... src/test_ik_node.s"
-	@echo "... src/test_joint_publisher.o"
-	@echo "... src/test_joint_publisher.i"
-	@echo "... src/test_joint_publisher.s"
-	@echo "... src/ur3e_bridge.o"
-	@echo "... src/ur3e_bridge.i"
-	@echo "... src/ur3e_bridge.s"
-	@echo "... src/ur3e_pose_bridge.o"
-	@echo "... src/ur3e_pose_bridge.i"
-	@echo "... src/ur3e_pose_bridge.s"
+	@echo "... xr_teleop"
+	@echo "... src/xr_teleop_node.o"
+	@echo "... src/xr_teleop_node.i"
+	@echo "... src/xr_teleop_node.s"
 .PHONY : help
 
 

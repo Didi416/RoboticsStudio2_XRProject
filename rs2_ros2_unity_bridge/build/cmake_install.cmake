@@ -43,81 +43,21 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_pose_bridge" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_pose_bridge")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/xr_teleop" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/xr_teleop")
     file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_pose_bridge"
+         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/xr_teleop"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge" TYPE EXECUTABLE FILES "/home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/ur3e_pose_bridge")
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_pose_bridge" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_pose_bridge")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge" TYPE EXECUTABLE FILES "/home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/xr_teleop")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/xr_teleop" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/xr_teleop")
     file(RPATH_CHANGE
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_pose_bridge"
-         OLD_RPATH "/opt/ros/humble/lib:/opt/ros/humble/lib/x86_64-linux-gnu:"
-         NEW_RPATH "")
-    if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_pose_bridge")
-    endif()
-  endif()
-endif()
-
-if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_joint_state" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_joint_state")
-    file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_joint_state"
-         RPATH "")
-  endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge" TYPE EXECUTABLE FILES "/home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/test_joint_state")
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_joint_state" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_joint_state")
-    file(RPATH_CHANGE
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_joint_state"
-         OLD_RPATH "/opt/ros/humble/lib:/opt/ros/humble/lib/x86_64-linux-gnu:"
-         NEW_RPATH "")
-    if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_joint_state")
-    endif()
-  endif()
-endif()
-
-if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_bridge" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_bridge")
-    file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_bridge"
-         RPATH "")
-  endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge" TYPE EXECUTABLE FILES "/home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/ur3e_bridge")
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_bridge" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_bridge")
-    file(RPATH_CHANGE
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_bridge"
+         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/xr_teleop"
          OLD_RPATH "/opt/ros/humble/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/ur3e_bridge")
-    endif()
-  endif()
-endif()
-
-if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_ik_node" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_ik_node")
-    file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_ik_node"
-         RPATH "")
-  endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge" TYPE EXECUTABLE FILES "/home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/test_ik_node")
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_ik_node" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_ik_node")
-    file(RPATH_CHANGE
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_ik_node"
-         OLD_RPATH "/opt/ros/humble/lib:"
-         NEW_RPATH "")
-    if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/test_ik_node")
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rs2_ros2_unity_bridge/xr_teleop")
     endif()
   endif()
 endif()

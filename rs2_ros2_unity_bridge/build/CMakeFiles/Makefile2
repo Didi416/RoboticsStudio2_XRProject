@@ -63,10 +63,7 @@ CMAKE_BINARY_DIR = /home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/test_ik_node.dir/all
-all: CMakeFiles/ur3e_bridge.dir/all
-all: CMakeFiles/ur3e_pose_bridge.dir/all
-all: CMakeFiles/test_joint_state.dir/all
+all: CMakeFiles/xr_teleop.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -76,10 +73,7 @@ preinstall:
 # The main recursive "clean" target.
 clean: CMakeFiles/uninstall.dir/clean
 clean: CMakeFiles/rs2_ros2_unity_bridge_uninstall.dir/clean
-clean: CMakeFiles/test_ik_node.dir/clean
-clean: CMakeFiles/ur3e_bridge.dir/clean
-clean: CMakeFiles/ur3e_pose_bridge.dir/clean
-clean: CMakeFiles/test_joint_state.dir/clean
+clean: CMakeFiles/xr_teleop.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -135,108 +129,30 @@ CMakeFiles/rs2_ros2_unity_bridge_uninstall.dir/clean:
 .PHONY : CMakeFiles/rs2_ros2_unity_bridge_uninstall.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/test_ik_node.dir
+# Target rules for target CMakeFiles/xr_teleop.dir
 
 # All Build rule for target.
-CMakeFiles/test_ik_node.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_node.dir/build.make CMakeFiles/test_ik_node.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_node.dir/build.make CMakeFiles/test_ik_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/CMakeFiles --progress-num=1,2 "Built target test_ik_node"
-.PHONY : CMakeFiles/test_ik_node.dir/all
+CMakeFiles/xr_teleop.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/xr_teleop.dir/build.make CMakeFiles/xr_teleop.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/xr_teleop.dir/build.make CMakeFiles/xr_teleop.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/CMakeFiles --progress-num=1,2 "Built target xr_teleop"
+.PHONY : CMakeFiles/xr_teleop.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/test_ik_node.dir/rule: cmake_check_build_system
+CMakeFiles/xr_teleop.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_ik_node.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/xr_teleop.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_ik_node.dir/rule
+.PHONY : CMakeFiles/xr_teleop.dir/rule
 
 # Convenience name for target.
-test_ik_node: CMakeFiles/test_ik_node.dir/rule
-.PHONY : test_ik_node
+xr_teleop: CMakeFiles/xr_teleop.dir/rule
+.PHONY : xr_teleop
 
 # clean rule for target.
-CMakeFiles/test_ik_node.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_node.dir/build.make CMakeFiles/test_ik_node.dir/clean
-.PHONY : CMakeFiles/test_ik_node.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/ur3e_bridge.dir
-
-# All Build rule for target.
-CMakeFiles/ur3e_bridge.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_bridge.dir/build.make CMakeFiles/ur3e_bridge.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_bridge.dir/build.make CMakeFiles/ur3e_bridge.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/CMakeFiles --progress-num=5,6 "Built target ur3e_bridge"
-.PHONY : CMakeFiles/ur3e_bridge.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/ur3e_bridge.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/ur3e_bridge.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/CMakeFiles 0
-.PHONY : CMakeFiles/ur3e_bridge.dir/rule
-
-# Convenience name for target.
-ur3e_bridge: CMakeFiles/ur3e_bridge.dir/rule
-.PHONY : ur3e_bridge
-
-# clean rule for target.
-CMakeFiles/ur3e_bridge.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_bridge.dir/build.make CMakeFiles/ur3e_bridge.dir/clean
-.PHONY : CMakeFiles/ur3e_bridge.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/ur3e_pose_bridge.dir
-
-# All Build rule for target.
-CMakeFiles/ur3e_pose_bridge.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_pose_bridge.dir/build.make CMakeFiles/ur3e_pose_bridge.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_pose_bridge.dir/build.make CMakeFiles/ur3e_pose_bridge.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/CMakeFiles --progress-num=7,8 "Built target ur3e_pose_bridge"
-.PHONY : CMakeFiles/ur3e_pose_bridge.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/ur3e_pose_bridge.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/ur3e_pose_bridge.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/CMakeFiles 0
-.PHONY : CMakeFiles/ur3e_pose_bridge.dir/rule
-
-# Convenience name for target.
-ur3e_pose_bridge: CMakeFiles/ur3e_pose_bridge.dir/rule
-.PHONY : ur3e_pose_bridge
-
-# clean rule for target.
-CMakeFiles/ur3e_pose_bridge.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ur3e_pose_bridge.dir/build.make CMakeFiles/ur3e_pose_bridge.dir/clean
-.PHONY : CMakeFiles/ur3e_pose_bridge.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_joint_state.dir
-
-# All Build rule for target.
-CMakeFiles/test_joint_state.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_joint_state.dir/build.make CMakeFiles/test_joint_state.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_joint_state.dir/build.make CMakeFiles/test_joint_state.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/CMakeFiles --progress-num=3,4 "Built target test_joint_state"
-.PHONY : CMakeFiles/test_joint_state.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_joint_state.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_joint_state.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dyandra/ros2_ws/src/RoboticsStudio2_XRProject/rs2_ros2_unity_bridge/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_joint_state.dir/rule
-
-# Convenience name for target.
-test_joint_state: CMakeFiles/test_joint_state.dir/rule
-.PHONY : test_joint_state
-
-# clean rule for target.
-CMakeFiles/test_joint_state.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_joint_state.dir/build.make CMakeFiles/test_joint_state.dir/clean
-.PHONY : CMakeFiles/test_joint_state.dir/clean
+CMakeFiles/xr_teleop.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/xr_teleop.dir/build.make CMakeFiles/xr_teleop.dir/clean
+.PHONY : CMakeFiles/xr_teleop.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

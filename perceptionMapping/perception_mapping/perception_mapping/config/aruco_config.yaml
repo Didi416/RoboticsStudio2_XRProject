@@ -1,0 +1,87 @@
+# aruco_config.yaml
+# ──────────────────────────────────────────────────────────────────────────────
+# Configuration for the EscapeXRtist perception & mapping subsystem.
+# All physical measurements in METRES unless noted.
+# ──────────────────────────────────────────────────────────────────────────────
+
+# ── Camera source ─────────────────────────────────────────────────────────────
+camera:
+  device_index: 0           # /dev/video0  (laptop webcam)
+  width:  1280
+  height: 720
+  fps:    30
+
+  # Intrinsic matrix [fx, 0, cx, 0, fy, cy, 0, 0, 1] (row-major, 9 values)
+  # Replace with values from your webcam calibration (checkerboard or ROS camera_calibration pkg).
+  # These are reasonable defaults for a 1280x720 webcam.
+  camera_matrix:
+    - [900.0, 0.0,   640.0]
+    - [0.0,   900.0, 360.0]
+    - [0.0,   0.0,   1.0  ]
+
+  # Distortion coefficients [k1, k2, p1, p2, k3]
+  dist_coeffs: [0.0, 0.0, 0.0, 0.0, 0.0]
+
+# ── ArUco dictionary ──────────────────────────────────────────────────────────
+aruco:
+  dictionary: DICT_4X4_50     # must match aruco_marker_generator.py
+  marker_size_m: 0.050        # physical side length of each marker (metres)
+
+  # Marker IDs and their semantic corner positions on the puzzle wall
+  # Origin convention: puzzle wall centre = (0,0,0); +X right, +Y up, +Z toward camera
+  corner_ids:
+    top_left:     0
+    top_right:    1
+    bottom_right: 2
+    bottom_left:  3
+
+# ── Puzzle wall physical dimensions ──────────────────────────────────────────
+puzzle_wall:
+  width_m:  0.350   # 350 mm
+  height_m: 0.350   # 350 mm
+
+  # Margin from wall edge to marker centre (metres)
+  # Must match the layout in aruco_marker_generator.py
+  marker_margin_m: 0.035   # 10mm margin + 25mm half-marker = 35mm to centre
+
+# ── Eye-in-hand calibration result ───────────────────────────────────────────
+# Paste your calibrated values here after running hand-eye calibration.
+# These transform the camera frame into the robot end-effector (tool0) frame.
+#
+# T_tool0_camera  =  translation + quaternion (x y z w)
+#
+# HOW TO FILL THIS IN:
+#   If you used easy_handeye or a custom calibration:
+#     rosrun easy_handeye publish  → copy the published transform here.
+#   If you solved it manually:
+#     fill translation_xyz and rotation_xyzw from your result.
+#
+# The node calibration_publisher.py reads this and broadcasts the TF:
+#     /tool0  →  /camera_optical_frame
+#
+eye_in_hand_calibration:
+  translation_xyz: [0.035, -0.012, 0.048]   # metres  ← replace with your values
+  rotation_xyzw:   [0.012,  0.701,  0.012, 0.713]   # quaternion  ← replace
+
+# ── ROS topics & frames ───────────────────────────────────────────────────────
+ros:
+  base_frame:          "base_link"
+  tool_frame:          "tool0"
+  camera_frame:        "camera_optical_frame"
+  puzzle_wall_frame:   "puzzle_wall"
+
+  # Published topics
+  topic_puzzle_wall_pose:  "/perception/puzzle_wall_pose"   # geometry_msgs/PoseStamped
+  topic_marker_array:      "/perception/detected_markers"   # visualization_msgs/MarkerArray
+  topic_detection_status:  "/perception/detection_status"   # std_msgs/String  (JSON)
+  topic_camera_image_raw:  "/perception/image_raw"          # sensor_msgs/Image
+  topic_camera_debug:      "/perception/image_debug"        # sensor_msgs/Image (annotated)
+
+# ── Filtering ─────────────────────────────────────────────────────────────────
+filter:
+  # Simple exponential moving average applied to the puzzle wall pose
+  # alpha=1.0 → no filtering; alpha=0.1 → heavy smoothing
+  pose_ema_alpha: 0.3
+
+  # How many consecutive frames without detection before flagging "lost"
+  lost_detection_frames: 15
