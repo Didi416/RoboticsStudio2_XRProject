@@ -1155,7 +1155,7 @@ Transform:
   m_GameObject: {fileID: 129970368}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.07694, y: -0.23, z: -6.6700006}
+  m_LocalPosition: {x: 3.07694, y: 0.35121, z: -6.6700006}
   m_LocalScale: {x: 1, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3120,7 +3120,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: b60563a56d0ae47cb8d5da466a03cb1f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.15
+      value: 0.18
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b60563a56d0ae47cb8d5da466a03cb1f,
         type: 3}
@@ -5621,8 +5621,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.5, y: 2.5, z: 2.5}
-  m_Center: {x: 0, y: 1.2, z: -6}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &487094652
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8994,7 +8994,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f40b2921c3b504781a4fe50524c7b2c5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.13
+      value: 0.44121015
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f40b2921c3b504781a4fe50524c7b2c5,
         type: 3}
@@ -11703,8 +11703,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.5, y: 2.5, z: 2.5}
-  m_Center: {x: 0, y: 1.5, z: -3}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1022184478
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -15940,6 +15940,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 312370193}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1306132166 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8d073708270f841efab608ba485afbb2,
+    type: 3}
+  m_PrefabInstance: {fileID: 2001245805}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1306132169 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d073708270f841efab608ba485afbb2,
@@ -16188,8 +16194,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.5, y: 2.5, z: 2.5}
-  m_Center: {x: 0, y: 1.2, z: 6}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1311188399
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -16776,7 +16782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60523e0647cc6ab43acc73cb266a32a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor
-  m_InteractionManager: {fileID: 2051655485}
+  m_InteractionManager: {fileID: 0}
   m_InteractionLayers:
     m_Bits: 2
   m_Handedness: 0
@@ -18556,7 +18562,7 @@ Transform:
   m_GameObject: {fileID: 1575643659}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0.7071068, z: 0, w: 0}
-  m_LocalPosition: {x: 12.38, y: 1.39, z: -2.93}
+  m_LocalPosition: {x: 12.41, y: 1.58, z: -2.93}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18574,23 +18580,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b6cf306c982a42e6b6035a2b6ef533b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LilyPadGrid
-  gridWidth: 4
-  gridHeight: 4
+  gridWidth: 5
+  gridHeight: 5
   cellSize: 1
   lilyPadPrefab: {fileID: 1015956462}
-  lineMaterial: {fileID: 0}
-  lineColor: {r: 1, g: 1, b: 1, a: 1}
-  lineWidth: 0.02
-  lineHeightOffset: 0.01
-  minPathLength: 5
-  maxPathLength: 12
-  defaultColor: {r: 0, g: 1, b: 0, a: 1}
-  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  completedColor: {r: 0, g: 1, b: 1, a: 1}
-  highlightDuration: 0.6
-  delayBetweenPads: 0.3
-  autoPlaySequence: 1
-  replayKey: 114
+  emptyTilePrefab: {fileID: 1306132166}
   currentPath: []
 --- !u!1001 &1583369909
 PrefabInstance:
@@ -23332,7 +23326,7 @@ Transform:
   m_GameObject: {fileID: 1839722770}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.996941, y: -0.27, z: -2.5300007}
+  m_LocalPosition: {x: 11.996941, y: 0.10121, z: -2.5300007}
   m_LocalScale: {x: 1, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24503,17 +24497,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: b8ebecdf7dfb74741826537dda2a544f,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b8ebecdf7dfb74741826537dda2a544f,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b8ebecdf7dfb74741826537dda2a544f,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b8ebecdf7dfb74741826537dda2a544f,
         type: 3}
@@ -24523,12 +24517,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: b8ebecdf7dfb74741826537dda2a544f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.36
+      value: -0.33
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b8ebecdf7dfb74741826537dda2a544f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.86
+      value: -8.84
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b8ebecdf7dfb74741826537dda2a544f,
         type: 3}
@@ -25462,8 +25456,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 3, z: 3}
-  m_Center: {x: 0, y: 1.2, z: -12}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &2054614112
 Rigidbody:
   m_ObjectHideFlags: 0

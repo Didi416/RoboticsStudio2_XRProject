@@ -50,8 +50,33 @@ public class EggPlacementScript : MonoBehaviour
             originalColor = objectRenderer.material.color;
     }
 
+    // private void OnGrabbed(SelectEnterEventArgs args)
+    // {
+    //     if (grabAudioSource != null && grabbingSound != null)
+    //     {
+    //         grabAudioSource.clip = grabbingSound;
+    //         grabAudioSource.loop = true;
+    //         grabAudioSource.Play();
+    //     }
+    // }
+
+    // private void OnReleased(SelectExitEventArgs args)
+    // {
+    //     // Stop grab sound
+    //     if (grabAudioSource != null)
+    //     {
+    //         grabAudioSource.loop = false;
+    //         grabAudioSource.Stop();
+    //     }
+
+    //     StartCoroutine(CheckPlacement());
+    // }
     private void OnGrabbed(SelectEnterEventArgs args)
     {
+        // Only play grab sound if grabbed by a CONTROLLER not a socket
+        if (args.interactorObject is UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor)
+            return;
+
         if (grabAudioSource != null && grabbingSound != null)
         {
             grabAudioSource.clip = grabbingSound;
@@ -62,7 +87,7 @@ public class EggPlacementScript : MonoBehaviour
 
     private void OnReleased(SelectExitEventArgs args)
     {
-        // Stop grab sound
+        // Always stop grab sound on any release
         if (grabAudioSource != null)
         {
             grabAudioSource.loop = false;

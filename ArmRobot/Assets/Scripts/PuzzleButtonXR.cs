@@ -138,7 +138,7 @@ namespace EscapeXRtist.UI
             var controllers = FindObjectsOfType<ActionBasedController>();
             foreach (var c in controllers)
             {
-                if (c.TryGetComponent<XRBaseControllerInteractor>(out var interactor))
+                if (c.TryGetComponent<UnityEngine.XR.Interaction.Toolkit.Interactors.XRBaseInputInteractor>(out var interactor))
                     interactor.SendHapticImpulse(HapticAmplitude, HapticDuration);
             }
         }

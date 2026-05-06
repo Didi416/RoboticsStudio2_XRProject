@@ -1,78 +1,160 @@
+
 // using UnityEngine;
 // using System.Collections.Generic;
 
 // public class LilyPadGrid : MonoBehaviour
 // {
 //     [Header("Grid Settings")]
-//     public int gridWidth = 5;
-//     public int gridHeight = 5;
+//     public int gridWidth = 4;
+//     public int gridHeight = 4;
 //     public float cellSize = 1f;
 
-//     [Header("Prefabs")]
-//     public GameObject lilyPadPrefab;    // visible lily pad
-//     public GameObject emptyTilePrefab;  // empty water tile
+//     [Header("Lily Pad Prefab")]
+//     public GameObject lilyPadPrefab;
+
+//     [Header("Grid Line Settings")]
+//     public Material lineMaterial;
+//     public Color lineColor = Color.white;
+//     public float lineWidth = 0.02f;
+//     public float lineHeightOffset = 0.01f;
 
 //     [Header("Path Settings")]
 //     public int minPathLength = 5;
 //     public int maxPathLength = 12;
 
-//     // Stores the generated path as grid coordinates
 //     public List<Vector2Int> currentPath = new List<Vector2Int>();
 
-//     private GameObject[,] tiles = new GameObject[5, 5];
+//     private GameObject[,] lilyPads;
+//     private Vector2Int startCell = new Vector2Int(0, 0);
+//     private Vector2Int[] possibleEndCells = new Vector2Int[]
+//     {
+//         new Vector2Int(1, 4),
+//         new Vector2Int(3, 4),
+//         new Vector2Int(4, 1),
+//         new Vector2Int(4, 3)
+//     };
 
 //     void Start()
 //     {
-//         GenerateGrid();
+//         lilyPads = new GameObject[gridWidth + 1, gridHeight + 1];
+//         DrawGrid();
 //         GeneratePath();
 //     }
 
-//     void GenerateGrid()
+//     // ─────────────────────────────────────────
+//     // GRID LINES
+//     // ─────────────────────────────────────────
+
+//     void DrawGrid()
 //     {
-//         for (int x = 0; x < gridWidth; x++)
+//         // Horizontal lines
+//         for (int y = 0; y <= gridHeight; y++)
 //         {
-//             for (int y = 0; y < gridHeight; y++)
-//             {
-//                 // Uses the parent object's rotation so tiles align correctly
-//                 Vector3 localPos = new Vector3(x * cellSize, 0, y * cellSize);
-//                 Vector3 worldPos = transform.TransformPoint(localPos);
-//                 tiles[x, y] = Instantiate(emptyTilePrefab, worldPos, transform.rotation, transform);
-//             }
+//             Vector3 start = transform.TransformPoint(new Vector3(0, lineHeightOffset, y * cellSize));
+//             Vector3 end = transform.TransformPoint(new Vector3(gridWidth * cellSize, lineHeightOffset, y * cellSize));
+//             CreateLine($"HLine_{y}", start, end);
+//         }
+
+//         // Vertical lines
+//         for (int x = 0; x <= gridWidth; x++)
+//         {
+//             Vector3 start = transform.TransformPoint(new Vector3(x * cellSize, lineHeightOffset, 0));
+//             Vector3 end = transform.TransformPoint(new Vector3(x * cellSize, lineHeightOffset, gridHeight * cellSize));
+//             CreateLine($"VLine_{x}", start, end);
 //         }
 //     }
+
+//     void CreateLine(string lineName, Vector3 start, Vector3 end)
+//     {
+//         GameObject lineObj = new GameObject(lineName);
+//         lineObj.transform.parent = transform;
+
+//         LineRenderer lr = lineObj.AddComponent<LineRenderer>();
+
+//         lr.positionCount = 2;
+//         lr.SetPosition(0, start);
+//         lr.SetPosition(1, end);
+
+//         lr.startWidth = lineWidth;
+//         lr.endWidth = lineWidth;
+
+//         lr.material = lineMaterial != null
+//             ? lineMaterial
+//             : new Material(Shader.Find("Sprites/Default"));
+
+//         lr.startColor = lineColor;
+//         lr.endColor = lineColor;
+
+//         lr.useWorldSpace = true;
+//         lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+//         lr.receiveShadows = false;
+//     }
+
+//     // ─────────────────────────────────────────
+//     // PATH GENERATION
+//     // ─────────────────────────────────────────
 
 //     void GeneratePath()
 //     {
-//         currentPath.Clear();
+//         Vector2Int endCell = possibleEndCells[Random.Range(0, possibleEndCells.Length)];
+//         Debug.Log($"Path: start {startCell} → end {endCell}");
 
-//         // Start from a random cell on the left column
-//         Vector2Int current = new Vector2Int(0, Random.Range(0, gridHeight));
-//         currentPath.Add(current);
-
-//         int pathLength = Random.Range(minPathLength, maxPathLength);
-
-//         for (int i = 0; i < pathLength; i++)
+//         for (int attempt = 0; attempt < 100; attempt++)
 //         {
-//             List<Vector2Int> neighbours = GetValidNeighbours(current);
-//             if (neighbours.Count == 0) break;
-
-//             current = neighbours[Random.Range(0, neighbours.Count)];
-//             currentPath.Add(current);
+//             List<Vector2Int> path = TryGeneratePath(startCell, endCell);
+//             if (path != null)
+//             {
+//                 currentPath = path;
+//                 SpawnLilyPads();
+//                 return;
+//             }
 //         }
 
-//         // Show lily pads on path tiles
-//         foreach (Vector2Int cell in currentPath)
-//         {
-//             Destroy(tiles[cell.x, cell.y]);
-//             Vector3 localPos = new Vector3(cell.x * cellSize, 0, cell.y * cellSize);
-//             Vector3 worldPos = transform.TransformPoint(localPos);
-//             tiles[cell.x, cell.y] = Instantiate(lilyPadPrefab, worldPos, transform.rotation, transform);
-//         }
-
-//         Debug.Log($"Path generated with {currentPath.Count} steps");
+//         Debug.LogError("Could not generate a valid path after 100 attempts!");
 //     }
 
-//     List<Vector2Int> GetValidNeighbours(Vector2Int cell)
+//     List<Vector2Int> TryGeneratePath(Vector2Int start, Vector2Int end)
+//     {
+//         List<Vector2Int> path = new List<Vector2Int>();
+//         HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+
+//         Vector2Int current = start;
+//         path.Add(current);
+//         visited.Add(current);
+
+//         int maxSteps = 50;
+
+//         for (int step = 0; step < maxSteps; step++)
+//         {
+//             if (current == end)
+//             {
+//                 Debug.Log($"Path generated with {path.Count} steps");
+//                 return path;
+//             }
+
+//             List<Vector2Int> neighbours = GetValidNeighbours(current, visited);
+//             if (neighbours.Count == 0) return null;
+
+//             neighbours.Sort((a, b) =>
+//             {
+//                 int distA = Mathf.Abs(a.x - end.x) + Mathf.Abs(a.y - end.y);
+//                 int distB = Mathf.Abs(b.x - end.x) + Mathf.Abs(b.y - end.y);
+//                 return distA.CompareTo(distB);
+//             });
+
+//             Vector2Int next = Random.value < 0.7f
+//                 ? neighbours[0]
+//                 : neighbours[Random.Range(0, neighbours.Count)];
+
+//             current = next;
+//             path.Add(current);
+//             visited.Add(current);
+//         }
+
+//         return null;
+//     }
+
+//     List<Vector2Int> GetValidNeighbours(Vector2Int cell, HashSet<Vector2Int> visited)
 //     {
 //         List<Vector2Int> neighbours = new List<Vector2Int>();
 //         Vector2Int[] directions = {
@@ -83,73 +165,223 @@
 //         foreach (var dir in directions)
 //         {
 //             Vector2Int next = cell + dir;
-//             // Stay within grid and don't revisit
-//             if (next.x >= 0 && next.x < gridWidth &&
-//                 next.y >= 0 && next.y < gridHeight &&
-//                 !currentPath.Contains(next))
+//             if (next.x >= 0 && next.x <= gridWidth &&
+//                 next.y >= 0 && next.y <= gridHeight &&
+//                 !visited.Contains(next))
 //             {
 //                 neighbours.Add(next);
 //             }
 //         }
 //         return neighbours;
 //     }
+
+//     // ─────────────────────────────────────────
+//     // LILY PAD SPAWNING
+//     // ─────────────────────────────────────────
+
+//     void SpawnLilyPads()
+//     {
+//         foreach (Vector2Int cell in currentPath)
+//         {
+//             if (lilyPads[cell.x, cell.y] != null)
+//                 Destroy(lilyPads[cell.x, cell.y]);
+
+//             Vector3 localPos = new Vector3(cell.x * cellSize, 0, cell.y * cellSize);
+//             Vector3 worldPos = transform.TransformPoint(localPos);
+//             lilyPads[cell.x, cell.y] = Instantiate(lilyPadPrefab, worldPos, transform.rotation, transform);
+//         }
+//     }
 // }
 
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class LilyPadGrid : MonoBehaviour
 {
     [Header("Grid Settings")]
-    public int gridWidth = 5;
-    public int gridHeight = 5;
+    public int gridWidth = 4;
+    public int gridHeight = 4;
     public float cellSize = 1f;
 
-    [Header("Prefabs")]
+    [Header("Lily Pad Prefab")]
     public GameObject lilyPadPrefab;
-    public GameObject emptyTilePrefab;
+
+    [Header("Grid Line Settings")]
+    public Material lineMaterial;
+    public Color lineColor = Color.white;
+    public float lineWidth = 0.02f;
+    public float lineHeightOffset = 0.01f;
+
+    [Header("Path Settings")]
+    public int minPathLength = 5;
+    public int maxPathLength = 12;
+
+    [Header("Highlight Settings")]
+    public Color defaultColor = Color.green;       // normal lily pad color
+    public Color highlightColor = Color.yellow;    // currently highlighted pad
+    public Color completedColor = Color.cyan;      // already shown pads
+    public float highlightDuration = 0.6f;         // how long each pad glows
+    public float delayBetweenPads = 0.3f;          // gap between each highlight
+    public bool autoPlaySequence = true;           // play sequence on start
+    public KeyCode replayKey = KeyCode.R;          // press R to replay sequence
 
     public List<Vector2Int> currentPath = new List<Vector2Int>();
-    private GameObject[,] tiles = new GameObject[5, 5];
 
-    // Fixed start - top left
+    private GameObject[,] lilyPads;
+    private Renderer[,] lilyPadRenderers;
+
     private Vector2Int startCell = new Vector2Int(0, 0);
-
-    // Four possible end points
     private Vector2Int[] possibleEndCells = new Vector2Int[]
     {
-        new Vector2Int(1, 4), // 2nd column bottom row
-        new Vector2Int(3, 4), // 4th column bottom row
-        new Vector2Int(4, 3), // 2nd row last column
-        new Vector2Int(4, 1)  // 4th row last column
+        new Vector2Int(1, 4),
+        new Vector2Int(3, 4),
+        new Vector2Int(4, 1),
+        new Vector2Int(4, 3)
     };
 
     void Start()
     {
-        GenerateGrid();
+        lilyPads = new GameObject[gridWidth + 1, gridHeight + 1];
+        lilyPadRenderers = new Renderer[gridWidth + 1, gridHeight + 1];
+        DrawGrid();
         GeneratePath();
+
+        if (autoPlaySequence)
+            StartCoroutine(PlayHighlightSequence());
     }
 
-    void GenerateGrid()
+    // void Update()
+    // {
+    //     // Press R to replay the highlight sequence
+    //     if (Keyboard.current != null &&
+    //         UnityEngine.InputSystem.Keyboard.current[UnityEngine.InputSystem.Key.R].wasPressedThisFrame)
+    //     {
+    //         ReplaySequence();
+    //     }
+    // }
+
+    public void ReplaySequence()
     {
-        for (int x = 0; x < gridWidth; x++)
+        StopAllCoroutines();
+        ResetAllColors();
+        StartCoroutine(PlayHighlightSequence());
+    }
+
+    // ─────────────────────────────────────────
+    // HIGHLIGHT SEQUENCE
+    // ─────────────────────────────────────────
+
+    IEnumerator PlayHighlightSequence()
+    {
+        // Wait a moment before starting
+        yield return new WaitForSeconds(1f);
+
+        for (int i = 0; i < currentPath.Count; i++)
         {
-            for (int y = 0; y < gridHeight; y++)
-            {
-                Vector3 localPos = new Vector3(x * cellSize, 0, y * cellSize);
-                Vector3 worldPos = transform.TransformPoint(localPos);
-                tiles[x, y] = Instantiate(emptyTilePrefab, worldPos, transform.rotation, transform);
-            }
+            Vector2Int cell = currentPath[i];
+            Renderer rend = lilyPadRenderers[cell.x, cell.y];
+
+            if (rend == null) continue;
+
+            // Pulse the current pad
+            yield return StartCoroutine(PulsePad(rend, i));
+
+            // Mark as completed color after highlight
+            rend.material.color = completedColor;
+
+            yield return new WaitForSeconds(delayBetweenPads);
+        }
+
+        // After full sequence, reset all to default color
+        yield return new WaitForSeconds(0.5f);
+        ResetAllColors();
+
+        Debug.Log("Highlight sequence complete!");
+    }
+
+    IEnumerator PulsePad(Renderer rend, int index)
+    {
+        float elapsed = 0f;
+        bool isStart = index == 0;
+        bool isEnd = index == currentPath.Count - 1;
+
+        // Start and end pads pulse faster to stand out
+        float duration = (isStart || isEnd) ? highlightDuration * 1.5f : highlightDuration;
+
+        // Pulse between highlight and default color
+        while (elapsed < duration)
+        {
+            float t = Mathf.PingPong(elapsed * 4f, 1f);
+            rend.material.color = Color.Lerp(defaultColor, highlightColor, t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        rend.material.color = highlightColor;
+    }
+
+    void ResetAllColors()
+    {
+        foreach (Vector2Int cell in currentPath)
+        {
+            Renderer rend = lilyPadRenderers[cell.x, cell.y];
+            if (rend != null)
+                rend.material.color = defaultColor;
         }
     }
 
+    // ─────────────────────────────────────────
+    // GRID LINES
+    // ─────────────────────────────────────────
+
+    void DrawGrid()
+    {
+        for (int y = 0; y <= gridHeight; y++)
+        {
+            Vector3 start = transform.TransformPoint(new Vector3(0, lineHeightOffset, y * cellSize));
+            Vector3 end = transform.TransformPoint(new Vector3(gridWidth * cellSize, lineHeightOffset, y * cellSize));
+            CreateLine($"HLine_{y}", start, end);
+        }
+
+        for (int x = 0; x <= gridWidth; x++)
+        {
+            Vector3 start = transform.TransformPoint(new Vector3(x * cellSize, lineHeightOffset, 0));
+            Vector3 end = transform.TransformPoint(new Vector3(x * cellSize, lineHeightOffset, gridHeight * cellSize));
+            CreateLine($"VLine_{x}", start, end);
+        }
+    }
+
+    void CreateLine(string lineName, Vector3 start, Vector3 end)
+    {
+        GameObject lineObj = new GameObject(lineName);
+        lineObj.transform.parent = transform;
+
+        LineRenderer lr = lineObj.AddComponent<LineRenderer>();
+        lr.positionCount = 2;
+        lr.SetPosition(0, start);
+        lr.SetPosition(1, end);
+        lr.startWidth = lineWidth;
+        lr.endWidth = lineWidth;
+        lr.material = lineMaterial != null
+            ? lineMaterial
+            : new Material(Shader.Find("Sprites/Default"));
+        lr.startColor = lineColor;
+        lr.endColor = lineColor;
+        lr.useWorldSpace = true;
+        lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        lr.receiveShadows = false;
+    }
+
+    // ─────────────────────────────────────────
+    // PATH GENERATION
+    // ─────────────────────────────────────────
+
     void GeneratePath()
     {
-        // Pick a random end point
         Vector2Int endCell = possibleEndCells[Random.Range(0, possibleEndCells.Length)];
         Debug.Log($"Path: start {startCell} → end {endCell}");
 
-        // Try to generate a valid path up to 100 attempts
         for (int attempt = 0; attempt < 100; attempt++)
         {
             List<Vector2Int> path = TryGeneratePath(startCell, endCell);
@@ -177,7 +409,6 @@ public class LilyPadGrid : MonoBehaviour
 
         for (int step = 0; step < maxSteps; step++)
         {
-            // If we reached the end, success!
             if (current == end)
             {
                 Debug.Log($"Path generated with {path.Count} steps");
@@ -185,11 +416,8 @@ public class LilyPadGrid : MonoBehaviour
             }
 
             List<Vector2Int> neighbours = GetValidNeighbours(current, visited);
+            if (neighbours.Count == 0) return null;
 
-            if (neighbours.Count == 0)
-                return null; // dead end, try again
-
-            // Bias towards the end point
             neighbours.Sort((a, b) =>
             {
                 int distA = Mathf.Abs(a.x - end.x) + Mathf.Abs(a.y - end.y);
@@ -197,19 +425,16 @@ public class LilyPadGrid : MonoBehaviour
                 return distA.CompareTo(distB);
             });
 
-            // 70% chance to move towards end, 30% chance to wander
-            Vector2Int next;
-            if (Random.value < 0.7f)
-                next = neighbours[0]; // closest to end
-            else
-                next = neighbours[Random.Range(0, neighbours.Count)]; // random
+            Vector2Int next = Random.value < 0.7f
+                ? neighbours[0]
+                : neighbours[Random.Range(0, neighbours.Count)];
 
             current = next;
             path.Add(current);
             visited.Add(current);
         }
 
-        return null; // exceeded max steps
+        return null;
     }
 
     List<Vector2Int> GetValidNeighbours(Vector2Int cell, HashSet<Vector2Int> visited)
@@ -223,8 +448,8 @@ public class LilyPadGrid : MonoBehaviour
         foreach (var dir in directions)
         {
             Vector2Int next = cell + dir;
-            if (next.x >= 0 && next.x < gridWidth &&
-                next.y >= 0 && next.y < gridHeight &&
+            if (next.x >= 0 && next.x <= gridWidth &&
+                next.y >= 0 && next.y <= gridHeight &&
                 !visited.Contains(next))
             {
                 neighbours.Add(next);
@@ -233,14 +458,29 @@ public class LilyPadGrid : MonoBehaviour
         return neighbours;
     }
 
+    // ─────────────────────────────────────────
+    // LILY PAD SPAWNING
+    // ─────────────────────────────────────────
+
     void SpawnLilyPads()
     {
         foreach (Vector2Int cell in currentPath)
         {
-            Destroy(tiles[cell.x, cell.y]);
+            if (lilyPads[cell.x, cell.y] != null)
+                Destroy(lilyPads[cell.x, cell.y]);
+
             Vector3 localPos = new Vector3(cell.x * cellSize, 0, cell.y * cellSize);
             Vector3 worldPos = transform.TransformPoint(localPos);
-            tiles[cell.x, cell.y] = Instantiate(lilyPadPrefab, worldPos, transform.rotation, transform);
+            GameObject pad = Instantiate(lilyPadPrefab, worldPos, transform.rotation, transform);
+            lilyPads[cell.x, cell.y] = pad;
+
+            // Store renderer for color changes
+            Renderer rend = pad.GetComponentInChildren<Renderer>();
+            if (rend != null)
+            {
+                lilyPadRenderers[cell.x, cell.y] = rend;
+                rend.material.color = defaultColor;
+            }
         }
     }
 }
