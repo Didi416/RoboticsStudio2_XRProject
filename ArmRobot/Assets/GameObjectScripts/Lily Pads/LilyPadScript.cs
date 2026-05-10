@@ -196,6 +196,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class LilyPadGrid : MonoBehaviour
 {
@@ -213,23 +215,25 @@ public class LilyPadGrid : MonoBehaviour
     public float lineWidth = 0.02f;
     public float lineHeightOffset = 0.01f;
 
+    [Header("Lily Pad Offset")]
+    public float lilyPadHeightOffset = 0.05f;
+
     [Header("Path Settings")]
     public int minPathLength = 5;
     public int maxPathLength = 12;
 
     [Header("Highlight Settings")]
-    public Color defaultColor = Color.green;       // normal lily pad color
-    public Color highlightColor = Color.yellow;    // currently highlighted pad
-    public Color completedColor = Color.cyan;      // already shown pads
-    public float highlightDuration = 0.6f;         // how long each pad glows
-    public float delayBetweenPads = 0.3f;          // gap between each highlight
-    public bool autoPlaySequence = true;           // play sequence on start
-    public KeyCode replayKey = KeyCode.R;          // press R to replay sequence
+    public Color defaultColor = Color.green;
+    public Color highlightColor = Color.yellow;
+    public Color completedColor = Color.cyan;
+    public float highlightDuration = 0.6f;
+    public float delayBetweenPads = 0.3f;
 
     public List<Vector2Int> currentPath = new List<Vector2Int>();
 
     private GameObject[,] lilyPads;
     private Renderer[,] lilyPadRenderers;
+    private bool isPlaying = false;
 
     private Vector2Int startCell = new Vector2Int(0, 0);
     private Vector2Int[] possibleEndCells = new Vector2Int[]
@@ -246,26 +250,20 @@ public class LilyPadGrid : MonoBehaviour
         lilyPadRenderers = new Renderer[gridWidth + 1, gridHeight + 1];
         DrawGrid();
         GeneratePath();
-
-        if (autoPlaySequence)
-            StartCoroutine(PlayHighlightSequence());
     }
 
-    // void Update()
-    // {
-    //     // Press R to replay the highlight sequence
-    //     if (Keyboard.current != null &&
-    //         UnityEngine.InputSystem.Keyboard.current[UnityEngine.InputSystem.Key.R].wasPressedThisFrame)
-    //     {
-    //         ReplaySequence();
-    //     }
-    // }
+    // ─────────────────────────────────────────
+    // CALLED BY EACH LILY PAD WHEN SELECTED
+    // ─────────────────────────────────────────
 
-    public void ReplaySequence()
+    public void OnLilyPadTriggered()
     {
-        StopAllCoroutines();
-        ResetAllColors();
-        StartCoroutine(PlayHighlightSequence());
+        if (!isPlaying)
+        {
+            StopAllCoroutines();
+            ResetAllColors();
+            StartCoroutine(PlayHighlightSequence());
+        }
     }
 
     // ─────────────────────────────────────────
@@ -274,42 +272,37 @@ public class LilyPadGrid : MonoBehaviour
 
     IEnumerator PlayHighlightSequence()
     {
-        // Wait a moment before starting
-        yield return new WaitForSeconds(1f);
+        isPlaying = true;
+        yield return new WaitForSeconds(0.5f);
 
         for (int i = 0; i < currentPath.Count; i++)
         {
             Vector2Int cell = currentPath[i];
             Renderer rend = lilyPadRenderers[cell.x, cell.y];
-
             if (rend == null) continue;
 
-            // Pulse the current pad
-            yield return StartCoroutine(PulsePad(rend, i));
+            bool isStart = i == 0;
+            bool isEnd = i == currentPath.Count - 1;
+            float duration = (isStart || isEnd)
+                ? highlightDuration * 1.5f
+                : highlightDuration;
 
-            // Mark as completed color after highlight
+            yield return StartCoroutine(PulsePad(rend, duration));
+
             rend.material.color = completedColor;
-
             yield return new WaitForSeconds(delayBetweenPads);
         }
 
-        // After full sequence, reset all to default color
         yield return new WaitForSeconds(0.5f);
         ResetAllColors();
 
+        isPlaying = false;
         Debug.Log("Highlight sequence complete!");
     }
 
-    IEnumerator PulsePad(Renderer rend, int index)
+    IEnumerator PulsePad(Renderer rend, float duration)
     {
         float elapsed = 0f;
-        bool isStart = index == 0;
-        bool isEnd = index == currentPath.Count - 1;
-
-        // Start and end pads pulse faster to stand out
-        float duration = (isStart || isEnd) ? highlightDuration * 1.5f : highlightDuration;
-
-        // Pulse between highlight and default color
         while (elapsed < duration)
         {
             float t = Mathf.PingPong(elapsed * 4f, 1f);
@@ -317,7 +310,6 @@ public class LilyPadGrid : MonoBehaviour
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         rend.material.color = highlightColor;
     }
 
@@ -339,15 +331,19 @@ public class LilyPadGrid : MonoBehaviour
     {
         for (int y = 0; y <= gridHeight; y++)
         {
-            Vector3 start = transform.TransformPoint(new Vector3(0, lineHeightOffset, y * cellSize));
-            Vector3 end = transform.TransformPoint(new Vector3(gridWidth * cellSize, lineHeightOffset, y * cellSize));
+            Vector3 start = transform.TransformPoint(
+                new Vector3(0, lineHeightOffset, y * cellSize));
+            Vector3 end = transform.TransformPoint(
+                new Vector3(gridWidth * cellSize, lineHeightOffset, y * cellSize));
             CreateLine($"HLine_{y}", start, end);
         }
 
         for (int x = 0; x <= gridWidth; x++)
         {
-            Vector3 start = transform.TransformPoint(new Vector3(x * cellSize, lineHeightOffset, 0));
-            Vector3 end = transform.TransformPoint(new Vector3(x * cellSize, lineHeightOffset, gridHeight * cellSize));
+            Vector3 start = transform.TransformPoint(
+                new Vector3(x * cellSize, lineHeightOffset, 0));
+            Vector3 end = transform.TransformPoint(
+                new Vector3(x * cellSize, lineHeightOffset, gridHeight * cellSize));
             CreateLine($"VLine_{x}", start, end);
         }
     }
@@ -356,7 +352,6 @@ public class LilyPadGrid : MonoBehaviour
     {
         GameObject lineObj = new GameObject(lineName);
         lineObj.transform.parent = transform;
-
         LineRenderer lr = lineObj.AddComponent<LineRenderer>();
         lr.positionCount = 2;
         lr.SetPosition(0, start);
@@ -379,7 +374,8 @@ public class LilyPadGrid : MonoBehaviour
 
     void GeneratePath()
     {
-        Vector2Int endCell = possibleEndCells[Random.Range(0, possibleEndCells.Length)];
+        Vector2Int endCell =
+            possibleEndCells[Random.Range(0, possibleEndCells.Length)];
         Debug.Log($"Path: start {startCell} → end {endCell}");
 
         for (int attempt = 0; attempt < 100; attempt++)
@@ -400,11 +396,9 @@ public class LilyPadGrid : MonoBehaviour
     {
         List<Vector2Int> path = new List<Vector2Int>();
         HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
-
         Vector2Int current = start;
         path.Add(current);
         visited.Add(current);
-
         int maxSteps = 50;
 
         for (int step = 0; step < maxSteps; step++)
@@ -433,7 +427,6 @@ public class LilyPadGrid : MonoBehaviour
             path.Add(current);
             visited.Add(current);
         }
-
         return null;
     }
 
@@ -469,12 +462,25 @@ public class LilyPadGrid : MonoBehaviour
             if (lilyPads[cell.x, cell.y] != null)
                 Destroy(lilyPads[cell.x, cell.y]);
 
-            Vector3 localPos = new Vector3(cell.x * cellSize, 0, cell.y * cellSize);
+            Vector3 localPos = new Vector3(cell.x * cellSize, lilyPadHeightOffset, cell.y * cellSize);
             Vector3 worldPos = transform.TransformPoint(localPos);
-            GameObject pad = Instantiate(lilyPadPrefab, worldPos, transform.rotation, transform);
+            GameObject pad = Instantiate(
+                lilyPadPrefab, worldPos, transform.rotation, transform);
             lilyPads[cell.x, cell.y] = pad;
 
-            // Store renderer for color changes
+            // Add collider if missing
+            if (pad.GetComponent<Collider>() == null)
+                pad.AddComponent<SphereCollider>();
+
+            // Add XR Simple Interactable so ray can select it
+            XRSimpleInteractable interactable =
+                pad.AddComponent<XRSimpleInteractable>();
+
+            // Store reference to grid for callback
+            LilyPadTrigger trigger = pad.AddComponent<LilyPadTrigger>();
+            trigger.grid = this;
+
+            // Store renderer
             Renderer rend = pad.GetComponentInChildren<Renderer>();
             if (rend != null)
             {

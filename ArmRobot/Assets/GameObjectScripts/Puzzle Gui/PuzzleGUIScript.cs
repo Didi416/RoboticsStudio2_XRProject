@@ -164,7 +164,7 @@ public class PuzzleGUIScript : MonoBehaviour
     public void OnPuzzle1Pressed()
     {
         currentPuzzle = 1;
-        UpdateStatus("Puzzle 1: Button Matrix (LH)");
+        UpdateStatus("Puzzle 1: Frog Call Console");
         Debug.Log("GUI: Puzzle 1 selected");
 
         // TEAMMATE: call move to puzzle 1 position here
@@ -174,7 +174,7 @@ public class PuzzleGUIScript : MonoBehaviour
     public void OnPuzzle2Pressed()
     {
         currentPuzzle = 2;
-        UpdateStatus("Puzzle 2: Slider (RH)");
+        UpdateStatus("Puzzle 2: Lily Pad Maze");
         Debug.Log("GUI: Puzzle 2 selected");
 
         // TEAMMATE: call move to puzzle 2 position here
@@ -184,7 +184,7 @@ public class PuzzleGUIScript : MonoBehaviour
     public void OnPuzzle3Pressed()
     {
         currentPuzzle = 3;
-        UpdateStatus("Puzzle 3: Egg Sorting");
+        UpdateStatus("Puzzle 3: Frog Egg Sorting");
         Debug.Log("GUI: Puzzle 3 selected");
 
         // TEAMMATE: call move to puzzle 3 position here
