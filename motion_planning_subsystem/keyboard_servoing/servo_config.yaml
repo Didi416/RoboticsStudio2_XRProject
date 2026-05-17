@@ -1,0 +1,63 @@
+servo_node:
+  ros__parameters:
+    move_group_name: ur_manipulator
+    ee_frame_name: tool0
+    robot_link_command_frame: base_link
+
+    cartesian_command_in_topic: /servo_node/delta_twist_cmds
+    joint_topic: /joint_states
+
+    # Switched from scaled_joint_trajectory_controller to
+    # forward_position_controller which accepts Float64MultiArray directly.
+    # This avoids the trajectory interpolation overhead and is more
+    # responsive for real-time servo use.
+    command_out_topic: /forward_position_controller/commands
+    command_out_type: std_msgs/Float64MultiArray
+    publish_joint_positions: true
+    publish_joint_velocities: false
+    publish_joint_accelerations: false
+
+    is_primary_planning_scene_monitor: true
+    monitored_planning_scene_topic: /planning_scene
+
+    # Lowered from default 100Hz — VM cannot sustain the default rate.
+    # run_duration warnings appear when this is too high.
+    publish_period: 0.034        # ~30 Hz
+
+    incoming_command_timeout: 0.2
+    num_outgoing_halt_msgs_to_publish: 4
+
+    scale:
+      linear:     0.5
+      rotational: 0.5
+      joint:      0.5
+
+    # ── Singularity handling ──────────────────────────────────────────────────
+    # The condition number measures how close the arm is to a singularity.
+    # Lower threshold = less sensitive (triggers less often).
+    # The arm starts decelerating between lower and hard_stop thresholds,
+    # reaching zero velocity exactly at hard_stop.
+    #
+    # Default values (17 / 30) are very conservative and will trigger on
+    # any slightly awkward pose. These relaxed values suit a UR3e in
+    # simulation where you want broad freedom of movement.
+    lower_singularity_threshold:              5.0   # start decelerating here
+    hard_stop_singularity_threshold:         10.0   # full stop here
+    leaving_singularity_threshold_multiplier: 2.0   # hysteresis — must be
+                                                     # this x lower threshold
+                                                     # away before re-enabling
+
+    # Joint limits — servo stops this many radians before the URDF limit.
+    # Increase to give more buffer, decrease for more range.
+    joint_limit_margin_rad: 0.05
+
+    # ── Collision checking ────────────────────────────────────────────────────
+    # Servo checks self-collision and scene collision every tick.
+    # Proximity thresholds control how close links can get before
+    # servo starts decelerating (same deceleration logic as singularity).
+    check_collisions:                    true
+    collision_check_rate:                10.0   # Hz
+    self_collision_proximity_threshold:  0.02   # metres — increased from 0.01
+    scene_collision_proximity_threshold: 0.05   # metres — gives more buffer
+
+    use_gazebo: false

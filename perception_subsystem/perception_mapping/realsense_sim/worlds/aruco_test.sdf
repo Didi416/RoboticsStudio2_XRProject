@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <world name="aruco_test_world">
+
+    <!-- Lighting -->
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <direction>-0.5 0.1 -0.9</direction>
+      <diffuse>0.9 0.9 0.9 1</diffuse>
+      <specular>0.3 0.3 0.3 1</specular>
+    </light>
+
+    <!-- Physics -->
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <!-- Required Ignition system plugins -->
+    <plugin filename="ignition-gazebo-physics-system"
+            name="ignition::gazebo::systems::Physics"/>
+    <plugin filename="ignition-gazebo-sensors-system"
+            name="ignition::gazebo::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="ignition-gazebo-scene-broadcaster-system"
+            name="ignition::gazebo::systems::SceneBroadcaster"/>
+    <plugin filename="ignition-gazebo-user-commands-system"
+            name="ignition::gazebo::systems::UserCommands"/>
+
+    <!-- Ground plane -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal></plane></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane><normal>0 0 1</normal><size>10 10</size></plane>
+          </geometry>
+          <material>
+            <ambient>0.6 0.6 0.6 1</ambient>
+            <diffuse>0.6 0.6 0.6 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!--
+      Camera: positioned 40cm above the table surface,
+      tilted 30 degrees downward to look at the workspace.
+      pose = x y z roll pitch yaw
+    -->
+    <include>
+      <uri>model://realsense_d435i</uri>
+      <name>d435i_camera</name>
+      <pose>0 0 0.4  0 0.52 0</pose>
+    </include>
+
+    <!--
+      Puzzle workspace table — represents the physical puzzle board.
+      Placed 35cm in front of the camera, flat on the ground.
+    -->
+    <model name="puzzle_workspace">
+      <static>true</static>
+      <pose>0.35 0 0.01  0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box><size>0.40 0.40 0.01</size></box>
+          </geometry>
+          <material>
+            <ambient>0.85 0.80 0.70 1</ambient>
+            <diffuse>0.85 0.80 0.70 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box><size>0.40 0.40 0.01</size></box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <!--
+      Marker object 1 — represents a puzzle piece with an ArUco marker.
+      A bright-coloured block so you can see it clearly in the camera feed.
+    -->
+    <model name="puzzle_piece_0">
+      <static>true</static>
+      <pose>0.30 0.05 0.025  0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.05 0.05 0.03</size></box></geometry>
+          <material>
+            <ambient>0.8 0.1 0.1 1</ambient>
+            <diffuse>0.8 0.1 0.1 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><box><size>0.05 0.05 0.03</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+
+    <!-- Marker object 2 -->
+    <model name="puzzle_piece_1">
+      <static>true</static>
+      <pose>0.35 -0.08 0.025  0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.05 0.05 0.03</size></box></geometry>
+          <material>
+            <ambient>0.1 0.6 0.1 1</ambient>
+            <diffuse>0.1 0.6 0.1 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><box><size>0.05 0.05 0.03</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+
+  </world>
+</sdf>

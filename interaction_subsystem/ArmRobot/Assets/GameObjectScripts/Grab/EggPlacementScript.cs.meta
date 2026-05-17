@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: b887415e0f61e49458f896152bad02bc
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - audioSource: {instanceID: 0}
+  - grabAudioSource: {instanceID: 0}
+  - correctSound: {fileID: 8300000, guid: cb9eec7f915e74e6192be84538ebcd4c, type: 3}
+  - wrongSound: {fileID: 8300000, guid: 90039a14cffa84d65915521e881c7eb2, type: 3}
+  - droppedSound: {fileID: 8300000, guid: 6e28c8c29fa0144adb1e4b2622264028, type: 3}
+  - grabbingSound: {fileID: 8300000, guid: 7770429c397d84ba589850ed9736bda2, type: 3}
+  - correctSocket: {instanceID: 0}
+  - objectRenderer: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
