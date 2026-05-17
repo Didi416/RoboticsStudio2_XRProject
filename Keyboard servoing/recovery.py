@@ -29,7 +29,7 @@ import threading
 # ── Safe home pose ────────────────────────────────────────────────────────────
 # Elbow up, wrist neutral — well away from all UR3e singularities.
 # Adjust these if your workspace needs a different home.
-HOME_JOINTS = [0.0, -1.0, 0.5, -1.0, -1.57, 0.0]
+HOME_JOINTS = [0.0, -1.0, 1.5, -2.5, -1.57, 0.0]
 HOME_JOINT_NAMES = [
     'shoulder_pan_joint',
     'shoulder_lift_joint',

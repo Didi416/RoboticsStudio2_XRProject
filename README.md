@@ -10,28 +10,64 @@ Commands to launch fake hardware test with ur_onrobot packages:
 - python3 keyboard_bridge.py (make sure output commands topic is also set to forward velocity controller)
 
 
-Launch Teleop with URSim:
+Single Launch file method:
+Launch URSim:
+```sh
+ros2 run ur_client_library start_ursim.sh -m ur3e
 ```
+
+Launch XR full stack launch file (includes UR Driver, MoveIt, controller switching, Servo service trigger, ROS TCP Endpoint)
+```sh
+ros2 launch rs2_ros2_unity_bridge xr_full_stack.launch.py 
+```
+Configurable launch arguments:
+- `robot_ip` (default: `192.168.56.101`): Default URSim, can be change to real robot IP
+- `ros_tcp_host`, (default: `127.0.0.1`): Default Unity host IP that ROS-TCP-Endpoint listens on.',
+
+To change `ros_tcp_host`, you must first change the "Unity --> Robotics --> ROS Settings" ROS Host IP Address to your ROS machine IP, which can be found using:
+```sh
+hostname -I
+```
+(usually first IP address listed).
+
+To launch OnRobot Gripper (use_fake_hardware:=true)
+```sh
+ros2 launch rs2_ros2_unity_bridge ur_onrobot_group.launch.py 
+```
+___________________________________________________
+
+If you want to launch each CLI call individually:
+Launch Teleop with URSim:
+```sh
 ros2 run ur_client_library start_ursim.sh -m ur3e
 ```
 URSIM launch
-```
-ros2 launch rs2_ros2_unity_bridge ur_test.launch.py ur_type:=ur3e robot_ip:=192.168.56.101 launch_rviz:=true 
+```sh
+ros2 launch rs2_ros2_unity_bridge ur_driver_modified.launch.py ur_type:=ur3e robot_ip:=192.168.56.101 launch_rviz:=true 
 ```
 (change port to 50001 if ti reads Addres already in use in terminal)
+```sh
+ros2 launch rs2_ros2_unity_bridge ur_moveit_modified.launch.py ur_type:=ur3e launch_rviz:=true
 ```
-ros2 launch rs2_ros2_unity_bridge ur_moveit_test.launch.py ur_type:=ur3e launch_rviz:=true
-```
-```
+```sh
 ros2 control switch_controllers --activate forward_velocity_controller --deactivate scaled_joint_trajectory_controller
 ```
-```
+```sh
 ros2 service call /servo_node/start_servo std_srvs/srv/Trigger {}
 ```
-```
+```sh
 ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=127.0.0.1
 ```
-```
+```sh
 ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=172.19.116.163 
 ```
 (for VR Headset connection)
+
+
+For onrobot simulation (not URSim, enable use_fake_hardware:=true)
+Note: You must make sure the yaml files (from above) have changed their target controllers, especially if/when you clone the OnRobot package direct from source.
+
+ros2 launch ur_onrobot_control start_robot.launch.py ur_type:=ur3e onrobot_type:=rg2 use_fake_hardware:=true
+ros2 launch ur_onrobot_control start_robot.launch.py ur_type:=ur3e onrobot_type:=rg2 robot_ip:=192.168.0.194
+
+ros2 launch ur_onrobot_moveit_config ur_onrobot_moveit.launch.py ur_type:=ur3e onrobot_type:=rg2

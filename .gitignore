@@ -7,20 +7,28 @@ Builds/
 Logs/
 UserSettings/
 MemoryCaptures/
+ProjectSettings/
 .utmp/
 build/
 ArmRobot_BurstDebugInformation_DoNotShip/
+# Packages/
+!Packages/manifest.json
+!Packages/packages-lock.json
 
  
 # Unity 6 specific
 .idea/
 .vs/
 .vscode/
+
+# Ignore files with CommandBuffer in the name
+*CommandBuffer.cs
  
 # Auto-generated VS/Rider project files
 *.csproj
 *.unityproj
 *.sln
+*.slnx
 *.suo
 *.tmp
 *.user
