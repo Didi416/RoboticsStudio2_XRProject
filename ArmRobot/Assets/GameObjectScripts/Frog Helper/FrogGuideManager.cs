@@ -20,6 +20,7 @@ public class FrogGuideManager : MonoBehaviour
     public TextMeshProUGUI speakerName;    // "Lily the Frog"
     public Button nextButton;
     public Button exitButton;
+    
 
     [Header("Hint Room Selection")]
     public GameObject roomSelectionPanel;  // shows after help pressed in puzzle
@@ -27,6 +28,7 @@ public class FrogGuideManager : MonoBehaviour
     public Button puzzle1Button;
     public Button puzzle2Button;
     public Button puzzle3Button;
+    public Button backButton;
 
     [Header("Frog Images")]
     public Sprite frogNeutral;
@@ -100,6 +102,9 @@ public class FrogGuideManager : MonoBehaviour
 
         // Auto play intro after short delay
         Invoke("PlayIntro", 1.5f);
+
+        if (backButton != null)
+        backButton.onClick.AddListener(OnBackPressed);
     }
 
     void OnEnable()
@@ -161,12 +166,41 @@ public class FrogGuideManager : MonoBehaviour
         roomSelectionPanel.SetActive(true);
         guideOpen = true;
 
-        // Show frog asking what help is needed
+        // Reset sequence state so nothing carries over
+        currentSequence = null;
+        currentLineIndex = 0;
+        isTyping = false;
+
+        if (typewriterCoroutine != null)
+        {
+            StopCoroutine(typewriterCoroutine);
+            typewriterCoroutine = null;
+        }
+
+        if (tts != null)
+            tts.StopSpeaking();
+
         ShowSingleLine("Ribbit! Which puzzle do you need help with?", frogPointing);
     }
 
+    // void ShowHints(List<DialogueLine> hints)
+    // {
+    //     roomSelectionPanel.SetActive(false);
+
+    //     // Play ribbit when switching to hints
+    //     if (tts != null)
+    //         tts.Speak("", null);
+
+    //     StartSequence(hints, frogPointing);
+    // }
     void ShowHints(List<DialogueLine> hints)
     {
+        if (hints == null || hints.Count == 0)
+        {
+            Debug.LogWarning("No hints available!");
+            return;
+        }
+
         roomSelectionPanel.SetActive(false);
         StartSequence(hints, frogPointing);
     }
@@ -181,9 +215,9 @@ public class FrogGuideManager : MonoBehaviour
         if (frogImage != null && frogSprite != null)
             frogImage.sprite = frogSprite;
 
-        // Speak first line immediately
+        // Speak first line with its audio clip
         if (tts != null && sequence.Count > 0)
-            tts.Speak(sequence[0].text);
+            tts.Speak(sequence[0].text, sequence[0].audioClip);
 
         ShowCurrentLine();
     }
@@ -227,9 +261,100 @@ public class FrogGuideManager : MonoBehaviour
         }
     }
 
+    // public void OnBackPressed()
+    // {
+    //     // Stop current sequence and audio
+    //     if (typewriterCoroutine != null)
+    //         StopCoroutine(typewriterCoroutine);
+    //     if (tts != null)
+    //         tts.StopSpeaking();
+
+    //     // Clear dialogue text
+    //     if (dialogueText != null)
+    //         dialogueText.text = "";
+
+    //     // Show room selection again
+    //     roomSelectionPanel.SetActive(true);
+
+    //     // Reset to pointing frog
+    //     if (frogImage != null && frogPointing != null)
+    //         frogImage.sprite = frogPointing;
+
+    //     // Show the which puzzle question again
+    //     ShowSingleLine("Ribbit! Which puzzle do you need help with?", frogPointing);
+
+    //     Debug.Log("Back button pressed - returned to room selection");
+    // }
+
+    public void OnBackPressed()
+    {
+        // Stop everything safely
+        if (typewriterCoroutine != null)
+        {
+            StopCoroutine(typewriterCoroutine);
+            typewriterCoroutine = null;
+        }
+
+        if (tts != null)
+            tts.StopSpeaking();
+
+        // Reset state
+        currentSequence = null;
+        currentLineIndex = 0;
+        isTyping = false;
+
+        // Clear text safely
+        if (dialogueText != null)
+            dialogueText.text = "";
+
+        // Show room selection
+        roomSelectionPanel.SetActive(true);
+
+        ShowSingleLine("Ribbit! Which puzzle do you need help with?", frogPointing);
+    }
+
+    // public void OnNextPressed()
+    // {
+    //     Debug.Log($"Next pressed - isTyping: {isTyping}, lineIndex: {currentLineIndex}");
+
+    //     if (isTyping)
+    //     {
+    //         StopCoroutine(typewriterCoroutine);
+    //         isTyping = false;
+    //         dialogueText.text = currentSequence[currentLineIndex].text;
+    //         return;
+    //     }
+
+    //     currentLineIndex++;
+
+    //     if (currentSequence != null && currentLineIndex < currentSequence.Count)
+    //     {
+    //         // Play audio clip for this specific line
+    //         if (tts != null)
+    //             tts.Speak(
+    //                 currentSequence[currentLineIndex].text,
+    //                 currentSequence[currentLineIndex].audioClip);
+    //         else
+    //             Debug.LogError("TTS is null!");
+
+    //         ShowCurrentLine();
+    //     }
+    //     else
+    //     {
+    //         OnSequenceEnd();
+    //     }
+    // }
+
     public void OnNextPressed()
     {
         Debug.Log($"Next pressed - isTyping: {isTyping}, lineIndex: {currentLineIndex}");
+
+        // Guard against null sequence
+        if (currentSequence == null)
+        {
+            Debug.LogWarning("Next pressed but no sequence active");
+            return;
+        }
 
         if (isTyping)
         {
@@ -241,25 +366,19 @@ public class FrogGuideManager : MonoBehaviour
 
         currentLineIndex++;
 
-        if (currentSequence != null && currentLineIndex < currentSequence.Count)
+        if (currentLineIndex < currentSequence.Count)
         {
-            Debug.Log($"Showing line {currentLineIndex}: {currentSequence[currentLineIndex].text}");
-
             if (tts != null)
-            {
-                Debug.Log("Calling TTS speak");
-                tts.Speak(currentSequence[currentLineIndex].text);
-            }
+                tts.Speak(
+                    currentSequence[currentLineIndex].text,
+                    currentSequence[currentLineIndex].audioClip);
             else
-            {
-                Debug.LogError("TTS is null! Drag FrogTTS object into TTS slot in Inspector");
-            }
+                Debug.LogError("TTS is null!");
 
             ShowCurrentLine();
         }
         else
         {
-            Debug.Log("Sequence ended");
             OnSequenceEnd();
         }
     }
@@ -307,3 +426,7 @@ public class FrogGuideManager : MonoBehaviour
         isTyping = false;
     }
 }
+
+
+
+

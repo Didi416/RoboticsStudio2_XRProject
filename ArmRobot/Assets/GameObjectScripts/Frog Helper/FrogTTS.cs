@@ -8,47 +8,54 @@ public class FrogTTS : MonoBehaviour
     public float speechRate = 0.9f;   // slightly slower for clarity
     public float pitch = 1.2f;        // slightly higher pitch for frog voice
 
-    [Header("Fallback Audio")]
+    // [Header("Fallback Audio")]
+    // public AudioSource audioSource;
+    // public AudioClip frogSoundPrefix;  // short ribbit before each line
+
+    [Header("Audio")]
     public AudioSource audioSource;
-    public AudioClip frogSoundPrefix;  // short ribbit before each line
+    public AudioClip frogSoundPrefix; // short ribbit before each line
 
     public bool isSpeaking = false;
 
-    public void Speak(string text)
+    public void Speak(string text, AudioClip clip = null)
     {
         StopAllCoroutines();
-        StartCoroutine(SpeakCoroutine(text));
+        StartCoroutine(SpeakCoroutine(text, clip));
     }
 
     public void StopSpeaking()
     {
         StopAllCoroutines();
         isSpeaking = false;
-
-        // Stop any playing audio
         if (audioSource != null && audioSource.isPlaying)
             audioSource.Stop();
     }
 
-    IEnumerator SpeakCoroutine(string text)
+    IEnumerator SpeakCoroutine(string text, AudioClip clip = null)
     {
         isSpeaking = true;
-        Debug.Log($"TTS SpeakCoroutine started: {text}");
+        Debug.Log($"SpeakCoroutine started. Clip: {(clip != null ? clip.name : "null")}, AudioSource: {(audioSource != null ? "assigned" : "NULL")}");
 
-        if (audioSource != null && frogSoundPrefix != null)
+        if (audioSource != null && clip != null)
         {
-            Debug.Log("Playing frog sound prefix");
+            Debug.Log($"Playing clip: {clip.name}");
+            audioSource.PlayOneShot(clip);
+            yield return new WaitForSeconds(clip.length);
+        }
+        else if (audioSource != null && frogSoundPrefix != null)
+        {
+            Debug.Log($"Playing frog prefix: {frogSoundPrefix.name}");
             audioSource.PlayOneShot(frogSoundPrefix);
             yield return new WaitForSeconds(frogSoundPrefix.length);
         }
         else
         {
-            Debug.LogWarning($"Audio Source null: {audioSource == null}, Frog Sound null: {frogSoundPrefix == null}");
+            Debug.LogWarning($"No audio played! AudioSource null: {audioSource == null}, clip null: {clip == null}, frogSoundPrefix null: {frogSoundPrefix == null}");
         }
 
-        Debug.Log("TTS speak finished");
         isSpeaking = false;
-    }
+    }   
 
     #if UNITY_ANDROID && !UNITY_EDITOR
     void AndroidTTS(string text)
@@ -74,3 +81,4 @@ public class FrogTTS : MonoBehaviour
     }
     #endif
 }
+
