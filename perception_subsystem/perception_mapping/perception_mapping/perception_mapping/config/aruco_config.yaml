@@ -6,21 +6,32 @@
 
 # ── Camera source ─────────────────────────────────────────────────────────────
 camera:
-  device_index: 0           # /dev/video0  (laptop webcam)
-  width:  1280
-  height: 720
+  #device_index: 0           # /dev/video0  (laptop webcam)
+  device_index: 2           # /dev/video2  (Intel RealSense D435i camera)
+  width:  640
+  height: 480
   fps:    30
 
   # Intrinsic matrix [fx, 0, cx, 0, fy, cy, 0, 0, 1] (row-major, 9 values)
+
+  # ------- WEBCAM--------------
   # Replace with values from your webcam calibration (checkerboard or ROS camera_calibration pkg).
   # These are reasonable defaults for a 1280x720 webcam.
-  camera_matrix:
-    - [900.0, 0.0,   640.0]
-    - [0.0,   900.0, 360.0]
-    - [0.0,   0.0,   1.0  ]
+  # camera_matrix:
+  #   - [900.0, 0.0,   640.0]
+  #   - [0.0,   900.0, 360.0]
+  #   - [0.0,   0.0,   1.0  ]
+  # # Distortion coefficients [k1, k2, p1, p2, k3]
+  # dist_coeffs: [0.0, 0.0, 0.0, 0.0, 0.0]
 
-  # Distortion coefficients [k1, k2, p1, p2, k3]
+# -------- Intel RealSense D435i camera ----------------
+# RealSense D435i intrinsics at 1280x720
+  camera_matrix:
+    - [606.527, 0.0,     326.572]
+    - [0.0,     605.459, 244.114]
+    - [0.0,     0.0,     1.0   ]
   dist_coeffs: [0.0, 0.0, 0.0, 0.0, 0.0]
+
 
 # ── ArUco dictionary ──────────────────────────────────────────────────────────
 aruco:
@@ -60,8 +71,8 @@ puzzle_wall:
 #     /tool0  →  /camera_optical_frame
 #
 eye_in_hand_calibration:
-  translation_xyz: [0.035, -0.012, 0.048]   # metres  ← replace with your values
-  rotation_xyzw:   [0.012,  0.701,  0.012, 0.713]   # quaternion  ← replace
+  translation_xyz: [0.011130, 0.001958, 0.009993]   # metres  
+  rotation_xyzw:   [0.035285,  -0.043867,  0.378927, 0.923713]   # quaternion
 
 # ── ROS topics & frames ───────────────────────────────────────────────────────
 ros:
