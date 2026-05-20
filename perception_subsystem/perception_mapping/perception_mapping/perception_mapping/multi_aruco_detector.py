@@ -143,8 +143,8 @@ class MultiArucoDetector(Node):
         self.debug       = self.get_parameter('debug_image').value
 
         # ArUco setup — OpenCV 4.5.x API (ROS2 Humble default)
-        self.aruco_dict   = aruco.Dictionary_get(aruco.DICT_4X4_50)
-        self.aruco_params = aruco.DetectorParameters_create()
+        self.aruco_dict   = aruco.getPredefinedDictionary(aruco.DICT_4X4_50)
+        self.aruco_params = aruco.DetectorParameters()
 
         # Camera intrinsics — filled on first CameraInfo message
         self.camera_matrix = None
@@ -283,8 +283,8 @@ class MultiArucoDetector(Node):
         gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         stamp = msg.header.stamp
 
-        corners, ids, _ = aruco.detectMarkers(
-            gray, self.aruco_dict, parameters=self.aruco_params)
+        detector = aruco.ArucoDetector(self.aruco_dict, self.aruco_params)
+        corners, ids, _ = detector.detectMarkers(gray)
 
         detected_ids = set()
 
