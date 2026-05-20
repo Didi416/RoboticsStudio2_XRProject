@@ -3,7 +3,7 @@
 aruco_detector_node.py
 ──────────────────────
 ROS2 node that:
-  1. Reads frames from a webcam (simulating the Intel RealSense D435i).
+  1. Reads frames from the Intel RealSense D435i via ROS topic.
   2. Detects the 4 ArUco corner markers fixed to the puzzle wall.
   3. Estimates the pose of each marker relative to the camera.
   4. Fuses the 4 corner detections into a single puzzle-wall centre pose.
@@ -96,15 +96,16 @@ def ema_pose(prev_T, new_T, alpha):
     if prev_T is None:
         return new_T
     # Position EMA
-    pos_new = new_T[:3, 3]
+    pos_new  = new_T[:3, 3]
     pos_prev = prev_T[:3, 3]
     pos_filt = alpha * pos_new + (1.0 - alpha) * pos_prev
 
-    # Rotation SLERP
+    # Rotation SLERP using Slerp class (works in all scipy versions)
+    from scipy.spatial.transform import Slerp
     rot_prev = R.from_matrix(prev_T[:3, :3])
     rot_new  = R.from_matrix(new_T[:3, :3])
-    rot_filt = R.slerp_single(rot_prev, rot_new, alpha) if hasattr(R, "slerp_single") else \
-               rot_prev.slerp(rot_new, alpha)  # older scipy API
+    slerp    = Slerp([0.0, 1.0], R.concatenate([rot_prev, rot_new]))
+    rot_filt = slerp(alpha)
 
     T_filt = np.eye(4)
     T_filt[:3, :3] = rot_filt.as_matrix()
@@ -136,11 +137,15 @@ class ArucoDetectorNode(Node):
         filter_cfg = cfg["filter"]
         ros_cfg    = cfg["ros"]
 
-        # ── Camera ────────────────────────────────────────────────────────
-        self._cam = cv2.VideoCapture(cam_cfg["device_index"])
-        self._cam.set(cv2.CAP_PROP_FRAME_WIDTH,  cam_cfg["width"])
-        self._cam.set(cv2.CAP_PROP_FRAME_HEIGHT, cam_cfg["height"])
-        self._cam.set(cv2.CAP_PROP_FPS,          cam_cfg["fps"])
+        # ── Camera (ROS subscriber instead of VideoCapture) ───────────────
+        self._latest_frame = None
+        self.create_subscription(
+            Image,
+            '/camera/camera/color/image_raw',
+            self._image_callback,
+            10
+        )
+        self.get_logger().info('[ArucoDetector] Subscribed to /camera/camera/color/image_raw')
 
         K = np.array(cam_cfg["camera_matrix"], dtype=np.float64)
         D = np.array(cam_cfg["dist_coeffs"],   dtype=np.float64)
@@ -211,13 +216,22 @@ class ArucoDetectorNode(Node):
         # ── Timer: 30 Hz ─────────────────────────────────────────────────
         self._timer = self.create_timer(1.0 / 30.0, self._process_frame)
 
-        self.get_logger().info("[ArucoDetector] Ready. Streaming from camera...")
+        self.get_logger().info("[ArucoDetector] Ready. Waiting for frames from RealSense...")
+
+    # ─────────────────────────────────────────────────────────────────────
+    def _image_callback(self, msg: Image) -> None:
+        """Convert ROS Image message to OpenCV BGR frame."""
+        try:
+            self._latest_frame = self._bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+        except Exception as e:
+            self.get_logger().warn(f'[ArucoDetector] cv_bridge error: {e}')
 
     # ─────────────────────────────────────────────────────────────────────
     def _process_frame(self):
-        ret, frame = self._cam.read()
-        if not ret:
-            self.get_logger().warn("[ArucoDetector] Failed to read camera frame.")
+        frame = self._latest_frame
+        if frame is None:
+            self.get_logger().warn("[ArucoDetector] Waiting for camera frame...",
+                                   throttle_duration_sec=3.0)
             return
 
         stamp = self.get_clock().now().to_msg()
@@ -294,14 +308,14 @@ class ArucoDetectorNode(Node):
         self._pub_status.publish(String(data=json.dumps(status)))
 
         # ── Publish annotated debug image ─────────────────────────────────
-        # Status overlay
         status_text = f"IDs: {sorted(detected_ids)} | {status['status']}"
         cv2.putText(debug_frame, status_text, (10, 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 200, 255), 2)
         try:
             self._pub_debug.publish(self._bridge.cv2_to_imgmsg(debug_frame, "bgr8"))
         except Exception as e:
-            pass   # non-critical
+            self.get_logger().warn(f"[ArucoDetector] Debug image publish failed: {e}",
+                                   throttle_duration_sec=5.0)
 
     # ─────────────────────────────────────────────────────────────────────
     def _fuse_markers_to_wall_pose(self, marker_transforms):
@@ -377,7 +391,7 @@ class ArucoDetectorNode(Node):
 
     # ─────────────────────────────────────────────────────────────────────
     def destroy_node(self):
-        self._cam.release()
+        self.get_logger().info('[ArucoDetector] Shutting down.')
         super().destroy_node()
 
 
