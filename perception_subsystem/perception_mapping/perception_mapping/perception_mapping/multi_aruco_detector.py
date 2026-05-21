@@ -49,10 +49,15 @@ from scipy.spatial.transform import Rotation
 # ── Puzzle marker registry ────────────────────────────────────────────────────
 PUZZLE_MARKERS = {
     0:  'frog_call_console',
-    1:  'lily_pad_maze',
-    2:  'frog_egg_sorting',
-    3:  'containment_dial',
+    # 1:  'lily_pad_maze',
+    # 2:  'frog_egg_sorting',
+    # 3:  'containment_dial',
     10: 'calibration_target',
+    # ── Puzzle 3 - eggs ──────────
+    1: 'egg_green',
+    2: 'egg_blue',
+    3: 'egg_white',
+    4: 'egg_purple',
 }
 
 # Physical marker size in metres — must match your printed markers.
