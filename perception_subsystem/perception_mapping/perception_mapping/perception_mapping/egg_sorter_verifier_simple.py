@@ -261,11 +261,11 @@ class EggSorterVerifierSimple(Node):
         self._pub_status.publish(status_msg)
         self._pub_egg_state.publish(egg_state_msg)
 
-        if solved:
-            self.get_logger().info("PUZZLE 3 SOLVED ✓")
-        else:
-            self.get_logger().debug(status_str)
-
+        # if solved:
+        #     self.get_logger().info("PUZZLE 3 SOLVED ✓")
+        # else:
+        #     self.get_logger().debug(status_str)
+        self.get_logger().info(status_str)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Entry point
