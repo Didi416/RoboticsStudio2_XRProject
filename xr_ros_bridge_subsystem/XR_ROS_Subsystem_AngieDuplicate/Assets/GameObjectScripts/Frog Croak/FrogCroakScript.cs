@@ -204,6 +204,11 @@ public class FrogCroakScript : MonoBehaviour
     [Header("Debug Testing")]
     public Key testKey = Key.G;
 
+    public int GetCroakCount()
+    {
+        return maxPlays;
+    }
+
     private int maxPlays;
     private bool isPlaying = false;
     private UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactable;
