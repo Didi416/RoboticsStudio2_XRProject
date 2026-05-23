@@ -55,8 +55,8 @@ public class FrogGuideManager : MonoBehaviour
         {
             // Position panel in front of player at all times
             Vector3 targetPos = playerCamera.position 
-                + playerCamera.forward * 2f  // 2 metres in front
-                + Vector3.down * 0.5f;       // slightly below eye level
+                + playerCamera.forward * 2f;  // 2 metres in front
+                //+ Vector3.down * 0.5f;       // slightly below eye level
             
             guidePanel.transform.position = Vector3.Lerp(
                 guidePanel.transform.position, 
@@ -71,6 +71,7 @@ public class FrogGuideManager : MonoBehaviour
                 Time.deltaTime * 5f);
         }
     }
+    
 
     // State
     private List<DialogueLine> currentSequence;
@@ -425,6 +426,8 @@ public class FrogGuideManager : MonoBehaviour
 
         isTyping = false;
     }
+
+    
 }
 
 

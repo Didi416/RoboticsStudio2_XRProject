@@ -184,6 +184,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 public class ButtonMatrixPanel : MonoBehaviour
 {
@@ -279,7 +280,7 @@ public class ButtonMatrixPanel : MonoBehaviour
 
         if (resultText != null)
         {
-            resultText.text = correct ? "✓" : "✗";
+            resultText.text = correct ? "Correct Code" : "Incorrect.\nTry Again";
             resultText.color = correct ? Color.green : Color.red;
         }
 
@@ -314,4 +315,18 @@ public class ButtonMatrixPanel : MonoBehaviour
 
         Debug.Log("Button Matrix reset");
     }
+
+    void Update()
+    {
+        if (Keyboard.current[Key.Digit1].wasPressedThisFrame) PressButton(1);
+        if (Keyboard.current[Key.Digit2].wasPressedThisFrame) PressButton(2);
+        if (Keyboard.current[Key.Digit3].wasPressedThisFrame) PressButton(3);
+        if (Keyboard.current[Key.Digit4].wasPressedThisFrame) PressButton(4);
+        if (Keyboard.current[Key.Digit5].wasPressedThisFrame) PressButton(5);
+        if (Keyboard.current[Key.Digit6].wasPressedThisFrame) PressButton(6);
+        if (Keyboard.current[Key.Digit7].wasPressedThisFrame) PressButton(7);
+        if (Keyboard.current[Key.Digit8].wasPressedThisFrame) PressButton(8);
+        if (Keyboard.current[Key.Digit9].wasPressedThisFrame) PressButton(9);
+    }
 }
+

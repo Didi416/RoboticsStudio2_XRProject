@@ -203,23 +203,29 @@ public class FrogCroakScript : MonoBehaviour
 
     [Header("Debug Testing")]
     public Key testKey = Key.G;
-
-    public int GetCroakCount()
-    {
-        return maxPlays;
-    }
-
+    
     private int maxPlays;
     private bool isPlaying = false;
     private UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactable;
 
-    void Start()
+    void Awake()
     {
         maxPlays = Random.Range(minCroaks, maxCroaks + 1);
+        Debug.Log($"{gameObject.name} croak count set to: {maxPlays}");
+    }
+
+    void Start()
+    {
+       // maxPlays = Random.Range(minCroaks, maxCroaks + 1);
         Debug.Log($"{gameObject.name} will croak {maxPlays} times (range {minCroaks}-{maxCroaks})");
         interactable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable>();
         if (interactable != null)
             interactable.selectEntered.AddListener(OnSelected);
+    }
+
+    public int GetCroakCount()
+    {
+        return maxPlays;
     }
 
     void OnDestroy()
