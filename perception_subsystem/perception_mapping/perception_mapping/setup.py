@@ -81,6 +81,9 @@ setup(
             'puzzle_object_detector = perception_mapping.puzzle_object_detector:main',
             'pose_filter_node = perception_mapping.pose_filter_node:main',
             'webcam_realsense_bridge = perception_mapping.webcam_realsense_bridge:main',
+            
+            'egg_sorter_verifier = perception_mapping.egg_sorter_verifier:main',
+            'egg_sorter_verifier_simple = perception_mapping.egg_sorter_verifier_simple:main',
         ],
     },
 )
