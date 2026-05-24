@@ -540,6 +540,7 @@ public class LilyPadGrid : MonoBehaviour
         }
 
         Debug.LogError("Could not generate a valid path after 100 attempts!");
+        Debug.Log($"LilyPadGrid path ready with {currentPath.Count} points");
     }
 
     List<Vector2Int> TryGeneratePath(Vector2Int start, Vector2Int end)
