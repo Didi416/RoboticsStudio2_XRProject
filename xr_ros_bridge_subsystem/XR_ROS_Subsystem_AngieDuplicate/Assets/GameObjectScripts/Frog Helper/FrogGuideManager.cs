@@ -8,22 +8,21 @@ using System.Collections.Generic;
 public class FrogGuideManager : MonoBehaviour
 {
     [Header("Input")]
-    public InputActionReference helpButtonAction;  // controller help button
-    public InputActionReference nextLineAction;    // trigger to advance dialogue
-    public InputActionReference exitAction;        // X button to exit
+    public InputActionReference helpButtonAction;
+    public InputActionReference nextLineAction;
+    public InputActionReference exitAction;
 
     [Header("UI References")]
-    public GameObject guidePanel;          // the whole bottom panel
-    public Image frogImage;                // frog character image
-    public GameObject textBubble;          // speech bubble background
-    public TextMeshProUGUI dialogueText;   // main text
-    public TextMeshProUGUI speakerName;    // "Lily the Frog"
+    public GameObject guidePanel;
+    public Image frogImage;
+    public GameObject textBubble;
+    public TextMeshProUGUI dialogueText;
+    public TextMeshProUGUI speakerName;
     public Button nextButton;
     public Button exitButton;
-    
 
     [Header("Hint Room Selection")]
-    public GameObject roomSelectionPanel;  // shows after help pressed in puzzle
+    public GameObject roomSelectionPanel;
     public Button mainRoomButton;
     public Button puzzle1Button;
     public Button puzzle2Button;
@@ -43,34 +42,11 @@ public class FrogGuideManager : MonoBehaviour
     public FrogTTS tts;
 
     [Header("Settings")]
-    public float typewriterSpeed = 0.03f;  // seconds per character
+    public float typewriterSpeed = 0.03f;
     public bool useTypewriterEffect = true;
 
     [Header("Player Reference")]
-    public Transform playerCamera; // drag in your Main Camera
-
-    void LateUpdate()
-    {
-        if (guideOpen && guidePanel.activeSelf)
-        {
-            // Position panel in front of player at all times
-            Vector3 targetPos = playerCamera.position 
-                + playerCamera.forward * 2f;  // 2 metres in front
-                //+ Vector3.down * 0.5f;       // slightly below eye level
-            
-            guidePanel.transform.position = Vector3.Lerp(
-                guidePanel.transform.position, 
-                targetPos, 
-                Time.deltaTime * 5f); // smooth follow
-            
-            // Always face the player
-            guidePanel.transform.rotation = Quaternion.Lerp(
-                guidePanel.transform.rotation,
-                Quaternion.LookRotation(
-                    guidePanel.transform.position - playerCamera.position),
-                Time.deltaTime * 5f);
-        }
-    }
+    public Transform playerCamera;
     
 
     // State
@@ -81,31 +57,51 @@ public class FrogGuideManager : MonoBehaviour
     private bool introPlayed = false;
     private Coroutine typewriterCoroutine;
 
+    void LateUpdate()
+    {
+        if (guideOpen && guidePanel.activeSelf)
+        {
+            Vector3 targetPos = playerCamera.position
+                + playerCamera.forward * 2f;
+
+            guidePanel.transform.position = Vector3.Lerp(
+                guidePanel.transform.position,
+                targetPos,
+                Time.deltaTime * 5f);
+
+            guidePanel.transform.rotation = Quaternion.Lerp(
+                guidePanel.transform.rotation,
+                Quaternion.LookRotation(
+                    guidePanel.transform.position - playerCamera.position),
+                Time.deltaTime * 5f);
+        }
+    }
+
     void Start()
     {
-        // Hide everything at start
         guidePanel.SetActive(false);
         roomSelectionPanel.SetActive(false);
 
-        // Hook up buttons
         if (nextButton != null)
             nextButton.onClick.AddListener(OnNextPressed);
         if (exitButton != null)
             exitButton.onClick.AddListener(CloseGuide);
         if (mainRoomButton != null)
-            mainRoomButton.onClick.AddListener(() => ShowHints(dialogueData.mainRoomLines));
+            mainRoomButton.onClick.AddListener(
+                () => ShowHints(dialogueData.mainRoomLines));
         if (puzzle1Button != null)
-            puzzle1Button.onClick.AddListener(() => ShowHints(dialogueData.puzzle1Hints));
+            puzzle1Button.onClick.AddListener(
+                () => ShowHints(dialogueData.puzzle1Hints));
         if (puzzle2Button != null)
-            puzzle2Button.onClick.AddListener(() => ShowHints(dialogueData.puzzle2Hints));
+            puzzle2Button.onClick.AddListener(
+                () => ShowHints(dialogueData.puzzle2Hints));
         if (puzzle3Button != null)
-            puzzle3Button.onClick.AddListener(() => ShowHints(dialogueData.puzzle3Hints));
-
-        // Auto play intro after short delay
-        Invoke("PlayIntro", 1.5f);
-
+            puzzle3Button.onClick.AddListener(
+                () => ShowHints(dialogueData.puzzle3Hints));
         if (backButton != null)
-        backButton.onClick.AddListener(OnBackPressed);
+            backButton.onClick.AddListener(OnBackPressed);
+
+        Invoke("PlayIntro", 1.5f);
     }
 
     void OnEnable()
@@ -134,21 +130,12 @@ public class FrogGuideManager : MonoBehaviour
 
     void OnHelpPressed(InputAction.CallbackContext ctx)
     {
-        if (guideOpen)
-            CloseGuide();
-        else
-            OpenHelpMenu();
+        if (guideOpen) CloseGuide();
+        else OpenHelpMenu();
     }
 
-    void OnNextLine(InputAction.CallbackContext ctx)
-    {
-        OnNextPressed();
-    }
-
-    void OnExitPressed(InputAction.CallbackContext ctx)
-    {
-        CloseGuide();
-    }
+    void OnNextLine(InputAction.CallbackContext ctx) => OnNextPressed();
+    void OnExitPressed(InputAction.CallbackContext ctx) => CloseGuide();
 
     // ─────────────────────────────────────────
     // GUIDE FLOW
@@ -166,8 +153,6 @@ public class FrogGuideManager : MonoBehaviour
         guidePanel.SetActive(true);
         roomSelectionPanel.SetActive(true);
         guideOpen = true;
-
-        // Reset sequence state so nothing carries over
         currentSequence = null;
         currentLineIndex = 0;
         isTyping = false;
@@ -178,22 +163,11 @@ public class FrogGuideManager : MonoBehaviour
             typewriterCoroutine = null;
         }
 
-        if (tts != null)
-            tts.StopSpeaking();
+        if (tts != null) tts.StopSpeaking();
 
         ShowSingleLine("Ribbit! Which puzzle do you need help with?", frogPointing);
     }
 
-    // void ShowHints(List<DialogueLine> hints)
-    // {
-    //     roomSelectionPanel.SetActive(false);
-
-    //     // Play ribbit when switching to hints
-    //     if (tts != null)
-    //         tts.Speak("", null);
-
-    //     StartSequence(hints, frogPointing);
-    // }
     void ShowHints(List<DialogueLine> hints)
     {
         if (hints == null || hints.Count == 0)
@@ -201,7 +175,6 @@ public class FrogGuideManager : MonoBehaviour
             Debug.LogWarning("No hints available!");
             return;
         }
-
         roomSelectionPanel.SetActive(false);
         StartSequence(hints, frogPointing);
     }
@@ -216,7 +189,6 @@ public class FrogGuideManager : MonoBehaviour
         if (frogImage != null && frogSprite != null)
             frogImage.sprite = frogSprite;
 
-        // Speak first line with its audio clip
         if (tts != null && sequence.Count > 0)
             tts.Speak(sequence[0].text, sequence[0].audioClip);
 
@@ -225,7 +197,8 @@ public class FrogGuideManager : MonoBehaviour
 
     void ShowCurrentLine()
     {
-        if (currentSequence == null || currentLineIndex >= currentSequence.Count)
+        if (currentSequence == null ||
+            currentLineIndex >= currentSequence.Count)
         {
             OnSequenceEnd();
             return;
@@ -262,95 +235,28 @@ public class FrogGuideManager : MonoBehaviour
         }
     }
 
-    // public void OnBackPressed()
-    // {
-    //     // Stop current sequence and audio
-    //     if (typewriterCoroutine != null)
-    //         StopCoroutine(typewriterCoroutine);
-    //     if (tts != null)
-    //         tts.StopSpeaking();
-
-    //     // Clear dialogue text
-    //     if (dialogueText != null)
-    //         dialogueText.text = "";
-
-    //     // Show room selection again
-    //     roomSelectionPanel.SetActive(true);
-
-    //     // Reset to pointing frog
-    //     if (frogImage != null && frogPointing != null)
-    //         frogImage.sprite = frogPointing;
-
-    //     // Show the which puzzle question again
-    //     ShowSingleLine("Ribbit! Which puzzle do you need help with?", frogPointing);
-
-    //     Debug.Log("Back button pressed - returned to room selection");
-    // }
-
     public void OnBackPressed()
     {
-        // Stop everything safely
         if (typewriterCoroutine != null)
         {
             StopCoroutine(typewriterCoroutine);
             typewriterCoroutine = null;
         }
 
-        if (tts != null)
-            tts.StopSpeaking();
+        if (tts != null) tts.StopSpeaking();
 
-        // Reset state
         currentSequence = null;
         currentLineIndex = 0;
         isTyping = false;
 
-        // Clear text safely
-        if (dialogueText != null)
-            dialogueText.text = "";
+        if (dialogueText != null) dialogueText.text = "";
 
-        // Show room selection
         roomSelectionPanel.SetActive(true);
-
         ShowSingleLine("Ribbit! Which puzzle do you need help with?", frogPointing);
     }
 
-    // public void OnNextPressed()
-    // {
-    //     Debug.Log($"Next pressed - isTyping: {isTyping}, lineIndex: {currentLineIndex}");
-
-    //     if (isTyping)
-    //     {
-    //         StopCoroutine(typewriterCoroutine);
-    //         isTyping = false;
-    //         dialogueText.text = currentSequence[currentLineIndex].text;
-    //         return;
-    //     }
-
-    //     currentLineIndex++;
-
-    //     if (currentSequence != null && currentLineIndex < currentSequence.Count)
-    //     {
-    //         // Play audio clip for this specific line
-    //         if (tts != null)
-    //             tts.Speak(
-    //                 currentSequence[currentLineIndex].text,
-    //                 currentSequence[currentLineIndex].audioClip);
-    //         else
-    //             Debug.LogError("TTS is null!");
-
-    //         ShowCurrentLine();
-    //     }
-    //     else
-    //     {
-    //         OnSequenceEnd();
-    //     }
-    // }
-
     public void OnNextPressed()
     {
-        Debug.Log($"Next pressed - isTyping: {isTyping}, lineIndex: {currentLineIndex}");
-
-        // Guard against null sequence
         if (currentSequence == null)
         {
             Debug.LogWarning("Next pressed but no sequence active");
@@ -373,8 +279,6 @@ public class FrogGuideManager : MonoBehaviour
                 tts.Speak(
                     currentSequence[currentLineIndex].text,
                     currentSequence[currentLineIndex].audioClip);
-            else
-                Debug.LogError("TTS is null!");
 
             ShowCurrentLine();
         }
@@ -386,7 +290,6 @@ public class FrogGuideManager : MonoBehaviour
 
     void OnSequenceEnd()
     {
-        // After intro, close and let player explore
         StartCoroutine(CloseAfterDelay(1.5f));
     }
 
@@ -402,11 +305,55 @@ public class FrogGuideManager : MonoBehaviour
         guidePanel.SetActive(false);
         roomSelectionPanel.SetActive(false);
 
-        if (tts != null)
-            tts.StopSpeaking();
-
+        if (tts != null) tts.StopSpeaking();
         if (typewriterCoroutine != null)
             StopCoroutine(typewriterCoroutine);
+    }
+
+    // ─────────────────────────────────────────
+    // VICTORY
+    // ─────────────────────────────────────────
+
+    public void PlayVictory()
+    {
+        StartSequence(dialogueData.victoryLines, frogHappy);
+        StartCoroutine(CelebrationEffect());
+    }
+    
+
+    // ─────────────────────────────────────────
+    // INCOMPLETE
+    // ─────────────────────────────────────────
+
+    public void PlayIncomplete()
+    {
+        StartSequence(dialogueData.incompleteLines, frogWorried);
+    }
+
+    // ─────────────────────────────────────────
+    // CELEBRATION EFFECT
+    // ─────────────────────────────────────────
+
+    IEnumerator CelebrationEffect()
+    {
+        if (frogImage == null) yield break;
+
+        Vector3 originalScale = frogImage.transform.localScale;
+
+        for (int i = 0; i < 3; i++)
+        {
+            float elapsed = 0f;
+            while (elapsed < 0.2f)
+            {
+                float t = Mathf.PingPong(elapsed * 10f, 1f);
+                frogImage.transform.localScale = originalScale *
+                    Mathf.Lerp(1f, 1.3f, t);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        frogImage.transform.localScale = originalScale;
     }
 
     // ─────────────────────────────────────────
@@ -426,8 +373,6 @@ public class FrogGuideManager : MonoBehaviour
 
         isTyping = false;
     }
-
-    
 }
 
 

@@ -60,4 +60,19 @@ public class FrogDialogue : ScriptableObject
         new DialogueLine { text = "Each egg belongs on a special stand... look carefully at the symbols. Water goes with water, fire with fire!" },
         new DialogueLine { text = "The stands have been moved around to trick you! Look around the room carefully for where they are hiding!" }
     };
+
+    [Header("Victory")]
+    public List<DialogueLine> victoryLines = new List<DialogueLine>()
+    {
+        new DialogueLine { text = "RIBBIT RIBBIT! You did it! All my frog friends are FREE!" },
+        new DialogueLine { text = "I knew you could do it! You are the best human friend a frog could ask for!" },
+        new DialogueLine { text = "Thank you thank you thank you! Go celebrate with my friends!" }
+    };
+
+    [Header("Incomplete")]
+    public List<DialogueLine> incompleteLines = new List<DialogueLine>()
+    {
+        new DialogueLine { text = "Ribbit... my friends are still trapped! The puzzles are not all solved yet!" },
+        new DialogueLine { text = "Please solve all the puzzles first then tap the card again to free them!" }
+    };
 }

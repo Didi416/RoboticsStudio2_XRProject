@@ -30,7 +30,9 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _Metallic: 0.824
     - _Parallax: 0.02
+    - _Smoothness: 0.5
     m_Colors:
     - _BaseColor: {r: 0.9433962, g: 0.8423089, b: 0.6630473, a: 1}
     - _Color: {r: 0.9433962, g: 0.8423089, b: 0.66304725, a: 1}
