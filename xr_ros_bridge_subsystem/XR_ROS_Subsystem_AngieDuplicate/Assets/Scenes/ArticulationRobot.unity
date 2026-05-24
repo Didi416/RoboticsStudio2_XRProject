@@ -32873,9 +32873,9 @@ MonoBehaviour:
   ledPrefab: {fileID: 7183256138280272637, guid: 57ffc72ceb4df426dbf7655bc38ce23a, type: 3}
   gridParent: {fileID: 2030251690}
   statusText: {fileID: 1642735002}
-  blinkSpeed: 0.5
   lilyPadGrid: {fileID: 1575643661}
   puzzleBoardManager: {fileID: 1426305081}
+  wrongResetDelay: 1.5
 --- !u!114 &1495501358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33999,7 +33999,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1575643659}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b6cf306c982a42e6b6035a2b6ef533b, type: 3}
+  m_Script: {fileID: 11500000, guid: 95dac19144f7f4ca69b79bae7ecee3ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LilyPadGrid
   gridWidth: 5
@@ -34014,7 +34014,7 @@ MonoBehaviour:
   minPathLength: 5
   maxPathLength: 12
   defaultColor: {r: 0, g: 1, b: 0, a: 1}
-  highlightColor: {r: 0.94509804, g: 0.15686274, b: 0.6016114, a: 1}
+  highlightColor: {r: 1, g: 0, b: 1, a: 1}
   completedColor: {r: 0, g: 1, b: 1, a: 1}
   highlightDuration: 0.6
   delayBetweenPads: 0.3
