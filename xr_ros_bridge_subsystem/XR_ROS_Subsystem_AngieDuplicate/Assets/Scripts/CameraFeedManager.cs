@@ -1,6 +1,7 @@
 // Assets/Scripts/CameraFeedManager.cs
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;          // New Input System
 using RosMessageTypes.Sensor;
 using Unity.Robotics.ROSTCPConnector;
 
@@ -10,33 +11,36 @@ public class CameraFeedManager : MonoBehaviour
     // Inspector Settings
     // ---------------------------------------------------------------
     [Header("Camera Source")]
-    [Tooltip("WebcamDirect = laptop webcam (no ROS needed)\nRealSenseROS = D435i via ROS2")]
     public CameraSource activeSource = CameraSource.WebcamDirect;
 
     [Header("Display")]
-    [Tooltip("Drag your RawImage UI element here")]
     public RawImage displayImage;
 
-    [Header("Webcam Settings (WebcamDirect mode)")]
-    [Tooltip("Leave blank to use the default/first webcam found")]
+    [Header("Webcam Settings")]
     public string preferredWebcamName = "";
     public int webcamWidth  = 640;
     public int webcamHeight = 480;
     public int webcamFPS    = 30;
 
-    [Header("RealSense ROS Settings (RealSenseROS mode)")]
-    [Tooltip("ROS2 topic published by the RealSense driver")]
+    [Header("RealSense ROS Settings")]
     public string rosImageTopic = "/camera/color/image_raw";
     public int rosImageWidth  = 640;
     public int rosImageHeight = 480;
 
     [Header("Runtime Switch")]
-    [Tooltip("Press this key to toggle between sources at runtime")]
-    public KeyCode toggleKey = KeyCode.Tab;
+    public Key toggleKey = Key.F1;     // New Input System Key enum
 
     [Header("Performance Monitoring")]
-    public bool showFPSInConsole = true;
-    public float fpsLogInterval = 2f;   // log every 2 seconds
+    public bool  showFPSInConsole = true;
+    public float fpsLogInterval   = 2f;
+
+    // ---------------------------------------------------------------
+    // Private state
+    // ---------------------------------------------------------------
+    private WebCamTexture _webcamTexture;
+    private Texture2D     _rosTexture;
+    private bool          _rosSubscribed  = false;
+    private CameraSource  _currentSource;
 
     private int   _frameCount     = 0;
     private float _fpsTimer       = 0f;
@@ -45,51 +49,60 @@ public class CameraFeedManager : MonoBehaviour
     private float _currentLatency = 0f;
 
     // ---------------------------------------------------------------
-    // Private state
-    // ---------------------------------------------------------------
-    private WebCamTexture  _webcamTexture;
-    private Texture2D      _rosTexture;
-    private bool           _rosSubscribed = false;
-    private CameraSource   _currentSource;
-
-    // ---------------------------------------------------------------
     // Unity lifecycle
     // ---------------------------------------------------------------
     void Start()
     {
         _currentSource = activeSource;
         ActivateSource(_currentSource);
+        Debug.Log($"[CameraFeedManager] Started with source: {_currentSource}");
     }
 
     void Update()
     {
-        // Runtime toggle with keypress
-        if (Input.GetKeyDown(toggleKey))
+        // ── New Input System toggle ──
+        if (Keyboard.current != null &&
+            Keyboard.current[toggleKey].wasPressedThisFrame)
         {
-            Debug.Log("[CameraFeedManager] Tab pressed"); 
+            Debug.Log("[CameraFeedManager] F1 key detected");
             Toggle();
         }
 
-        // Keep webcam texture live each frame
+        // ── Keep webcam texture live ──
         if (_currentSource == CameraSource.WebcamDirect &&
-            _webcamTexture != null && _webcamTexture.isPlaying)
+            _webcamTexture  != null &&
+            _webcamTexture.isPlaying)
         {
-            displayImage.texture = _webcamTexture;   // WebCamTexture updates automatically
+            displayImage.texture = _webcamTexture;
         }
 
-        // FPS logging timer
-        _fpsTimer += Time.deltaTime;
-        if (_fpsTimer >= fpsLogInterval)
+        // ── FPS logging timer (RealSense mode) ──
+        if (_currentSource == CameraSource.RealSenseROS)
         {
-            _currentFPS = _frameCount / _fpsTimer;
+            _fpsTimer += Time.deltaTime;
+            if (_fpsTimer >= fpsLogInterval)
+            {
+                _currentFPS = _frameCount / _fpsTimer;
 
-            if (showFPSInConsole)
-                Debug.Log($"[CameraFeedManager] ROS Stream FPS: {_currentFPS:F1} " +
-                        $"| Frame interval: {_currentLatency:F1}ms " +
-                        $"| Source: {_currentSource}");
+                if (_frameCount == 0)
+                {
+                    // No frames received yet — ROS probably not connected
+                    Debug.LogWarning("[CameraFeedManager] RealSense: No frames received. " +
+                                    "Is ROS2 running and the topic publishing?");
+                }
+                else
+                {
+                    Debug.Log($"[CameraFeedManager] ── RealSense Stream Stats ──");
+                    Debug.Log($"[CameraFeedManager] Source:         Intel RealSense D435i");
+                    Debug.Log($"[CameraFeedManager] Stream FPS:     {_currentFPS:F1} fps");
+                    Debug.Log($"[CameraFeedManager] Frame interval: {_currentLatency:F1} ms");
+                    Debug.Log($"[CameraFeedManager] Topic:          {rosImageTopic}");
+                    Debug.Log($"[CameraFeedManager] ──────────────────────────");
+                }
 
-            _frameCount = 0;
-            _fpsTimer   = 0f;
+                _frameCount = 0;
+                _fpsTimer   = 0f;
+            }
         }
     }
 
@@ -101,23 +114,22 @@ public class CameraFeedManager : MonoBehaviour
     // ---------------------------------------------------------------
     // Public API
     // ---------------------------------------------------------------
-
-    /// <summary>Switch to a specific source.</summary>
     public void SetSource(CameraSource source)
     {
         if (_currentSource == source) return;
         DeactivateCurrentSource();
-        _currentSource = source;
+        _currentSource  = source;
+        activeSource    = source;       // keep Inspector in sync
         ActivateSource(_currentSource);
     }
 
-    /// <summary>Toggle between webcam and RealSense.</summary>
     public void Toggle()
     {
-        SetSource(_currentSource == CameraSource.WebcamDirect
+        CameraSource next = _currentSource == CameraSource.WebcamDirect
             ? CameraSource.RealSenseROS
-            : CameraSource.WebcamDirect);
+            : CameraSource.WebcamDirect;
 
+        SetSource(next);
         Debug.Log($"[CameraFeedManager] Switched to: {_currentSource}");
     }
 
@@ -129,10 +141,15 @@ public class CameraFeedManager : MonoBehaviour
         switch (source)
         {
             case CameraSource.WebcamDirect:
+                Debug.Log("[CameraFeedManager] ── Activating: Webcam Direct ──");
                 StartWebcam();
                 break;
 
             case CameraSource.RealSenseROS:
+                Debug.Log("[CameraFeedManager] ── Activating: Intel RealSense D435i (ROS2) ──");
+                Debug.Log($"[CameraFeedManager] Subscribing to topic: {rosImageTopic}");
+                Debug.Log("[CameraFeedManager] Waiting for frames... (will print FPS every " +
+                        $"{fpsLogInterval}s once frames arrive)");
                 StartRealSense();
                 break;
         }
@@ -140,21 +157,13 @@ public class CameraFeedManager : MonoBehaviour
 
     void DeactivateCurrentSource()
     {
-        switch (_currentSource)
-        {
-            case CameraSource.WebcamDirect:
-                StopWebcam();
-                break;
-
-            case CameraSource.RealSenseROS:
-                // ROS subscription stays open — just stop updating the display
-                // (no unsubscribe API in ROS-TCP-Connector; we gate in the callback)
-                break;
-        }
+        if (_currentSource == CameraSource.WebcamDirect)
+            StopWebcam();
+        // ROS subscription stays open — gated in callback
     }
 
     // ---------------------------------------------------------------
-    // Webcam (laptop camera)
+    // Webcam
     // ---------------------------------------------------------------
     void StartWebcam()
     {
@@ -162,11 +171,14 @@ public class CameraFeedManager : MonoBehaviour
 
         if (devices.Length == 0)
         {
-            Debug.LogWarning("[CameraFeedManager] No webcam found on this machine.");
+            Debug.LogWarning("[CameraFeedManager] No webcam found.");
             return;
         }
 
-        // Pick preferred device by name, or fall back to first available
+        // Log all available devices so you can check names
+        foreach (var d in devices)
+            Debug.Log($"[CameraFeedManager] Found webcam: {d.name}");
+
         string deviceName = devices[0].name;
         foreach (var d in devices)
         {
@@ -179,13 +191,34 @@ public class CameraFeedManager : MonoBehaviour
         }
 
         Debug.Log($"[CameraFeedManager] Starting webcam: {deviceName}");
-
         _webcamTexture = new WebCamTexture(deviceName, webcamWidth, webcamHeight, webcamFPS);
         _webcamTexture.Play();
         displayImage.texture = _webcamTexture;
-
-        // Correct for webcam vertical flip (common on laptops)
         displayImage.transform.localScale = new Vector3(1, 1, 1);
+
+        Debug.Log($"[CameraFeedManager] Webcam started: {deviceName}");
+        Debug.Log($"[CameraFeedManager] Requested FPS: {webcamFPS} fps " +
+              $"| Resolution: {webcamWidth}x{webcamHeight}");
+
+        // Log actual FPS after a short delay (webcam needs time to initialise)
+        StartCoroutine(LogWebcamActualFPS());
+    }
+
+    
+    private System.Collections.IEnumerator LogWebcamActualFPS()
+    {
+        // Wait 1 second for webcam to fully initialise
+        yield return new WaitForSeconds(1f);
+
+        if (_webcamTexture != null && _webcamTexture.isPlaying)
+        {
+            Debug.Log($"[CameraFeedManager] ── Webcam Actual Stats ──");
+            Debug.Log($"[CameraFeedManager] Actual FPS:        {_webcamTexture.requestedFPS}");
+            Debug.Log($"[CameraFeedManager] Actual Resolution: " +
+                    $"{_webcamTexture.width}x{_webcamTexture.height}");
+            Debug.Log($"[CameraFeedManager] Device name:       {_webcamTexture.deviceName}");
+            Debug.Log($"[CameraFeedManager] ───────────────────────");
+        }
     }
 
     void StopWebcam()
@@ -195,7 +228,6 @@ public class CameraFeedManager : MonoBehaviour
             _webcamTexture.Stop();
             _webcamTexture = null;
         }
-        // Reset any scale flip
         if (displayImage != null)
             displayImage.transform.localScale = Vector3.one;
     }
@@ -205,53 +237,62 @@ public class CameraFeedManager : MonoBehaviour
     // ---------------------------------------------------------------
     void StartRealSense()
     {
-        // Create texture to receive ROS image data
+        Debug.Log($"[CameraFeedManager] Starting RealSense — topic: {rosImageTopic}");
+
         if (_rosTexture == null)
             _rosTexture = new Texture2D(rosImageWidth, rosImageHeight,
                                         TextureFormat.RGB24, false);
 
+        // Show black frame while waiting for ROS
         displayImage.texture = _rosTexture;
+        displayImage.transform.localScale = Vector3.one;
 
-        // Subscribe once (guard against duplicate subscriptions)
         if (!_rosSubscribed)
         {
             ROSConnection.GetOrCreateInstance()
                 .Subscribe<ImageMsg>(rosImageTopic, OnRosImageReceived);
             _rosSubscribed = true;
-            Debug.Log($"[CameraFeedManager] Subscribed to ROS topic: {rosImageTopic}");
+            Debug.Log("[CameraFeedManager] Subscribed to ROS topic.");
         }
+        else
+        {
+            Debug.Log("[CameraFeedManager] Already subscribed — waiting for frames.");
+        }
+
+        // Reset FPS counters
+        _frameCount    = 0;
+        _fpsTimer      = 0f;
+        _lastFrameTime = 0f;
     }
 
     void OnRosImageReceived(ImageMsg msg)
     {
         if (_currentSource != CameraSource.RealSenseROS) return;
 
-        // --- FPS tracking ---
+        // FPS tracking
         float now = Time.realtimeSinceStartup;
         if (_lastFrameTime > 0f)
-            _currentLatency = (now - _lastFrameTime) * 1000f;  // ms between frames
+            _currentLatency = (now - _lastFrameTime) * 1000f;
         _lastFrameTime = now;
         _frameCount++;
 
-        // --- Image update ---
-        byte[] pixels = msg.data;
-        if (msg.encoding == "bgr8")
-            pixels = BGRtoRGB(msg.data);
+        // BGR8 → RGB8 conversion (RealSense default encoding)
+        byte[] pixels = (msg.encoding == "bgr8") ? BGRtoRGB(msg.data) : msg.data;
 
         _rosTexture.LoadRawTextureData(pixels);
         _rosTexture.Apply();
     }
 
-    // RealSense publishes BGR8 by default; Unity expects RGB
     byte[] BGRtoRGB(byte[] bgr)
     {
         byte[] rgb = new byte[bgr.Length];
         for (int i = 0; i < bgr.Length; i += 3)
         {
-            rgb[i]     = bgr[i + 2]; // R
-            rgb[i + 1] = bgr[i + 1]; // G
-            rgb[i + 2] = bgr[i];     // B
+            rgb[i]     = bgr[i + 2];
+            rgb[i + 1] = bgr[i + 1];
+            rgb[i + 2] = bgr[i];
         }
         return rgb;
     }
+    
 }

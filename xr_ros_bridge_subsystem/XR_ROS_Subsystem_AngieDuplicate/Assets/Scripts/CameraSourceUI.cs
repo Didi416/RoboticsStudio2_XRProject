@@ -10,9 +10,9 @@ public class CameraSourceUI : MonoBehaviour
 
     void Update()
     {
-        if (sourceLabel != null)
+        if (sourceLabel != null && cameraManager != null)
             sourceLabel.text = cameraManager.activeSource == CameraSource.WebcamDirect
-                ? "📷 Source: Laptop Webcam  [TAB to switch]"
-                : "📷 Source: RealSense D435i  [TAB to switch]";
+                ? "Source: Webcam  [F1 to switch]"        // changed from Tab
+                : "Source: RealSense D435i  [F1 to switch]";
     }
 }
