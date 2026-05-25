@@ -37,7 +37,7 @@ camera:
 # ── ArUco dictionary ──────────────────────────────────────────────────────────
 aruco:
   dictionary: DICT_4X4_50     # must match aruco_marker_generator.py
-  marker_size_m: 0.050        # physical side length of each marker (metres)
+  marker_size_m: 0.020        # physical side length of each marker (metres)
 
   # Marker IDs and their semantic corner positions on the puzzle wall
   # Origin convention: puzzle wall centre = (0,0,0); +X right, +Y up, +Z toward camera
