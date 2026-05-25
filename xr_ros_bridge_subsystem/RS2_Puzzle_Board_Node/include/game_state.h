@@ -13,6 +13,7 @@ extern int mazeEndX;
 extern int mazeEndY;
 
 bool allPuzzlesSolved();
-void generatePuzzles();            // call once in setup()
-
+void generatePuzzles();
+void resetPuzzles();
+void updateState();
 #endif

@@ -13,7 +13,7 @@ ArmRobot_BurstDebugInformation_DoNotShip/
 # Packages/
 !Packages/manifest.json
 !Packages/packages-lock.json
-
+*.apk
  
 # Unity 6 specific
 .idea/

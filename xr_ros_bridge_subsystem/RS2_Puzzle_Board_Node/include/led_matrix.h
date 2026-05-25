@@ -20,7 +20,7 @@
 extern Adafruit_8x8matrix matrix;
 
 // ── State ────────────────────────────────────────────────────
-extern bool grid[8][8]; // visited cells
+extern bool currentGrid[8][8]; // visited cells
 extern int posX; // current position (col), start near centre
 extern int posY; // current position (row)
 extern unsigned long lastMove;
@@ -29,5 +29,8 @@ void drawGrid();
 void resetGrid();
 void led_matrix_setup();
 void led_matrix_work();
+
+// ── Helper functions for state serialization ─────────────────
+String getLedMatrixState();  // Returns 8x8 grid as "11110000,..." format
 
 #endif /*LED_MATRIX_H*/
