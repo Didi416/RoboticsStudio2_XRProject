@@ -169,16 +169,16 @@ void led_matrix_work() {
   int dx = 0;
   int dy = 0;
 
-  // if (rawX < 512 - DEADZONE)      dx = 1;
-  // else if (rawX > 512 + DEADZONE) dx = -1;
+  if (rawX < 512 - DEADZONE)      dx = -1;
+  else if (rawX > 512 + DEADZONE) dx = 1;
 
-  // if (rawY < 512 - DEADZONE)      dy = -1;
-  // else if (rawY > 512 + DEADZONE) dy = 1;
+  if (rawY < 512 - DEADZONE)      dy = 1;
+  else if (rawY > 512 + DEADZONE) dy = -1;
 
-  if (rawX < 512 - DEADZONE)      dy = -1;
-  else if (rawX > 512 + DEADZONE) dy = 1;
-  if (rawY < 512 - DEADZONE)      dx = -1;
-  else if (rawY > 512 + DEADZONE) dx = 1;
+  // if (rawX < 512 - DEADZONE)      dy = -1;
+  // else if (rawX > 512 + DEADZONE) dy = 1;
+  // if (rawY < 512 - DEADZONE)      dx = -1;
+  // else if (rawY > 512 + DEADZONE) dx = 1;
 
   if ((dx != 0) != (dy != 0)) {
     int newX = constrain(posX + dx, 0, 7);
@@ -206,4 +206,20 @@ void led_matrix_work() {
       }
     }
   }
+}
+
+// ── Helper function for state serialization ──────────────────
+String getLedMatrixState() {
+  String ledMatrix = "";
+  for (int row = 0; row < 8; row++) {
+    for (int col = 0; col < 8; col++) {
+      if (currentGrid[row][col]) {
+        ledMatrix += "1";
+      } else {
+        ledMatrix += "0";
+      }
+    }
+    if (row < 7) ledMatrix += ",";
+  }
+  return ledMatrix;
 }

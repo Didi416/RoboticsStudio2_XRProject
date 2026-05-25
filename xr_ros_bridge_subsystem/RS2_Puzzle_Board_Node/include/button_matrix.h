@@ -30,4 +30,8 @@ void resetEntry();
 void button_matrix_setup();
 void button_matrix_work();
 
+// ── Helper functions for state serialization ──────────────────
+String getButtonStates();  // Returns button states as "0,0,1,0,..." (12 values)
+String getDisplayText();   // Returns current display text (4 chars)
+
 #endif /*BUTTON_MATRIX_H*/

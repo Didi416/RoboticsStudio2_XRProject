@@ -18,7 +18,7 @@ ros2 run ur_client_library start_ursim.sh -m ur3e
 
 Launch XR full stack launch file (includes UR Driver, MoveIt, controller switching, Servo service trigger, ROS TCP Endpoint)
 ```sh
-ros2 launch rs2_ros2_unity_bridge xr_full_stack.launch.py 
+ros2 launch rs2_xr_puzzle xr_full_stack.launch.py 
 ```
 Configurable launch arguments:
 - `robot_ip` (default: `192.168.56.101`): Default URSim, can be change to real robot IP
@@ -32,7 +32,7 @@ hostname -I
 
 To launch OnRobot Gripper (use_fake_hardware:=true)
 ```sh
-ros2 launch rs2_ros2_unity_bridge ur_onrobot_group.launch.py 
+ros2 launch rs2_xr_puzzle ur_onrobot_group.launch.py 
 ```
 ___________________________________________________
 
@@ -43,11 +43,11 @@ ros2 run ur_client_library start_ursim.sh -m ur3e
 ```
 URSIM launch
 ```sh
-ros2 launch rs2_ros2_unity_bridge ur_driver_modified.launch.py ur_type:=ur3e robot_ip:=192.168.56.101 launch_rviz:=true 
+ros2 launch rs2_xr_puzzle ur_driver_modified.launch.py ur_type:=ur3e robot_ip:=192.168.56.101 launch_rviz:=true 
 ```
 (change port to 50001 if ti reads Addres already in use in terminal)
 ```sh
-ros2 launch rs2_ros2_unity_bridge ur_moveit_modified.launch.py ur_type:=ur3e launch_rviz:=true
+ros2 launch rs2_xr_puzzle ur_moveit_modified.launch.py ur_type:=ur3e launch_rviz:=true
 ```
 ```sh
 ros2 control switch_controllers --activate forward_velocity_controller --deactivate scaled_joint_trajectory_controller
@@ -69,5 +69,8 @@ Note: You must make sure the yaml files (from above) have changed their target c
 
 ros2 launch ur_onrobot_control start_robot.launch.py ur_type:=ur3e onrobot_type:=rg2 use_fake_hardware:=true
 ros2 launch ur_onrobot_control start_robot.launch.py ur_type:=ur3e onrobot_type:=rg2 robot_ip:=192.168.0.194
+ros2 launch rs2_xr_puzzle ur_onrobot_group.launch.py robot_ip:=192.168.0.197 ros_tcp_host:=172.19.117.235
 
 ros2 launch ur_onrobot_moveit_config ur_onrobot_moveit.launch.py ur_type:=ur3e onrobot_type:=rg2
+
+

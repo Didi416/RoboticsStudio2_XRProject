@@ -19,11 +19,6 @@ def generate_launch_description():
 
     args = [
         DeclareLaunchArgument(
-            'robot_ip',
-            default_value='192.168.56.101', # URSIM
-            description='Robot IP, defaults to URSIM (ignored when use_fake_hardware:=true).',
-        ),
-        DeclareLaunchArgument(
             'ros_tcp_host',
             default_value='127.0.0.1', # Default Unity host IP
             description='IP the ROS-TCP-Endpoint listens on. (Default Unity host IP)',
@@ -35,26 +30,27 @@ def generate_launch_description():
         ),
     ]
 
-    robot_ip        = LaunchConfiguration('robot_ip')
+    # robot_ip        = LaunchConfiguration('robot_ip')
     ros_tcp_host    = LaunchConfiguration('ros_tcp_host')
     ros_tcp_port    = LaunchConfiguration('ros_tcp_port')
     # ──────────────────────────────────────────────
-    # Step 1 – UR hardware / driver (HAS TO BE STARTED IN SEPARATE TERMINAL TO BE ABLE TO START EXTERNAL CONTROL IN URSIM BEFORE SWITCHING CONTROLLERS IN THIS LAUNCH FILE)
+    # Step 1 – UR hardware / driver
     # ──────────────────────────────────────────────
-    # ur_hardware_launch = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(
-    #             get_package_share_directory("rs2_ros2_unity_bridge"),
-    #             "launch",
-    #             "ur_driver_modified.launch.py",
-    #         )
-    #     ),
-    #     launch_arguments={
-    #         "ur_type": "ur3e",
-    #         "robot_ip": robot_ip,
-    #         "launch_rviz": "true",
-    #     }.items(),
-    # )
+    ur_hardware_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("ur_onrobot_control"),
+                "launch",
+                "start_robot.launch.py",
+            )
+        ),
+        launch_arguments={
+            "ur_type": "ur3e",
+            "onrobot_type": "rg2",
+            "launch_rviz": "true",
+            "use_fake_hardware": "true",
+        }.items(),
+    )
 
     # ──────────────────────────────────────────────
     # Step 2 – MoveIt + RViz  (delayed to let driver settle)
@@ -65,13 +61,14 @@ def generate_launch_description():
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     os.path.join(
-                        get_package_share_directory("rs2_ros2_unity_bridge"),
+                        get_package_share_directory("ur_onrobot_moveit_config"),
                         "launch",
-                        "ur_moveit_modified.launch.py",
+                        "ur_onrobot_moveit.launch.py",
                     )
                 ),
                 launch_arguments={
                     "ur_type": "ur3e",
+                    "onrobot_type": "rg2",
                     "launch_rviz": "false",
                 }.items(),
             )
@@ -99,20 +96,20 @@ def generate_launch_description():
         ],
     )
 
-    # switch_controllers = TimerAction(
-    #     period=12.0,
-    #     actions=[
-    #         ExecuteProcess(
-    #             cmd=[
-    #                 "ros2", "control", "switch_controllers",
-    #                 "--activate",   "finger_width_trajectory_controller",
-    #                 "--deactivate", "finger_width_controller",
-    #             ],
-    #             output="screen",
-    #             name="switch_controllers_fingers",
-    #         )
-    #     ],
-    # )
+    switch_controllers = TimerAction(
+        period=12.0,
+        actions=[
+            ExecuteProcess(
+                cmd=[
+                    "ros2", "control", "switch_controllers",
+                    "--activate",   "finger_width_controller",
+                    "--deactivate", "finger_width_trajectory_controller",
+                ],
+                output="screen",
+                name="switch_controllers_fingers",
+            )
+        ],
+    )
 
     # ──────────────────────────────────────────────
     # Step 4 – Start servo node service call
@@ -150,12 +147,23 @@ def generate_launch_description():
         ],
     )
 
+    set_pose = TimerAction(
+        period=22.0,
+        actions=[
+            ExecuteProcess(
+                cmd=["python3", os.path.expanduser("~/ros_ws/src/RoboticsStudio2_XRProject/motion_planning_subsystem/keyboard_servoing/recovery.py")],
+                output="screen",
+                name="recovery_script",
+            )
+        ],
+    )
+
     return LaunchDescription(
         args + [
             # LogInfo(msg="[1/5] Launching UR hardware driver + RViz..."),
             # ur_hardware_launch,
 
-            LogInfo(msg="[2/5] Launching MoveIt (in 5 s)..."),
+            LogInfo(msg="[2/5] Launching MoveIt + RViz (in 5 s)..."),
             ur_moveit_launch,
 
             LogInfo(msg="[3/5] Switching controllers (in 12 s)..."),
@@ -166,5 +174,8 @@ def generate_launch_description():
 
             LogInfo(msg="[5/5] Starting ROS TCP Endpoint (in 18 s)..."),
             tcp_endpoint,
+
+            LogInfo(msg="Setting to recovery pose (in 22s)..."),
+            set_pose,
         ]
     )

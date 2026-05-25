@@ -138,3 +138,36 @@ void button_matrix_work() {
     }
   }
 }
+
+// ── Helper functions for state serialization ──────────────────
+String getButtonStates() {
+  // Returns button states as comma-separated values (12 total)
+  // Keys are ordered by their position: 1,2,3,4,5,6,7,8,9,*,0,#
+  String states = "";
+  for (int i = 0; i < LIST_MAX; i++) {
+    if (kpd.key[i].kstate == PRESSED) {
+      states += "1";
+    } else {
+      states += "0";
+    }
+    if (i < LIST_MAX - 1) states += ",";
+  }
+  return states;
+}
+
+String getDisplayText() {
+  // Returns current display text (4 characters)
+  // This captures the text being entered
+  String displayText = entered_code;
+  if (displayText.length() == 0) {
+    displayText = "----";
+  }
+  // Pad to 4 characters with dashes
+  while (displayText.length() < 4) {
+    displayText += "-";
+  }
+  if (displayText.length() > 4) {
+    displayText = displayText.substring(0, 4);
+  }
+  return displayText;
+}

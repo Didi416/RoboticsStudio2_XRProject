@@ -103,13 +103,6 @@ static void generateMaze() {
 
   mazeEndX = x;
   mazeEndY = y;
-
-  // Serial.print("Generated maze end: (");
-  // Serial.print(mazeEndX);
-  // Serial.print(", ");
-  // Serial.print(mazeEndY);
-  // Serial.print(")  length: ");
-  // Serial.println(steps + 1);
 }
 
 void printMaze() {
@@ -139,4 +132,10 @@ void generatePuzzles() {
   generateCode();
   generateMaze();
   printMaze();
+}
+
+void resetPuzzles() {
+  puzzleMazeSolved = false;
+  puzzleCodeSolved = false;
+  generatePuzzles();
 }
