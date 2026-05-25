@@ -29,14 +29,14 @@ import numpy as np
 import os
 
 # ── Puzzle wall physical dimensions (millimetres) ──────────────────────────
-PUZZLE_WALL_WIDTH_MM  = 350   # e.g. 35 cm wide
-PUZZLE_WALL_HEIGHT_MM = 350   # e.g. 35 cm tall
+PUZZLE_WALL_WIDTH_MM  = 200   # e.g. 20 cm wide
+PUZZLE_WALL_HEIGHT_MM = 200   # e.g. 20 cm tall
 
 # ── Marker settings ─────────────────────────────────────────────────────────
-MARKER_SIZE_MM   = 50         # physical side length of each printed marker
+MARKER_SIZE_MM   = 20         # physical side length of each printed marker
 MARGIN_MM        = 10         # gap between marker edge and wall corner
 ARUCO_DICT_ID    = cv2.aruco.DICT_4X4_50
-MARKER_IDS       = [0, 1, 2, 3]   # TL, TR, BR, BL
+MARKER_IDS       = [5, 6, 7, 8]   # TL, TR, BR, BL
 
 # ── Output resolution ───────────────────────────────────────────────────────
 DPI = 300
@@ -61,16 +61,16 @@ def generate_sheet():
     # Corner pixel positions (top-left corner of each marker)
     margin_px = mm_to_px(MARGIN_MM)
     positions = {
-        0: (margin_px,                          margin_px),                         # TL
-        1: (canvas_w_px - margin_px - marker_px, margin_px),                        # TR
-        2: (canvas_w_px - margin_px - marker_px, canvas_h_px - margin_px - marker_px),  # BR
-        3: (margin_px,                           canvas_h_px - margin_px - marker_px),  # BL
+        5: (margin_px,                          margin_px),                         # TL
+        6: (canvas_w_px - margin_px - marker_px, margin_px),                        # TR
+        7: (canvas_w_px - margin_px - marker_px, canvas_h_px - margin_px - marker_px),  # BR
+        8: (margin_px,                           canvas_h_px - margin_px - marker_px),  # BL
     }
 
-    label_map = {0: "TL (ID 0)", 1: "TR (ID 1)", 2: "BR (ID 2)", 3: "BL (ID 3)"}
+    label_map = {5: "TL (ID 5)", 6: "TR (ID 6)", 7: "BR (ID 7)", 8: "BL (ID 8)"}
 
     for marker_id in MARKER_IDS:
-        marker_img = cv2.aruco.drawMarker(aruco_dict, marker_id, marker_px)
+        marker_img = cv2.aruco.generateImageMarker(aruco_dict, marker_id, marker_px)
         x, y = positions[marker_id]
         canvas[y:y+marker_px, x:x+marker_px] = marker_img
 
