@@ -96,7 +96,7 @@ def generate_launch_description():
         ],
     )
 
-    switch_controllers = TimerAction(
+    switch_controllers2 = TimerAction(
         period=12.0,
         actions=[
             ExecuteProcess(
@@ -163,8 +163,11 @@ def generate_launch_description():
             # LogInfo(msg="[1/5] Launching UR hardware driver + RViz..."),
             # ur_hardware_launch,
 
-            LogInfo(msg="[2/5] Launching MoveIt + RViz (in 5 s)..."),
+            LogInfo(msg="[1/5] Launching MoveIt + RViz (in 5 s)..."),
             ur_moveit_launch,
+
+            LogInfo(msg="[2/5] Switching controllers (in 12 s)..."),
+            switch_controllers,
 
             LogInfo(msg="[3/5] Switching controllers (in 12 s)..."),
             switch_controllers,

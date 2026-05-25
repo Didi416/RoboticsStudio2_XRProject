@@ -324,7 +324,7 @@ public class LilyPadGrid : MonoBehaviour
 
     [Header("Path Settings")]
     public int minPathLength = 5;
-    public int maxPathLength = 12;
+    public int maxPathLength = 10;
 
     [Header("Highlight Settings")]
     public Color defaultColor = Color.green;

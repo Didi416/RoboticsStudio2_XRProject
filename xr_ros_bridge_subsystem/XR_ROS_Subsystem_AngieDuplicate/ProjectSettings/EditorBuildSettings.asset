@@ -5,12 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainVRScene.unity
     guid: 80ad4558455a66e6981d8cb5caade7a9
-  - enabled: 0
-    path: Assets/Environment/Lamp_Collection/Scenes/Sample_Scene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/ArticulationRobot.unity
+    guid: 94fa6bc4b68eb4fd0b73c109f3ff4e02
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: fde41db4c23ae48ff83af0e5bf481901, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

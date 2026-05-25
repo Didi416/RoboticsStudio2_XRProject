@@ -705,7 +705,7 @@ KEY_TIMEOUT   = 0.08
 COMMAND_FRAME = 'tool0'
 
 # ── Controller names ──────────────────────────────────────────────────────────
-SERVO_CONTROLLER   = 'forward_position_controller'
+SERVO_CONTROLLER   = 'forward_velocity_controller'
 PLANNER_CONTROLLER = 'scaled_joint_trajectory_controller'
 SWITCH_CONTROLLER_SERVICE = '/controller_manager/switch_controller'
 GROUP_NAME = 'ur_onrobot_manipulator'
