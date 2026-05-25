@@ -158,9 +158,26 @@ class ArucoDetectorNode(Node):
             "DICT_5X5_100":  cv2.aruco.DICT_5X5_100,
             "DICT_6X6_250":  cv2.aruco.DICT_6X6_250,
         }
+        
         aruco_dict = cv2.aruco.getPredefinedDictionary(dict_map[aruco_cfg["dictionary"]])
         self._aruco_params = cv2.aruco.DetectorParameters()
+
+        # ── Tuned for markers spaced far apart on a large board ──────────────
+        # Allow detection of smaller markers in the frame
+        self._aruco_params.minMarkerPerimeterRate = 0.01   # default 0.03 — detect smaller markers
+        self._aruco_params.maxMarkerPerimeterRate = 4.0    # default 4.0  — keep as is
+        self._aruco_params.polygonalApproxAccuracyRate = 0.05  # default 0.03 — more tolerance
+        self._aruco_params.minCornerDistanceRate = 0.01    # default 0.05 — corners can be closer
+        self._aruco_params.minDistanceToBorder = 1         # default 3 — detect near frame edges
+        self._aruco_params.adaptiveThreshWinSizeMin = 3    # default 3
+        self._aruco_params.adaptiveThreshWinSizeMax = 53   # default 23 — larger window for varied lighting
+        self._aruco_params.adaptiveThreshWinSizeStep = 4   # default 10
+        self._aruco_params.adaptiveThreshConstant = 7      # default 7
+        self._aruco_params.minOtsuStdDev = 5.0             # default 5.0
+        self._aruco_params.errorCorrectionRate = 0.6       # default 0.6
+
         self._aruco_detector = cv2.aruco.ArucoDetector(aruco_dict, self._aruco_params)
+
         self._marker_size   = aruco_cfg["marker_size_m"]
 
         self._corner_ids = {
@@ -273,7 +290,7 @@ class ArucoDetectorNode(Node):
 
         # ── Fuse detections into puzzle wall pose ─────────────────────────
         puzzle_wall_T = None
-        if len(marker_transforms) >= 2:
+        if len(marker_transforms) == len(self._id_set):
             puzzle_wall_T = self._fuse_markers_to_wall_pose(marker_transforms)
 
         if puzzle_wall_T is not None:

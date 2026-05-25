@@ -8,8 +8,9 @@
 camera:
   #device_index: 0           # /dev/video0  (laptop webcam)
   device_index: 2           # /dev/video2  (Intel RealSense D435i camera)
-  width:  640
-  height: 480
+  topic: "/camera/camera/color/image_raw" 
+  width:  1280
+  height: 720
   fps:    30
 
   # Intrinsic matrix [fx, 0, cx, 0, fy, cy, 0, 0, 1] (row-major, 9 values)
@@ -27,8 +28,8 @@ camera:
 # -------- Intel RealSense D435i camera ----------------
 # RealSense D435i intrinsics at 1280x720
   camera_matrix:
-    - [606.527, 0.0,     326.572]
-    - [0.0,     605.459, 244.114]
+    - [908.159, 0.0,     647.846]
+    - [0.0,     907.397, 366.289]
     - [0.0,     0.0,     1.0   ]
   dist_coeffs: [0.0, 0.0, 0.0, 0.0, 0.0]
 
@@ -41,19 +42,19 @@ aruco:
   # Marker IDs and their semantic corner positions on the puzzle wall
   # Origin convention: puzzle wall centre = (0,0,0); +X right, +Y up, +Z toward camera
   corner_ids:
-    top_left:     0
-    top_right:    1
-    bottom_right: 2
-    bottom_left:  3
+    top_left:     5
+    top_right:    6
+    bottom_right: 7
+    bottom_left:  8
 
 # ── Puzzle wall physical dimensions ──────────────────────────────────────────
 puzzle_wall:
-  width_m:  0.350   # 350 mm
-  height_m: 0.350   # 350 mm
+  width_m:  0.200   # 200 mm
+  height_m: 0.200   # 200 mm
 
   # Margin from wall edge to marker centre (metres)
   # Must match the layout in aruco_marker_generator.py
-  marker_margin_m: 0.035   # 10mm margin + 25mm half-marker = 35mm to centre
+  marker_margin_m: 0.020   # 10mm margin + 25mm half-marker = 35mm to centre
 
 # ── Eye-in-hand calibration result ───────────────────────────────────────────
 # Paste your calibrated values here after running hand-eye calibration.
