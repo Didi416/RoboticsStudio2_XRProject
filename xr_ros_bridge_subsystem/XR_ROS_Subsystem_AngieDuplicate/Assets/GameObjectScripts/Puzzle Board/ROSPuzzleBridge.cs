@@ -240,14 +240,27 @@ public class ROSPuzzleBridge : MonoBehaviour
     // Arduino maze end → lily pad possible ends
     // ─────────────────────────────────────────
 
+    // void SyncLilyPadEndPoint(int endX, int endY)
+    // {
+    //     if (lilyPadGrid == null) return;
+
+    //     // Convert Arduino 8x8 coords to lily pad 6x6 coords
+    //     // Arduino inner grid 1-6 → lily pad 0-5
+    //     int lilyEndX = Mathf.Clamp(endX - 1, 0, 5);
+    //     int lilyEndY = Mathf.Clamp(endY - 1, 0, 5);
+
+    //     Debug.Log($"Lily pad end synced to ({lilyEndX},{lilyEndY})");
+    // }
     void SyncLilyPadEndPoint(int endX, int endY)
     {
         if (lilyPadGrid == null) return;
 
         // Convert Arduino 8x8 coords to lily pad 6x6 coords
-        // Arduino inner grid 1-6 → lily pad 0-5
         int lilyEndX = Mathf.Clamp(endX - 1, 0, 5);
         int lilyEndY = Mathf.Clamp(endY - 1, 0, 5);
+
+        // ← ADD THIS - actually call the method!
+        lilyPadGrid.SetEndPoint(lilyEndX, lilyEndY);
 
         Debug.Log($"Lily pad end synced to ({lilyEndX},{lilyEndY})");
     }
@@ -261,7 +274,8 @@ public class ROSPuzzleBridge : MonoBehaviour
 public class PuzzleGenerationData
 {
     public string code;
-    public int[][] maze;
+    //public int[][] maze;
+    public string maze;
     public int maze_end_x;
     public int maze_end_y;
     public string timestamp;

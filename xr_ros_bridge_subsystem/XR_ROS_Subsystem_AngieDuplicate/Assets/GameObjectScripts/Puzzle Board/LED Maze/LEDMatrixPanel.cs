@@ -395,11 +395,24 @@ public class LEDMatrixPanel : MonoBehaviour
             return;
         }
         
+        // foreach (Vector2Int p in lilyPadGrid.currentPath)
+        // {
+        //     int ledX = Mathf.Clamp(p.x + 1, innerMin, innerMax);
+        //     // Change this line - remove the flip
+        //     int ledY = Mathf.Clamp(p.y + 1, innerMin, innerMax);
+        //     mappedPath.Add(new Vector2Int(ledX, ledY));
+        // }
+        // foreach (Vector2Int p in lilyPadGrid.currentPath)
+        // {
+        //     int ledX = Mathf.Clamp(p.x + 1, innerMin, innerMax);
+        //     int ledY = Mathf.Clamp(innerMax - p.y, innerMin, innerMax);
+        //     mappedPath.Add(new Vector2Int(ledX, ledY));
+        // }
         foreach (Vector2Int p in lilyPadGrid.currentPath)
         {
-            int ledX = Mathf.Clamp(p.x + 1, innerMin, innerMax);
-            // Change this line - remove the flip
-            int ledY = Mathf.Clamp(p.y + 1, innerMin, innerMax);
+            // Swap: lily X maps to LED Y, lily Y maps to LED X
+            int ledX = Mathf.Clamp(p.y + 1, innerMin, innerMax);
+            int ledY = Mathf.Clamp(innerMax - p.x, innerMin, innerMax);
             mappedPath.Add(new Vector2Int(ledX, ledY));
         }
 
@@ -665,7 +678,9 @@ public class LEDMatrixPanel : MonoBehaviour
             {
                 int index = row * gridSize + col;
                 int x = col;
-                int y = gridSize - 1 - row; // flip Y for Unity UI
+                int y = row;
+                //int y = (gridSize - 1) - row; // flip
+                //int y = gridSize - 1 - row; // flip Y for Unity UI
 
                 if (leds[x, y] == null) continue;
 
