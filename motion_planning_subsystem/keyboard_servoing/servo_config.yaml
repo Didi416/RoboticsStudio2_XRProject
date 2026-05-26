@@ -11,7 +11,7 @@ servo_node:
     # forward_position_controller which accepts Float64MultiArray directly.
     # This avoids the trajectory interpolation overhead and is more
     # responsive for real-time servo use.
-    command_out_topic: /forward_position_controller/commands
+    command_out_topic: /forward_velocity_controller/commands
     command_out_type: std_msgs/Float64MultiArray
     publish_joint_positions: true
     publish_joint_velocities: false

@@ -41,7 +41,7 @@ HOME_JOINT_NAMES = [
 HOME_MOVE_TIME = 5.0   # seconds — slow and safe
 
 # ── Controller names ──────────────────────────────────────────────────────────
-SERVO_CONTROLLER   = 'forward_position_controller'
+SERVO_CONTROLLER   = 'forward_velocity_controller'
 PLANNER_CONTROLLER = 'scaled_joint_trajectory_controller'
 
 # ── Servo services ────────────────────────────────────────────────────────────

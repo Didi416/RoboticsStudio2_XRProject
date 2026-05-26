@@ -69,7 +69,7 @@ def generate_launch_description():
                 launch_arguments={
                     "ur_type": "ur3e",
                     "onrobot_type": "rg2",
-                    "launch_rviz": "false",
+                    "launch_rviz": "true",
                 }.items(),
             )
         ],
@@ -170,7 +170,7 @@ def generate_launch_description():
             switch_controllers,
 
             LogInfo(msg="[3/5] Switching controllers (in 12 s)..."),
-            switch_controllers,
+            switch_controllers2,
 
             LogInfo(msg="[4/5] Starting servo (in 15 s)..."),
             start_servo,

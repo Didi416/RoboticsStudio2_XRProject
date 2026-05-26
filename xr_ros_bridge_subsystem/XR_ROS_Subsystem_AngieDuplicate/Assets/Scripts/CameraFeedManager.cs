@@ -23,7 +23,7 @@ public class CameraFeedManager : MonoBehaviour
     public int webcamFPS    = 30;
 
     [Header("RealSense ROS Settings")]
-    public string rosImageTopic = "/camera/color/image_raw";
+    public string rosImageTopic = "/camera/camera/color/image_raw";
     public int rosImageWidth  = 640;
     public int rosImageHeight = 480;
 
@@ -237,7 +237,11 @@ public class CameraFeedManager : MonoBehaviour
     // ---------------------------------------------------------------
     void StartRealSense()
     {
-        Debug.Log($"[CameraFeedManager] Starting RealSense — topic: {rosImageTopic}");
+        //Debug.Log($"[CameraFeedManager] Starting RealSense — topic: {rosImageTopic}");
+        Debug.Log($"[CameraFeedManager] ── Activating: Intel RealSense D435i (ROS2) ──");
+        Debug.Log($"[CameraFeedManager] Subscribing to topic: {rosImageTopic}");
+        Debug.Log($"[CameraFeedManager] Waiting for frames... (will print FPS every " +
+                $"{fpsLogInterval}s once frames arrive)");
 
         if (_rosTexture == null)
             _rosTexture = new Texture2D(rosImageWidth, rosImageHeight,
@@ -245,7 +249,7 @@ public class CameraFeedManager : MonoBehaviour
 
         // Show black frame while waiting for ROS
         displayImage.texture = _rosTexture;
-        displayImage.transform.localScale = Vector3.one;
+        displayImage.transform.localScale = new Vector3(1, -1, 1);   // flip vertical only
 
         if (!_rosSubscribed)
         {
@@ -276,8 +280,38 @@ public class CameraFeedManager : MonoBehaviour
         _lastFrameTime = now;
         _frameCount++;
 
-        // BGR8 → RGB8 conversion (RealSense default encoding)
-        byte[] pixels = (msg.encoding == "bgr8") ? BGRtoRGB(msg.data) : msg.data;
+        // Handle all common RealSense encodings
+        byte[] pixels;
+        switch (msg.encoding)
+        {
+            case "bgr8":
+                Debug.Log("[CameraFeedManager] Encoding: bgr8 — converting to RGB");
+                pixels = BGRtoRGB(msg.data);
+                break;
+
+            case "rgb8":
+                // Already correct for Unity — no conversion needed
+                pixels = msg.data;
+                break;
+
+            case "rgba8":
+                pixels = RGBAtoRGB(msg.data);
+                break;
+
+            default:
+                Debug.LogWarning($"[CameraFeedManager] Unknown encoding: {msg.encoding} " +
+                                "— attempting raw load");
+                pixels = msg.data;
+                break;
+        }
+
+        // Resize texture if dimensions changed
+        if (_rosTexture.width != (int)msg.width || 
+            _rosTexture.height != (int)msg.height)
+        {
+            Debug.Log($"[CameraFeedManager] Resizing texture to {msg.width}x{msg.height}");
+            _rosTexture.Reinitialize((int)msg.width, (int)msg.height);
+        }
 
         _rosTexture.LoadRawTextureData(pixels);
         _rosTexture.Apply();
@@ -291,6 +325,20 @@ public class CameraFeedManager : MonoBehaviour
             rgb[i]     = bgr[i + 2];
             rgb[i + 1] = bgr[i + 1];
             rgb[i + 2] = bgr[i];
+        }
+        return rgb;
+    }
+
+    byte[] RGBAtoRGB(byte[] rgba)
+    {
+        byte[] rgb = new byte[(rgba.Length / 4) * 3];
+        int j = 0;
+        for (int i = 0; i < rgba.Length; i += 4)
+        {
+            rgb[j++] = rgba[i];        // R
+            rgb[j++] = rgba[i + 1];    // G
+            rgb[j++] = rgba[i + 2];    // B
+            // skip rgba[i + 3] — alpha
         }
         return rgb;
     }
