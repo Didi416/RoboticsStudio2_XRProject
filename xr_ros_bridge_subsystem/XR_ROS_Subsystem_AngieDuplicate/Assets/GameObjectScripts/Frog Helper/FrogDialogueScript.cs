@@ -48,7 +48,7 @@ public class FrogDialogue : ScriptableObject
     [Header("Puzzle Room 2 - Slider Hints")]
     public List<DialogueLine> puzzle2Hints = new List<DialogueLine>()
     {
-        new DialogueLine { text = "My friends love jumping on lily pads! Can you follow their favourite path? Maybe try touching one?" },
+        new DialogueLine { text = "My friends love jumping on lily pads! Can you follow their favourite path? Maybe try touching one with the left trigger?" },
         new DialogueLine { text = "The lily pads light up in a special order... watch carefully and remember the sequence!" },
         new DialogueLine { text = "The robot arm needs to follow the same path the lily pads showed you. Start from the top left corner!" }
     };
