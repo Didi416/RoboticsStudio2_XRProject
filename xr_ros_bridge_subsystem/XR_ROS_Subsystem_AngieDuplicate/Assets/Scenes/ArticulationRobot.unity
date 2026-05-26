@@ -1669,9 +1669,9 @@ MonoBehaviour:
   webcamWidth: 640
   webcamHeight: 480
   webcamFPS: 30
-  rosImageTopic: /camera/color/image_raw
-  rosImageWidth: 640
-  rosImageHeight: 480
+  rosImageTopic: /camera/color/image_raw_unity
+  rosImageWidth: 1280
+  rosImageHeight: 720
   toggleKey: 94
   showFPSInConsole: 1
   fpsLogInterval: 2
