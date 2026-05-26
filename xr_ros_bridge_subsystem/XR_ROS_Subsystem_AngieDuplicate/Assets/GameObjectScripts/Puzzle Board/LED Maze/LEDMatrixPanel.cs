@@ -394,13 +394,21 @@ public class LEDMatrixPanel : MonoBehaviour
             Debug.LogWarning("No lily pad path!");
             return;
         }
-
+        
         foreach (Vector2Int p in lilyPadGrid.currentPath)
         {
             int ledX = Mathf.Clamp(p.x + 1, innerMin, innerMax);
-            int ledY = Mathf.Clamp(innerMax - p.y, innerMin, innerMax);
+            // Change this line - remove the flip
+            int ledY = Mathf.Clamp(p.y + 1, innerMin, innerMax);
             mappedPath.Add(new Vector2Int(ledX, ledY));
         }
+
+        // foreach (Vector2Int p in lilyPadGrid.currentPath)
+        // {
+        //     int ledX = Mathf.Clamp(p.x + 1, innerMin, innerMax);
+        //     int ledY = Mathf.Clamp(innerMax - p.y, innerMin, innerMax);
+        //     mappedPath.Add(new Vector2Int(ledX, ledY));
+        // }
 
         string lily = "Lily: ";
         string led = "LED:  ";
@@ -643,5 +651,38 @@ public class LEDMatrixPanel : MonoBehaviour
         
         playerPath.Clear();
         playerPath.Add(cursorPos); // add start point so step 0 is already counted
+    }
+
+    // Called by ROS bridge to mirror Arduino LED states
+    public void SetLEDStatesFromROS(byte[] ledData)
+    {
+        if (leds == null || ledData == null) return;
+        if (ledData.Length < gridSize * gridSize) return;
+
+        for (int row = 0; row < gridSize; row++)
+        {
+            for (int col = 0; col < gridSize; col++)
+            {
+                int index = row * gridSize + col;
+                int x = col;
+                int y = gridSize - 1 - row; // flip Y for Unity UI
+
+                if (leds[x, y] == null) continue;
+
+                bool isBorder = x == 0 || x == gridSize - 1 ||
+                                y == 0 || y == gridSize - 1;
+
+                if (isBorder)
+                {
+                    leds[x, y].color = borderColor;
+                    continue;
+                }
+
+                leds[x, y].color = ledData[index] == 1 ? onColor : offColor;
+            }
+        }
+
+        // Update cursor position from Arduino posX/posY
+        // These come through joystick topic so no extra work needed
     }
 }

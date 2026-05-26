@@ -601,4 +601,32 @@ public class LilyPadGrid : MonoBehaviour
         }
         return neighbours;
     }
+
+    // Add this method to LilyPadGrid.cs
+    public void SetEndPoint(int x, int y)
+    {
+        // Clamp to valid grid range
+        x = Mathf.Clamp(x, 0, gridWidth);
+        y = Mathf.Clamp(y, 0, gridHeight);
+
+        Debug.Log($"LilyPadGrid end point updated to ({x},{y})");
+
+        // Regenerate path with new end point
+        currentPath.Clear();
+
+        Vector2Int newEnd = new Vector2Int(x, y);
+
+        for (int attempt = 0; attempt < 100; attempt++)
+        {
+            List<Vector2Int> path = TryGeneratePath(startCell, newEnd);
+            if (path != null)
+            {
+                currentPath = path;
+                Debug.Log($"Path regenerated with {currentPath.Count} steps");
+                return;
+            }
+        }
+
+        Debug.LogError("Could not regenerate path!");
+    }
 }

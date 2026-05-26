@@ -328,5 +328,18 @@ public class ButtonMatrixPanel : MonoBehaviour
         if (Keyboard.current[Key.Digit8].wasPressedThisFrame) PressButton(8);
         if (Keyboard.current[Key.Digit9].wasPressedThisFrame) PressButton(9);
     }
+
+    // Called by ROS bridge to sync display
+    public void SetDisplayFromROS(string text)
+    {
+        if (ssdDisplay != null)
+            ssdDisplay.text = text;
+    }
+
+    // Called after frog croaks are synced
+    public void RefreshCorrectCode()
+    {
+        GetCorrectCodeFromFrogs();
+    }
 }
 
