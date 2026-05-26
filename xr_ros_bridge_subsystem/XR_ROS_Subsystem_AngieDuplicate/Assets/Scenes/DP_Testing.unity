@@ -1572,7 +1572,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &117059386
 Transform:
   m_ObjectHideFlags: 0
@@ -5328,11 +5328,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.24
+      value: 0.69
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.266
+      value: -1.91
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7591,7 +7591,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 401970875}
-  - component: {fileID: 401970876}
   m_Layer: 0
   m_Name: Puzzle Objects
   m_TagString: Untagged
@@ -7620,18 +7619,6 @@ Transform:
   - {fileID: 470524495}
   m_Father: {fileID: 1169641743}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &401970876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 401970874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4860b1a03d5af8183882e15f36c97ae0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PuzzleWallSync
 --- !u!1 &412234025
 GameObject:
   m_ObjectHideFlags: 8
@@ -9877,7 +9864,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &497079808
 Transform:
   m_ObjectHideFlags: 0
@@ -13000,9 +12987,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
       insertIndex: -1
       addedObject: {fileID: 616756364}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 616756365}
   m_SourcePrefab: {fileID: 100100000, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
 --- !u!4 &616756358 stripped
 Transform:
@@ -13087,19 +13071,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EggCube
   eggType: cloud
   cubeColor: {r: 1, g: 0.9669811, b: 0.9669811, a: 0}
---- !u!114 &616756365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 579859520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 946f2abd9a5f2bc1990b5695ba0b7c6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EggSync
-  eggID: 1
 --- !u!1 &619302147
 GameObject:
   m_ObjectHideFlags: 0
@@ -13144,7 +13115,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619302147}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -15120,9 +15091,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1236354713}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1236354714}
   m_SourcePrefab: {fileID: 100100000, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
 --- !u!4 &744828223 stripped
 Transform:
@@ -16532,7 +16500,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815829083}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -22345,7 +22313,6 @@ GameObject:
   - component: {fileID: 1081127995}
   - component: {fileID: 1081127994}
   - component: {fileID: 1081127993}
-  - component: {fileID: 1081127996}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -22360,7 +22327,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1081127992}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
@@ -22414,45 +22381,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1081127996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081127992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab68ce6587aab0146b8dabefbd806791, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.XRUIInputModule
-  m_SendPointerHoverToParent: 1
-  m_ClickSpeed: 0.3
-  m_MoveDeadzone: 0.6
-  m_RepeatDelay: 0.5
-  m_RepeatRate: 0.1
-  m_TrackedDeviceDragThresholdMultiplier: 2
-  m_TrackedScrollDeltaMultiplier: 5
-  m_BypassUIToolkitEvents: 0
-  m_ActiveInputMode: 0
-  m_EnableXRInput: 1
-  m_EnableMouseInput: 1
-  m_EnableTouchInput: 1
-  m_EnableGamepadInput: 1
-  m_EnableJoystickInput: 1
-  m_PointAction: {fileID: 0}
-  m_LeftClickAction: {fileID: 0}
-  m_MiddleClickAction: {fileID: 0}
-  m_RightClickAction: {fileID: 0}
-  m_ScrollWheelAction: {fileID: 0}
-  m_NavigateAction: {fileID: 0}
-  m_SubmitAction: {fileID: 0}
-  m_CancelAction: {fileID: 0}
-  m_EnableBuiltinActionsAsFallback: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
 --- !u!1 &1086245720
 GameObject:
   m_ObjectHideFlags: 8
@@ -26828,19 +26756,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EggCube
   eggType: earth
   cubeColor: {r: 0.36250263, g: 0.41509432, b: 0.26041293, a: 1}
---- !u!114 &1236354714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1236354707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 946f2abd9a5f2bc1990b5695ba0b7c6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EggSync
-  eggID: 2
 --- !u!1001 &1240433563
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30858,6 +30773,7 @@ GameObject:
   - component: {fileID: 1399983265}
   - component: {fileID: 1399983264}
   - component: {fileID: 1399983263}
+  - component: {fileID: 1399983267}
   m_Layer: 0
   m_Name: ur3e_onrobot
   m_TagString: robot
@@ -30970,6 +30886,33 @@ MonoBehaviour:
   chosenAxis: 0
   currentOrientation: 0
   collisionExceptions: []
+--- !u!54 &1399983267
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399983261}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1400079044
 GameObject:
   m_ObjectHideFlags: 8
@@ -35858,9 +35801,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2010409652}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2010409653}
   m_SourcePrefab: {fileID: 100100000, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
 --- !u!4 &1671388454 stripped
 Transform:
@@ -38657,7 +38597,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1733356693
 Transform:
   m_ObjectHideFlags: 0
@@ -39070,9 +39010,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1764575204}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1764575205}
   m_SourcePrefab: {fileID: 100100000, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
 --- !u!4 &1764575198 stripped
 Transform:
@@ -39157,19 +39094,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EggCube
   eggType: water
   cubeColor: {r: 0.49019608, g: 0.7529412, b: 0.7764706, a: 1}
---- !u!114 &1764575205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 338204360}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 946f2abd9a5f2bc1990b5695ba0b7c6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EggSync
-  eggID: 4
 --- !u!1 &1765826650
 GameObject:
   m_ObjectHideFlags: 0
@@ -44298,19 +44222,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EggCube
   eggType: space
   cubeColor: {r: 0.8627451, g: 0.16862746, b: 0.9764706, a: 1}
---- !u!114 &2010409653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2010409646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 946f2abd9a5f2bc1990b5695ba0b7c6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EggSync
-  eggID: 3
 --- !u!1 &2011480908
 GameObject:
   m_ObjectHideFlags: 8

@@ -29,20 +29,15 @@ public class ROSPuzzleBridge : MonoBehaviour
     void Start()
     {
         ros = ROSConnection.GetOrCreateInstance();
+        Debug.Log($"ROS connecting to: {ros.RosIPAddress}:{ros.RosPort}");
 
         // Subscribe to all topics
-        ros.Subscribe<RosMessageTypes.Std.Int32MultiArrayMsg>(
-            buttonsTopic, OnButtonsReceived);
-        ros.Subscribe<StringMsg>(
-            displayTopic, OnDisplayReceived);
-        ros.Subscribe<Vector3Msg>(
-            joystickTopic, OnJoystickReceived);
-        ros.Subscribe<StringMsg>(
-            puzzleGenerationTopic, OnPuzzleGenerationReceived);
-        ros.Subscribe<RosMessageTypes.Std.UInt8MultiArrayMsg>(
-            ledsTopic, OnLEDsReceived);
-        ros.Subscribe<StringMsg>(
-            puzzleStateTopic, OnPuzzleStateReceived);
+        ros.Subscribe<RosMessageTypes.Std.Int32MultiArrayMsg>(buttonsTopic, OnButtonsReceived);
+        ros.Subscribe<RosMessageTypes.Std.StringMsg>(displayTopic, OnDisplayReceived);
+        ros.Subscribe<Vector3Msg>(joystickTopic, OnJoystickReceived);
+        ros.Subscribe<RosMessageTypes.Std.StringMsg>(puzzleGenerationTopic, OnPuzzleGenerationReceived);
+        ros.Subscribe<RosMessageTypes.Std.UInt8MultiArrayMsg>(ledsTopic, OnLEDsReceived);
+        ros.Subscribe<RosMessageTypes.Std.StringMsg>(puzzleStateTopic, OnPuzzleStateReceived);
 
         Debug.Log("ROSPuzzleBridge: All topics subscribed");
     }
@@ -54,6 +49,7 @@ public class ROSPuzzleBridge : MonoBehaviour
 
     void OnButtonsReceived(RosMessageTypes.Std.Int32MultiArrayMsg msg)
     {
+        Debug.Log($"ROS: Button has been pressed");
         for (int i = 0; i < msg.data.Length && i < 9; i++)
         {
             if (msg.data[i] == 1)
@@ -75,10 +71,10 @@ public class ROSPuzzleBridge : MonoBehaviour
     // Sync Arduino SSD display with Unity SSD
     // ─────────────────────────────────────────
 
-    void OnDisplayReceived(StringMsg msg)
+    void OnDisplayReceived(RosMessageTypes.Std.StringMsg msg)
     {
         string displayText = msg.data;
-        Debug.Log($"ROS: Display: {displayText}");
+        Debug.Log($"ROS: Display please work: {displayText}");
 
         UnityMainThreadDispatcher.Instance().Enqueue(() =>
         {
@@ -129,18 +125,49 @@ public class ROSPuzzleBridge : MonoBehaviour
     // This overrides coordinate mapping entirely
     // ─────────────────────────────────────────
 
+    // void OnLEDsReceived(RosMessageTypes.Std.UInt8MultiArrayMsg msg)
+    // {
+    //     byte[] ledData = new byte[msg.data.Length];
+    //     for (int i = 0; i < msg.data.Length; i++)
+    //         ledData[i] = (byte)msg.data[i];
+
+    //     UnityMainThreadDispatcher.Instance().Enqueue(() =>
+    //     {
+    //         if (ledMatrixPanel != null)
+    //         {
+    //             ledMirrorMode = true;
+    //             ledMatrixPanel.SetLEDStatesFromROS(ledData);
+    //         }
+    //     });
+    // }
+
     void OnLEDsReceived(RosMessageTypes.Std.UInt8MultiArrayMsg msg)
     {
         byte[] ledData = new byte[msg.data.Length];
         for (int i = 0; i < msg.data.Length; i++)
             ledData[i] = (byte)msg.data[i];
-
+        
         UnityMainThreadDispatcher.Instance().Enqueue(() =>
         {
             if (ledMatrixPanel != null)
             {
+                // Flip X axis by reversing each row
+                byte[] flippedData = new byte[ledData.Length];
+                int rowSize = 8; // 8x8 LED matrix
+                
+                for (int row = 0; row < 8; row++)
+                {
+                    for (int col = 0; col < 8; col++)
+                    {
+                        // Map (row, col) to (row, 7-col) to flip X axis
+                        // flippedData[row * rowSize + (7 - col)] = ledData[row * rowSize + col];
+                        // Flip Y axis by reversing row order
+                        flippedData[(7 - row) * rowSize + col] = ledData[row * rowSize + col];
+                    }
+                }
+                
                 ledMirrorMode = true;
-                ledMatrixPanel.SetLEDStatesFromROS(ledData);
+                ledMatrixPanel.SetLEDStatesFromROS(flippedData);
             }
         });
     }
@@ -151,7 +178,7 @@ public class ROSPuzzleBridge : MonoBehaviour
     // and maze with lily pad grid
     // ─────────────────────────────────────────
 
-    void OnPuzzleGenerationReceived(StringMsg msg)
+    void OnPuzzleGenerationReceived(RosMessageTypes.Std.StringMsg msg)
     {
         Debug.Log($"ROS: Puzzle generation: {msg.data}");
 
@@ -182,7 +209,7 @@ public class ROSPuzzleBridge : MonoBehaviour
     // Arduino validates → Unity shows result
     // ─────────────────────────────────────────
 
-    void OnPuzzleStateReceived(StringMsg msg)
+    void OnPuzzleStateReceived(RosMessageTypes.Std.StringMsg msg)
     {
         try
         {

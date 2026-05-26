@@ -505,7 +505,7 @@ public class XRTwistPublisher : MonoBehaviour
         Vector3 angROS = new Vector3(angUnity.z, -angUnity.x, angUnity.y);
         if (inputMode == InputMode.XRHeadset){
             angROS = new Vector3(-angUnity.x, angUnity.z, -angUnity.y);
-            linROS = new Vector3(linUnity.x, -linUnity.z, linUnity.y);
+            linROS = new Vector3(linUnity.x, linUnity.z, linUnity.y);
         }
 
         var msg = new TwistStampedMsg
