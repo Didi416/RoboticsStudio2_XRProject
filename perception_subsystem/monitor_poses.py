@@ -15,12 +15,27 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped
 
+# PUZZLE_MARKERS = {
+#     0:  'Frog Call Console',
+#     1:  'Lily Pad Maze',
+#     2:  'Frog Egg Sorting',
+#     3:  'Containment Dial',
+#     10: 'Calibration Target',
+# }
+
 PUZZLE_MARKERS = {
-    0:  'Frog Call Console',
-    1:  'Lily Pad Maze',
-    2:  'Frog Egg Sorting',
-    3:  'Containment Dial',
-    10: 'Calibration Target',
+    0:  'frog_call_console',
+    10: 'calibration_target',
+    # Eggs
+    1: 'egg_green',
+    2: 'egg_blue',
+    3: 'egg_white',
+    4: 'egg_purple',
+    # Puzzle wall corners
+    5: 'wall_corner_tl',
+    6: 'wall_corner_tr',
+    7: 'wall_corner_br',
+    8: 'wall_corner_bl',
 }
 
 # Only print a pose update if position changed by more than this (metres).

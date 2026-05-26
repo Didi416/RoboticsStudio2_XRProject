@@ -84,6 +84,7 @@ setup(
             
             'egg_sorter_verifier = perception_mapping.egg_sorter_verifier:main',
             'egg_sorter_verifier_simple = perception_mapping.egg_sorter_verifier_simple:main',
+            'unity_pose_publisher = perception_mapping.unity_pose_publisher:main',
         ],
     },
 )
