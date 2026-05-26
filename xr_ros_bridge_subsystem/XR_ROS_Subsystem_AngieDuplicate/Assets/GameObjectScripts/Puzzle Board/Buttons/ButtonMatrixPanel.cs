@@ -484,7 +484,7 @@ public class ButtonMatrixPanel : MonoBehaviour
         // Show result text
         if (resultText != null)
         {
-            resultText.text = correct ? "✓ Correct Code!" : "✗ Incorrect!\nTry Again";
+            resultText.text = correct ? "Correct\nCode!" : "Incorrect!\nTry Again";
             resultText.color = correct ? Color.green : Color.red;
         }
  
