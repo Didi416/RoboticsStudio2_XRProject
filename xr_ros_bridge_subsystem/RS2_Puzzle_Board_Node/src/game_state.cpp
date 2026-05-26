@@ -25,7 +25,7 @@ static void seedRandom() {
 // ── Code generator ───────────────────────────────────────────
 static void generateCode() {
   for (int i = 0; i < 4; i++) {
-    generatedCode[i] = '0' + random(0, 9);  // digits 1–9, avoids 0 for clarity
+    generatedCode[i] = '0' + random(1, 9);  // digits 1–9, avoids 0 for clarity
   }
   generatedCode[4] = '\0';
 
