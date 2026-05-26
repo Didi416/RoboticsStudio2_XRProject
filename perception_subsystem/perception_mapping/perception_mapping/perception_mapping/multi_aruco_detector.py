@@ -51,10 +51,10 @@ PUZZLE_MARKERS = {
     0:  'frog_call_console',
     10: 'calibration_target',
     # Eggs
-    1: 'egg_green',
-    2: 'egg_blue',
-    3: 'egg_white',
-    4: 'egg_purple',
+    1: 'egg_white',
+    2: 'egg_green',
+    3: 'egg_purple',
+    4: 'egg_blue',
     # Puzzle wall corners
     5: 'wall_corner_tl',
     6: 'wall_corner_tr',
@@ -299,6 +299,11 @@ class MultiArucoDetector(Node):
             ids_flat = ids.flatten().tolist()
 
             for i, marker_id in enumerate(ids_flat):
+
+                # ── Filter: ignore any ID not in our puzzle registry ──
+                if marker_id not in PUZZLE_MARKERS:
+                    continue
+                
                 detected_ids.add(marker_id)
 
                 # 2D pose estimate (used for orientation + fallback position)

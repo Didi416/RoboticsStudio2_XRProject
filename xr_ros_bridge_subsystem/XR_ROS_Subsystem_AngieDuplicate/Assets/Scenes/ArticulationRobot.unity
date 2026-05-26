@@ -7591,6 +7591,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 401970875}
+  - component: {fileID: 401970876}
   m_Layer: 0
   m_Name: Puzzle Objects
   m_TagString: Untagged
@@ -7619,6 +7620,18 @@ Transform:
   - {fileID: 470524495}
   m_Father: {fileID: 1169641743}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &401970876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401970874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4860b1a03d5af8183882e15f36c97ae0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PuzzleWallSync
 --- !u!1 &412234025
 GameObject:
   m_ObjectHideFlags: 8
@@ -12987,6 +13000,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
       insertIndex: -1
       addedObject: {fileID: 616756364}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 616756365}
   m_SourcePrefab: {fileID: 100100000, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
 --- !u!4 &616756358 stripped
 Transform:
@@ -13071,6 +13087,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EggCube
   eggType: cloud
   cubeColor: {r: 1, g: 0.9669811, b: 0.9669811, a: 0}
+--- !u!114 &616756365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579859520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 946f2abd9a5f2bc1990b5695ba0b7c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EggSync
+  eggID: 1
 --- !u!1 &619302147
 GameObject:
   m_ObjectHideFlags: 0
@@ -15091,6 +15120,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1236354713}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1236354714}
   m_SourcePrefab: {fileID: 100100000, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
 --- !u!4 &744828223 stripped
 Transform:
@@ -26756,6 +26788,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EggCube
   eggType: earth
   cubeColor: {r: 0.36250263, g: 0.41509432, b: 0.26041293, a: 1}
+--- !u!114 &1236354714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236354707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 946f2abd9a5f2bc1990b5695ba0b7c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EggSync
+  eggID: 2
 --- !u!1001 &1240433563
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35771,6 +35816,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2010409652}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2010409653}
   m_SourcePrefab: {fileID: 100100000, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
 --- !u!4 &1671388454 stripped
 Transform:
@@ -38980,6 +39028,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1764575204}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1764575205}
   m_SourcePrefab: {fileID: 100100000, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
 --- !u!4 &1764575198 stripped
 Transform:
@@ -39064,6 +39115,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EggCube
   eggType: water
   cubeColor: {r: 0.49019608, g: 0.7529412, b: 0.7764706, a: 1}
+--- !u!114 &1764575205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 338204360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 946f2abd9a5f2bc1990b5695ba0b7c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EggSync
+  eggID: 4
 --- !u!1 &1765826650
 GameObject:
   m_ObjectHideFlags: 0
@@ -44192,6 +44256,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EggCube
   eggType: space
   cubeColor: {r: 0.8627451, g: 0.16862746, b: 0.9764706, a: 1}
+--- !u!114 &2010409653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010409646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 946f2abd9a5f2bc1990b5695ba0b7c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EggSync
+  eggID: 3
 --- !u!1 &2011480908
 GameObject:
   m_ObjectHideFlags: 8
