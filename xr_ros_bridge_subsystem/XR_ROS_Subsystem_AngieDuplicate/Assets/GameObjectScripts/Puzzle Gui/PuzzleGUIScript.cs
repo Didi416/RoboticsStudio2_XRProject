@@ -4,15 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.Std;
-<<<<<<< HEAD
 
-=======
-<<<<<<< Updated upstream
- 
-=======
-
->>>>>>> Stashed changes
->>>>>>> 60a1c52683894d3f760f90a40aea1f9935ab1347
 public class PuzzleGUIScript : MonoBehaviour
 {
     [Header("Input")]
@@ -48,24 +40,8 @@ public class PuzzleGUIScript : MonoBehaviour
 
     // ROS
     private ROSConnection ros;
-<<<<<<< HEAD
     private const string commandTopic = "/robot_gui/command";
 
-=======
-    private string robotCommandTopic = "/robot_gui/command";
- 
-    private bool isGUIOpen = false;
-<<<<<<< Updated upstream
- 
-=======
-    private int currentPuzzle = 0;
-
-    // ROS
-    private ROSConnection ros;
-    private const string commandTopic = "/robot_gui/command";
-
->>>>>>> Stashed changes
->>>>>>> 60a1c52683894d3f760f90a40aea1f9935ab1347
     void Start()
     {
         puzzleGUI.SetActive(false);
@@ -73,22 +49,12 @@ public class PuzzleGUIScript : MonoBehaviour
 
         if (singularityWarningPanel != null)
             singularityWarningPanel.SetActive(false);
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
- 
-=======
->>>>>>> 60a1c52683894d3f760f90a40aea1f9935ab1347
 
         // Set up ROS publisher
         ros = ROSConnection.GetOrCreateInstance();
         ros.RegisterPublisher<StringMsg>(commandTopic);
 
         // Hook up all buttons
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> 60a1c52683894d3f760f90a40aea1f9935ab1347
         if (closeButton != null)
             closeButton.onClick.AddListener(CloseGUI);
         if (resetRobotButton != null)
@@ -140,12 +106,6 @@ public class PuzzleGUIScript : MonoBehaviour
     }
 
     // ─────────────────────────────────────────
-<<<<<<< HEAD
-    // ROS HELPER
-=======
-<<<<<<< Updated upstream
-    // ROS COMMAND
-=======
     // ROS HELPER
     // ─────────────────────────────────────────
 
@@ -154,31 +114,6 @@ public class PuzzleGUIScript : MonoBehaviour
         var msg = new StringMsg(command);
         ros.Publish(commandTopic, msg);
         Debug.Log($"GUI: Sent ROS command → {command}");
-    }
-
-    // ─────────────────────────────────────────
-    // BUTTON FUNCTIONS
->>>>>>> Stashed changes
->>>>>>> 60a1c52683894d3f760f90a40aea1f9935ab1347
-    // ─────────────────────────────────────────
-
-    private void SendCommand(string command)
-    {
-<<<<<<< HEAD
-        var msg = new StringMsg(command);
-        ros.Publish(commandTopic, msg);
-        Debug.Log($"GUI: Sent ROS command → {command}");
-=======
-<<<<<<< Updated upstream
-        Debug.Log($"Robot command: {command}");
-        StringMsg msg = new StringMsg();
-        msg.data = command;
-        ros.Publish(robotCommandTopic, msg);
-=======
-        UpdateStatus("Returning robot to hover position...");
-        SendCommand("hover");
->>>>>>> Stashed changes
->>>>>>> 60a1c52683894d3f760f90a40aea1f9935ab1347
     }
 
     // ─────────────────────────────────────────
@@ -187,58 +122,22 @@ public class PuzzleGUIScript : MonoBehaviour
 
     public void OnResetRobotPressed()
     {
-<<<<<<< HEAD
         UpdateStatus("Returning robot to hover position...");
         SendCommand("hover");
-=======
-<<<<<<< Updated upstream
-        UpdateStatus("Returning to hover position...");
-        Debug.Log("GUI: Reset → hover");
-        SendRobotCommand("hover");
-=======
-        currentPuzzle = 1;
-        UpdateStatus("Puzzle 1: Moving to board...");
-        SendCommand("face_board");
->>>>>>> Stashed changes
->>>>>>> 60a1c52683894d3f760f90a40aea1f9935ab1347
     }
 
     public void OnPuzzle1Pressed()
     {
-<<<<<<< HEAD
         currentPuzzle = 1;
         UpdateStatus("Puzzle 1: Moving to board...");
         SendCommand("face_board");
-=======
-<<<<<<< Updated upstream
-        UpdateStatus("Moving to face Puzzle Board...");
-        Debug.Log("GUI: Face Puzzle Board");
-        SendRobotCommand("face_board");
-=======
-        currentPuzzle = 2;
-        UpdateStatus("Puzzle 2: Lily Pad Maze");
-        SendCommand("face_board");
->>>>>>> Stashed changes
->>>>>>> 60a1c52683894d3f760f90a40aea1f9935ab1347
     }
 
     public void OnPuzzle2Pressed()
     {
-<<<<<<< HEAD
         currentPuzzle = 2;
         UpdateStatus("Puzzle 2: Lily Pad Maze");
         SendCommand("face_board");
-=======
-<<<<<<< Updated upstream
-        UpdateStatus("Moving to face Egg Puzzle...");
-        Debug.Log("GUI: Face Eggs");
-        SendRobotCommand("face_eggs");
-=======
-        currentPuzzle = 3;
-        UpdateStatus("Puzzle 3: Moving to eggs...");
-        SendCommand("face_eggs");
->>>>>>> Stashed changes
->>>>>>> 60a1c52683894d3f760f90a40aea1f9935ab1347
     }
 
     public void OnPuzzle3Pressed()
@@ -250,14 +149,6 @@ public class PuzzleGUIScript : MonoBehaviour
 
     public void OnResetPuzzlePressed()
     {
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-        UpdateStatus("Resetting - returning to hover...");
-        Debug.Log("GUI: Reset Puzzle → hover");
-        SendRobotCommand("hover");
-=======
->>>>>>> 60a1c52683894d3f760f90a40aea1f9935ab1347
         UpdateStatus($"Resetting Puzzle {currentPuzzle}...");
 
         switch (currentPuzzle)
@@ -275,10 +166,6 @@ public class PuzzleGUIScript : MonoBehaviour
                 UpdateStatus("No puzzle selected to reset.");
                 break;
         }
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> 60a1c52683894d3f760f90a40aea1f9935ab1347
     }
 
     // ─────────────────────────────────────────
@@ -294,17 +181,8 @@ public class PuzzleGUIScript : MonoBehaviour
                 singularityWarningText.text = "⚠ WARNING: Singularity Detected!\nReturning to safe position...";
         }
         UpdateStatus("⚠ Singularity Warning!");
-<<<<<<< HEAD
         SendCommand("hover");
         Debug.Log("GUI: Singularity warning triggered");
-=======
-<<<<<<< Updated upstream
-        SendRobotCommand("hover");
-=======
-        SendCommand("hover");
-        Debug.Log("GUI: Singularity warning triggered");
->>>>>>> Stashed changes
->>>>>>> 60a1c52683894d3f760f90a40aea1f9935ab1347
     }
 
     public void OnDismissWarning()
