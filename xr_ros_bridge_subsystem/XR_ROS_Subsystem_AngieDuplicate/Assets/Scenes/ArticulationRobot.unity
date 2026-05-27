@@ -6550,6 +6550,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
   m_PrefabInstance: {fileID: 347055171}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &347055173 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
+  m_PrefabInstance: {fileID: 347055171}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &348616332
 GameObject:
   m_ObjectHideFlags: 0
@@ -13362,9 +13367,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!65 &619924112
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17322,6 +17327,11 @@ PrefabInstance:
 --- !u!4 &866259381 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
+  m_PrefabInstance: {fileID: 866259380}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &866259382 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
   m_PrefabInstance: {fileID: 866259380}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &874001398
@@ -24335,6 +24345,11 @@ PrefabInstance:
 --- !u!4 &1157698658 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
+  m_PrefabInstance: {fileID: 1157698657}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1157698659 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
   m_PrefabInstance: {fileID: 1157698657}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1168626173
@@ -32896,9 +32911,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &1466788466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38325,7 +38340,7 @@ MonoBehaviour:
   snapDistance: 0.15
   snapSpeed: 10
   acceptsTag: 
-  zoneRenderer: {fileID: 0}
+  zoneRenderer: {fileID: 1157698659}
   emptyColor: {r: 0.3, g: 0.3, b: 0.3, a: 0.5}
   hoverColor: {r: 0, g: 0.8, b: 1, a: 0.5}
   snappedColor: {r: 0, g: 1, b: 0, a: 0.5}
@@ -38446,6 +38461,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
   m_PrefabInstance: {fileID: 1720555189}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &1720555191 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
+  m_PrefabInstance: {fileID: 1720555189}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1720555193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38501,7 +38521,7 @@ MonoBehaviour:
   snapDistance: 0.15
   snapSpeed: 10
   acceptsTag: 
-  zoneRenderer: {fileID: 0}
+  zoneRenderer: {fileID: 1720555191}
   emptyColor: {r: 0.3, g: 0.3, b: 0.3, a: 0.5}
   hoverColor: {r: 0, g: 0.8, b: 1, a: 0.5}
   snappedColor: {r: 0, g: 1, b: 0, a: 0.5}
@@ -43607,9 +43627,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &1922090070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43706,7 +43726,7 @@ MonoBehaviour:
   snapDistance: 0.15
   snapSpeed: 10
   acceptsTag: 
-  zoneRenderer: {fileID: 0}
+  zoneRenderer: {fileID: 866259382}
   emptyColor: {r: 0.3, g: 0.3, b: 0.3, a: 0.5}
   hoverColor: {r: 0, g: 0.8, b: 1, a: 0.5}
   snappedColor: {r: 0, g: 1, b: 0, a: 0.5}
@@ -44264,7 +44284,7 @@ MonoBehaviour:
   snapDistance: 0.15
   snapSpeed: 10
   acceptsTag: 
-  zoneRenderer: {fileID: 0}
+  zoneRenderer: {fileID: 347055173}
   emptyColor: {r: 0.3, g: 0.3, b: 0.3, a: 0.5}
   hoverColor: {r: 0, g: 0.8, b: 1, a: 0.5}
   snappedColor: {r: 0, g: 1, b: 0, a: 0.5}
