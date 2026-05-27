@@ -4484,7 +4484,7 @@ Transform:
   m_GameObject: {fileID: 246651806}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.7, y: 17.5, z: 2.01}
+  m_LocalPosition: {x: -8.9, y: 17.69, z: 2.01}
   m_LocalScale: {x: 2.4, y: 2.4, z: 0.15000004}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6541,6 +6541,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1966823415}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1966823418}
   m_SourcePrefab: {fileID: 100100000, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
 --- !u!4 &347055172 stripped
 Transform:
@@ -10185,7 +10188,7 @@ Transform:
   m_GameObject: {fileID: 500948751}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.71, y: 30.678005, z: 2}
+  m_LocalPosition: {x: -8.81, y: 30.678005, z: 2}
   m_LocalScale: {x: 2.4, y: 2.4, z: 0.15000004}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11483,9 +11486,10 @@ GameObject:
   - component: {fileID: 555247440}
   - component: {fileID: 555247439}
   - component: {fileID: 555247438}
+  - component: {fileID: 555247441}
   m_Layer: 0
   m_Name: right_finger_tip
-  m_TagString: Untagged
+  m_TagString: GripperTip
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11602,6 +11606,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Robotics.UrdfImporter::Unity.Robotics.UrdfImporter.UrdfLink
   IsBaseLink: 0
+--- !u!65 &555247441
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555247436}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.046513613, y: 0.061070304, z: 0.038045056}
+  m_Center: {x: 0.0001338831, y: -0.0031864697, z: 0.0051593124}
 --- !u!1 &558572030
 GameObject:
   m_ObjectHideFlags: 0
@@ -12425,7 +12450,7 @@ Transform:
   m_GameObject: {fileID: 601176643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.0900073, y: 22.04, z: 2}
+  m_LocalPosition: {x: -4.59, y: 22.04, z: 2}
   m_LocalScale: {x: 2.4, y: 2.4, z: 0.15000004}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13017,6 +13042,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
       insertIndex: -1
       addedObject: {fileID: 616756365}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 616756368}
   m_SourcePrefab: {fileID: 100100000, guid: 05093a18a85624149a9453e1aeb55027, type: 3}
 --- !u!4 &616756358 stripped
 Transform:
@@ -13068,9 +13096,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &616756363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13084,9 +13112,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RobotGrippable
   isGripped: 0
+  snapSpeed: 15
   followSpeed: 20
+  gripperTag: GripperTip
+  requireGripperTag: 1
+  snapToGripperCenter: 1
+  minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
+  testGripKey: 21
+  testReleaseKey: 32
 --- !u!114 &616756364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13114,6 +13149,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EggSync
   eggID: 1
+--- !u!114 &616756368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579859520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2da03d25ee69481595b14a7d3f35893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RobotGrippable
+  isGripped: 0
+  snapSpeed: 15
+  followSpeed: 20
+  gripperTag: GripperTip
+  requireGripperTag: 1
+  snapToGripperCenter: 1
+  minimumGripDistance: 0.05
+  usePhysics: 1
+  enableKeyboardTest: 1
+  testGripKey: 21
+  testReleaseKey: 32
 --- !u!1 &619302147
 GameObject:
   m_ObjectHideFlags: 0
@@ -13269,9 +13327,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RobotGrippable
   isGripped: 0
+  snapSpeed: 15
   followSpeed: 20
+  gripperTag: GripperTip
+  requireGripperTag: 1
+  snapToGripperCenter: 1
+  minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
+  testGripKey: 21
+  testReleaseKey: 32
 --- !u!54 &619924111
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -13294,7 +13359,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -17249,6 +17314,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1934539859}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1934539862}
   m_SourcePrefab: {fileID: 100100000, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
 --- !u!4 &866259381 stripped
 Transform:
@@ -18786,9 +18854,10 @@ GameObject:
   - component: {fileID: 939792089}
   - component: {fileID: 939792088}
   - component: {fileID: 939792087}
+  - component: {fileID: 939792090}
   m_Layer: 0
   m_Name: left_finger_tip
-  m_TagString: Untagged
+  m_TagString: GripperTip
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18905,6 +18974,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Robotics.UrdfImporter::Unity.Robotics.UrdfImporter.UrdfLink
   IsBaseLink: 0
+--- !u!65 &939792090
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939792085}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.05709881, y: 0.059920512, z: 0.035758764}
+  m_Center: {x: 0.0046628974, y: -0.0068761744, z: -0.005066595}
 --- !u!1 &942500139
 GameObject:
   m_ObjectHideFlags: 0
@@ -23739,7 +23829,7 @@ Transform:
   m_GameObject: {fileID: 1152744800}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.1200004, y: 26.22, z: 2}
+  m_LocalPosition: {x: -4.5, y: 26.22, z: 2}
   m_LocalScale: {x: 2.4, y: 2.4, z: 0.15000004}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24237,6 +24327,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1712980336}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1712980339}
   m_SourcePrefab: {fileID: 100100000, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
 --- !u!4 &1157698658 stripped
 Transform:
@@ -24709,7 +24802,7 @@ Transform:
   m_GameObject: {fileID: 1184858533}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13.332003, y: 17.6, z: 2}
+  m_LocalPosition: {x: -13.332003, y: 17.74, z: 2}
   m_LocalScale: {x: 2.4, y: 2.4, z: 0.15000004}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26906,9 +26999,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RobotGrippable
   isGripped: 0
+  snapSpeed: 15
   followSpeed: 20
+  gripperTag: GripperTip
+  requireGripperTag: 1
+  snapToGripperCenter: 1
+  minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
+  testGripKey: 21
+  testReleaseKey: 32
 --- !u!54 &1236354712
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -26933,9 +27033,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &1236354713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27352,7 +27452,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1252985559
 Transform:
   m_ObjectHideFlags: 0
@@ -32746,7 +32846,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -32764,9 +32864,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RobotGrippable
   isGripped: 0
+  snapSpeed: 15
   followSpeed: 20
+  gripperTag: GripperTip
+  requireGripperTag: 1
+  snapToGripperCenter: 1
+  minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
+  testGripKey: 21
+  testReleaseKey: 32
 --- !u!1 &1476193686
 GameObject:
   m_ObjectHideFlags: 0
@@ -36377,7 +36484,7 @@ Transform:
   m_GameObject: {fileID: 1687265068}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.078007, y: 30.678005, z: 2}
+  m_LocalPosition: {x: -4.42, y: 30.678005, z: 2}
   m_LocalScale: {x: 2.4, y: 2.4, z: 0.15000004}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -38155,6 +38262,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.43520007, y: 0.43520018, z: 0.20000003}
   m_Center: {x: -1.2547177, y: 2.025268, z: 0.10000002}
+--- !u!114 &1712980339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712980332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd8f32ca405e04c86a0bc808fc481a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CubeSnapZone
+  snapDistance: 0.15
+  snapSpeed: 10
+  acceptsTag: 
+  zoneRenderer: {fileID: 0}
+  emptyColor: {r: 0.3, g: 0.3, b: 0.3, a: 0.5}
+  hoverColor: {r: 0, g: 0.8, b: 1, a: 0.5}
+  snappedColor: {r: 0, g: 1, b: 0, a: 0.5}
+  cubePuzzleManager: {fileID: 904587817}
+  slotIndex: 0
 --- !u!1 &1713317427 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dd125b2bda2a44c69aaf7b37f0732e26, type: 3}
@@ -38261,6 +38389,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1720555193}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1720555197}
   m_SourcePrefab: {fileID: 100100000, guid: 958078fb79bf8446a9e3c6f35839d363, type: 3}
 --- !u!4 &1720555190 stripped
 Transform:
@@ -38285,7 +38416,7 @@ MonoBehaviour:
   correctColor: {r: 0, g: 1, b: 0, a: 1}
   wrongColor: {r: 1, g: 0, b: 0, a: 1}
   slotRenderer: {fileID: 0}
-  cubePuzzleManager: {fileID: 0}
+  cubePuzzleManager: {fileID: 904587817}
 --- !u!65 &1720555194
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -38307,6 +38438,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.43520007, y: 0.43520018, z: 0.20000003}
   m_Center: {x: -1.2547169, y: 2.025268, z: 0.10000002}
+--- !u!114 &1720555197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613788641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd8f32ca405e04c86a0bc808fc481a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CubeSnapZone
+  snapDistance: 0.15
+  snapSpeed: 10
+  acceptsTag: 
+  zoneRenderer: {fileID: 0}
+  emptyColor: {r: 0.3, g: 0.3, b: 0.3, a: 0.5}
+  hoverColor: {r: 0, g: 0.8, b: 1, a: 0.5}
+  snappedColor: {r: 0, g: 1, b: 0, a: 0.5}
+  cubePuzzleManager: {fileID: 904587817}
+  slotIndex: 1
 --- !u!1 &1726951695
 GameObject:
   m_ObjectHideFlags: 0
@@ -38992,7 +39144,7 @@ Transform:
   m_GameObject: {fileID: 1755176148}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.645, z: -2.11}
+  m_LocalPosition: {x: 0, y: 0.59, z: -2.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -39227,9 +39379,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RobotGrippable
   isGripped: 0
+  snapSpeed: 15
   followSpeed: 20
+  gripperTag: GripperTip
+  requireGripperTag: 1
+  snapToGripperCenter: 1
+  minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
+  testGripKey: 21
+  testReleaseKey: 32
 --- !u!54 &1764575203
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -39254,9 +39413,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &1764575204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43185,9 +43344,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RobotGrippable
   isGripped: 0
+  snapSpeed: 15
   followSpeed: 20
+  gripperTag: GripperTip
+  requireGripperTag: 1
+  snapToGripperCenter: 1
+  minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
+  testGripKey: 21
+  testReleaseKey: 32
 --- !u!1 &1921873599
 GameObject:
   m_ObjectHideFlags: 0
@@ -43391,7 +43557,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -43409,9 +43575,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RobotGrippable
   isGripped: 0
+  snapSpeed: 15
   followSpeed: 20
+  gripperTag: GripperTip
+  requireGripperTag: 1
+  snapToGripperCenter: 1
+  minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
+  testGripKey: 21
+  testReleaseKey: 32
 --- !u!114 &1922090071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43448,7 +43621,7 @@ MonoBehaviour:
   correctColor: {r: 0, g: 1, b: 0, a: 1}
   wrongColor: {r: 1, g: 0, b: 0, a: 1}
   slotRenderer: {fileID: 0}
-  cubePuzzleManager: {fileID: 0}
+  cubePuzzleManager: {fileID: 904587817}
 --- !u!65 &1934539859
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -43470,6 +43643,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.43520007, y: 0.43520018, z: 0.20000003}
   m_Center: {x: -1.2547182, y: 2.025268, z: 0.10000002}
+--- !u!114 &1934539862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934539855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd8f32ca405e04c86a0bc808fc481a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CubeSnapZone
+  snapDistance: 0.15
+  snapSpeed: 10
+  acceptsTag: 
+  zoneRenderer: {fileID: 0}
+  emptyColor: {r: 0.3, g: 0.3, b: 0.3, a: 0.5}
+  hoverColor: {r: 0, g: 0.8, b: 1, a: 0.5}
+  snappedColor: {r: 0, g: 1, b: 0, a: 0.5}
+  cubePuzzleManager: {fileID: 904587817}
+  slotIndex: 3
 --- !u!1 &1938996468
 GameObject:
   m_ObjectHideFlags: 0
@@ -43985,7 +44179,7 @@ MonoBehaviour:
   correctColor: {r: 0, g: 1, b: 0, a: 1}
   wrongColor: {r: 1, g: 0, b: 0, a: 1}
   slotRenderer: {fileID: 0}
-  cubePuzzleManager: {fileID: 0}
+  cubePuzzleManager: {fileID: 904587817}
 --- !u!65 &1966823415
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -44007,6 +44201,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.43520007, y: 0.43520018, z: 0.20000003}
   m_Center: {x: -1.2547169, y: 2.025268, z: 0.10000002}
+--- !u!114 &1966823418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1966823411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd8f32ca405e04c86a0bc808fc481a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CubeSnapZone
+  snapDistance: 0.15
+  snapSpeed: 10
+  acceptsTag: 
+  zoneRenderer: {fileID: 0}
+  emptyColor: {r: 0.3, g: 0.3, b: 0.3, a: 0.5}
+  hoverColor: {r: 0, g: 0.8, b: 1, a: 0.5}
+  snappedColor: {r: 0, g: 1, b: 0, a: 0.5}
+  cubePuzzleManager: {fileID: 904587817}
+  slotIndex: 3
 --- !u!1001 &1993020875
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44326,7 +44541,7 @@ Transform:
   m_GameObject: {fileID: 2001970988}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.25, y: 0.88, z: 0.07}
+  m_LocalPosition: {x: -1.25, y: 0.88, z: 0.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44371,9 +44586,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RobotGrippable
   isGripped: 0
+  snapSpeed: 15
   followSpeed: 20
+  gripperTag: GripperTip
+  requireGripperTag: 1
+  snapToGripperCenter: 1
+  minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
+  testGripKey: 21
+  testReleaseKey: 32
 --- !u!54 &2010409651
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -44398,9 +44620,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &2010409652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45170,7 +45392,7 @@ Transform:
   m_GameObject: {fileID: 2050473660}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.1, y: 17.9, z: 2.02}
+  m_LocalPosition: {x: -4.35, y: 17.66, z: 2.02}
   m_LocalScale: {x: 2.4, y: 2.4, z: 0.15000004}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46336,7 +46558,7 @@ Transform:
   m_GameObject: {fileID: 2091567531}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.12, y: 0.88, z: 0}
+  m_LocalPosition: {x: 1.02, y: 1.18, z: 0.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

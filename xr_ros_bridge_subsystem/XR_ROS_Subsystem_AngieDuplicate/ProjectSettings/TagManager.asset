@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - robot
+  - Base01
+  - GripperTip
   layers:
   - Default
   - TransparentFX
