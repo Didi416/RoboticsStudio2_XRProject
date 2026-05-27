@@ -11,27 +11,27 @@
 // It is provided here as a fallback if StringMsg is not available.
 // ─────────────────────────────────────────────────────────────────────────────
 
-using System;
-using Unity.Robotics.ROSTCPConnector.MessageGeneration;
+// using System;
+// using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 
-namespace RosMessageTypes.Std
-{
-    [Serializable]
-    public class StringMsg : Message
-    {
-        public const string k_RosMessageName = "std_msgs/String";
-        public override string RosMessageName => k_RosMessageName;
+// namespace RosMessageTypes.Std
+// {
+//     [Serializable]
+//     public class StringMsg : Message
+//     {
+//         public const string k_RosMessageName = "std_msgs/String";
+//         public override string RosMessageName => k_RosMessageName;
 
-        public string data;
+//         public string data;
 
-        public StringMsg()
-        {
-            data = "";
-        }
+//         public StringMsg()
+//         {
+//             data = "";
+//         }
 
-        public StringMsg(string data)
-        {
-            this.data = data;
-        }
-    }
-}
+//         public StringMsg(string data)
+//         {
+//             this.data = data;
+//         }
+//     }
+// }
