@@ -3494,6 +3494,8 @@ MonoBehaviour:
   - {fileID: 235358239}
   buttonDefaultColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   buttonPressedColor: {r: 0, g: 0.8, b: 1, a: 1}
+  buttonResetColor: {r: 1, g: 0.4, b: 0, a: 1}
+  buttonEnterColor: {r: 0, g: 0.9, b: 0.3, a: 1}
   ssdDisplay: {fileID: 1688517084}
   resultText: {fileID: 291930093}
   frogSigns:
@@ -3502,7 +3504,7 @@ MonoBehaviour:
   - {fileID: 1726951700}
   - {fileID: 1374665991}
   puzzleBoardManager: {fileID: 1426305081}
-  enableMouseTesting: 1
+  enableKeyboardTesting: 1
 --- !u!1 &186847781
 GameObject:
   m_ObjectHideFlags: 8
@@ -5437,7 +5439,7 @@ MonoBehaviour:
   frameId: base_link
   inputMode: 1
   gripThreshold: 0.7
-  linearScale: 1
+  linearScale: 2
   angularScale: 1
   linearDeadband: 0.0005
   angularDeadband: 0.005
@@ -30909,7 +30911,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -32735,17 +32737,13 @@ MonoBehaviour:
   robotArmCamera: {fileID: 888831370}
   closeButton: {fileID: 1941771696}
   resetRobotButton: {fileID: 1791731418}
-  puzzle1Button: {fileID: 1776835784}
-  puzzle2Button: {fileID: 1153483376}
-  puzzle3Button: {fileID: 685486308}
+  facePuzzleBoardButton: {fileID: 0}
+  faceEggsButton: {fileID: 0}
   resetPuzzleButton: {fileID: 183154268}
   singularityWarningPanel: {fileID: 768646726}
   singularityWarningText: {fileID: 914361350}
   dismissWarningButton: {fileID: 942500140}
   statusText: {fileID: 1109494932}
-  robotMovementScript: {fileID: 0}
-  sliderPuzzleScript: {fileID: 0}
-  eggSortingScript: {fileID: 0}
 --- !u!1001 &1486946522
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34283,8 +34281,6 @@ MonoBehaviour:
   lineWidth: 0.02
   lineHeightOffset: 0.01
   lilyPadHeightOffset: 0.05
-  minPathLength: 5
-  maxPathLength: 10
   defaultColor: {r: 0, g: 1, b: 0, a: 1}
   highlightColor: {r: 1, g: 0, b: 1, a: 1}
   completedColor: {r: 0, g: 1, b: 1, a: 1}

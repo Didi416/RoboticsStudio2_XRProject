@@ -44,7 +44,7 @@ def generate_launch_description():
     # ur_hardware_launch = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource(
     #         os.path.join(
-    #             get_package_share_directory("rs2_ros2_unity_bridge"),
+    #             get_package_share_directory("rs2_xr_puzzle"),
     #             "launch",
     #             "ur_driver_modified.launch.py",
     #         )
@@ -65,7 +65,7 @@ def generate_launch_description():
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     os.path.join(
-                        get_package_share_directory("rs2_ros2_unity_bridge"),
+                        get_package_share_directory("rs2_xr_puzzle"),
                         "launch",
                         "ur_moveit_modified.launch.py",
                     )
