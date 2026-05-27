@@ -1,8 +1,10 @@
 #include <Arduino.h>
 #include <game_state.h>
+#include <egg_sorter.h>
 
 bool puzzleMazeSolved = false;
 bool puzzleCodeSolved = false;
+// puzzleEggSolved lives in egg_sorter.cpp — extern declared in egg_sorter.h
 
 char generatedCode[5] = {0}; //null terminated 4 digit code
 bool generatedMaze[8][8] = {}; 
@@ -10,7 +12,7 @@ int mazeEndX = 1;
 int mazeEndY = 1;
 
 bool allPuzzlesSolved() {
-  return puzzleMazeSolved && puzzleCodeSolved;
+  return puzzleMazeSolved && puzzleCodeSolved && puzzleEggSolved;
 }
 
 static void seedRandom() {
@@ -132,10 +134,12 @@ void generatePuzzles() {
   generateCode();
   generateMaze();
   printMaze();
+  generateEggOrder();  // generate egg order after maze (same seed)
 }
 
 void resetPuzzles() {
   puzzleMazeSolved = false;
   puzzleCodeSolved = false;
+  // puzzleEggSolved is reset inside generateEggSequence()
   generatePuzzles();
 }
