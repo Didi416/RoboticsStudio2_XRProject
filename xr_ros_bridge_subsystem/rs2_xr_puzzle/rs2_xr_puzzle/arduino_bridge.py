@@ -13,7 +13,7 @@ class PuzzleBoardNode(Node):
         super().__init__('puzzle_board_node')
         
         # Declare parameters
-        self.declare_parameter('port', '/dev/ttyACM1') # Default port, specify port in arguments '--port'
+        self.declare_parameter('port', '/dev/ttyACM0') # Default port, specify port in arguments '--port'
         self.declare_parameter('baudrate', 9600)
         self.declare_parameter('debug', True)
         

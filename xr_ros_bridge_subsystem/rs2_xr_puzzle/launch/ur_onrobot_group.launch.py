@@ -147,6 +147,19 @@ def generate_launch_description():
         ],
     )
 
+    arduino_puzzle_topics = TimerAction(
+        period=20.0,
+        actions=[
+            Node(
+                package="rs2_xr_puzzle",
+                executable="arduino_bridge",
+                name="puzzle_topics",
+                output="screen",
+                # parameters=[{"ROS_IP": ros_tcp_host, "ROS_PORT": ros_tcp_port}],
+            )
+        ],
+    )
+
     set_pose = TimerAction(
         period=22.0,
         actions=[
