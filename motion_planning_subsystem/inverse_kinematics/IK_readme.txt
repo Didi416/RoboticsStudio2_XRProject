@@ -3,6 +3,9 @@ Pre-req for each terminal:
 
 source ~/ros2_ws/install/setup.bash
 
+source install/setup.bash
+
+
 source /opt/ros/humble/setup.bash
 
 
