@@ -256,7 +256,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # Servo node for realtime control
-    servo_yaml = load_yaml("rs2_ros2_unity_bridge", "config/ur3e_servo_config.yaml")
+    servo_yaml = load_yaml("rs2_xr_puzzle", "config/ur3e_servo_config.yaml")
     servo_params = {"moveit_servo": servo_yaml}
     servo_node = Node(
         package="moveit_servo",

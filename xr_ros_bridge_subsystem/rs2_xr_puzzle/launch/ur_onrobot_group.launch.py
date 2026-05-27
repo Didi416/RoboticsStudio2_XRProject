@@ -69,7 +69,7 @@ def generate_launch_description():
                 launch_arguments={
                     "ur_type": "ur3e",
                     "onrobot_type": "rg2",
-                    "launch_rviz": "true",
+                    "launch_rviz": "false",
                 }.items(),
             )
         ],
@@ -176,22 +176,25 @@ def generate_launch_description():
             # LogInfo(msg="[1/5] Launching UR hardware driver + RViz..."),
             # ur_hardware_launch,
 
-            LogInfo(msg="[1/5] Launching MoveIt + RViz (in 5 s)..."),
+            LogInfo(msg="Launching MoveIt + RViz (in 5 s)..."),
             ur_moveit_launch,
 
-            LogInfo(msg="[2/5] Switching controllers (in 12 s)..."),
+            LogInfo(msg="Switching controllers (in 12 s)..."),
             switch_controllers,
 
-            LogInfo(msg="[3/5] Switching controllers (in 12 s)..."),
+            LogInfo(msg="Switching controllers (in 12 s)..."),
             switch_controllers2,
 
-            LogInfo(msg="[4/5] Starting servo (in 15 s)..."),
+            LogInfo(msg="Starting servo (in 15 s)..."),
             start_servo,
 
-            LogInfo(msg="[5/5] Starting ROS TCP Endpoint (in 18 s)..."),
+            LogInfo(msg="Starting ROS TCP Endpoint (in 18 s)..."),
             tcp_endpoint,
 
             LogInfo(msg="Setting to recovery pose (in 22s)..."),
             set_pose,
+            
+            # LogInfo(msg="Starting Arduino bridge (in 20s)..."),
+            # arduino_puzzle_topics
         ]
     )

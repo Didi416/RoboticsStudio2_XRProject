@@ -13126,7 +13126,7 @@ MonoBehaviour:
   minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
-  testGripKey: 21
+  testGripKey: 19
   testReleaseKey: 32
 --- !u!114 &616756364
 MonoBehaviour:
@@ -13341,7 +13341,7 @@ MonoBehaviour:
   minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
-  testGripKey: 21
+  testGripKey: 15
   testReleaseKey: 32
 --- !u!54 &619924111
 Rigidbody:
@@ -27023,7 +27023,7 @@ MonoBehaviour:
   minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
-  testGripKey: 21
+  testGripKey: 19
   testReleaseKey: 32
 --- !u!54 &1236354712
 Rigidbody:
@@ -32935,7 +32935,7 @@ MonoBehaviour:
   minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
-  testGripKey: 21
+  testGripKey: 15
   testReleaseKey: 32
 --- !u!1 &1476193686
 GameObject:
@@ -39455,7 +39455,7 @@ MonoBehaviour:
   minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
-  testGripKey: 21
+  testGripKey: 19
   testReleaseKey: 32
 --- !u!54 &1764575203
 Rigidbody:
@@ -43651,7 +43651,7 @@ MonoBehaviour:
   minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
-  testGripKey: 21
+  testGripKey: 17
   testReleaseKey: 32
 --- !u!114 &1922090071
 MonoBehaviour:
@@ -44662,7 +44662,7 @@ MonoBehaviour:
   minimumGripDistance: 0.05
   usePhysics: 1
   enableKeyboardTest: 1
-  testGripKey: 21
+  testGripKey: 19
   testReleaseKey: 32
 --- !u!54 &2010409651
 Rigidbody:
