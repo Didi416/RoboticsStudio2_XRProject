@@ -20,12 +20,7 @@ extern String correct_code;
 extern String entered_code;
 extern int num_cursor;
 
-extern int redPin;
-extern int greenPin;
-extern int bluePin;
-
 //Funtion defintions
-void setColour(bool red, bool green, bool blue);
 void resetEntry();
 void button_matrix_setup();
 void button_matrix_work();

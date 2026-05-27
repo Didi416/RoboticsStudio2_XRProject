@@ -13,6 +13,8 @@ String display_state = "";
 // Timer for puzzle generation sending (5 seconds = 5000ms)
 unsigned long lastPuzzleGenSendTime = 0;
 const unsigned long PUZZLE_GEN_INTERVAL = 5000;
+unsigned long lastStateSendTime = 0;
+const unsigned long STATE_SEND_INTERVAL = 100;
 
 void updateState(){
   // Collect joystick analog values and switch state
@@ -86,7 +88,7 @@ void setup(){
 void loop(){
   unsigned long currentTime = millis();
   
-  if (digitalRead(joystick_switch) == LOW) {
+  if (digitalRead(joystick_switch) == HIGH) {
     Serial.println("RESET BOARD");
     resetPuzzles();
     sendPuzzleGeneration();
@@ -104,7 +106,12 @@ void loop(){
   led_matrix_work();
   rfid_work();
   egg_sorter_work();  // polls serial for EGG_SOLVED confirmation
-  updateState();
   
-  delay(100);  // Send state update every 100ms
+  if (currentTime - lastPuzzleGenSendTime >= PUZZLE_GEN_INTERVAL) {
+    updateState();
+    lastStateSendTime = currentTime;
+  }
+  // updateState();
+  
+  // delay(50);  // Send state update every 100ms
 }

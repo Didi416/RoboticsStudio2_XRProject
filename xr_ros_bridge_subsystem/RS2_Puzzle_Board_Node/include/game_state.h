@@ -16,4 +16,6 @@ bool allPuzzlesSolved();
 void generatePuzzles();
 void resetPuzzles();
 void updateState();
+void setRGB(bool r, bool g, bool b);
+
 #endif

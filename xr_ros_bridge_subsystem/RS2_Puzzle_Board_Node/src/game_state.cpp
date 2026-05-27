@@ -24,6 +24,21 @@ static void seedRandom() {
   randomSeed(seed);
 }
 
+// RGB LED pins — adjust to match your wiring
+const int RGB_RED   = 11;
+const int RGB_GREEN = 10;
+const int RGB_BLUE  = 9;
+
+// ── RGB helper ───────────────────────────────────────────────
+
+const int RGB_BRIGHTNESS = 2;  // 0–255, adjust to taste
+
+void setRGB(bool r, bool g, bool b) {
+  analogWrite(RGB_RED,   r ? RGB_BRIGHTNESS : 0);
+  analogWrite(RGB_GREEN, g ? RGB_BRIGHTNESS : 0);
+  analogWrite(RGB_BLUE,  b ? RGB_BRIGHTNESS : 0);
+}
+
 // ── Code generator ───────────────────────────────────────────
 static void generateCode() {
   for (int i = 0; i < 4; i++) {
@@ -135,6 +150,9 @@ void generatePuzzles() {
   generateMaze();
   printMaze();
   generateEggOrder();  // generate egg order after maze (same seed)
+  pinMode(RGB_RED,   OUTPUT);
+  pinMode(RGB_GREEN, OUTPUT);
+  pinMode(RGB_BLUE,  OUTPUT);
 }
 
 void resetPuzzles() {
