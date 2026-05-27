@@ -91,6 +91,7 @@
 #include <led_matrix.h>
 #include <game_state.h>
 #include <rfid.h>
+#include <egg_sorter.h> 
 
 int joystick_switch = 12;
 int joyX_state = 0;
@@ -118,12 +119,16 @@ void updateState(){
   
   // Collect puzzle state (1 if all solved, 0 otherwise)
   int puzzleState = allPuzzlesSolved() ? 1 : 0;
+
+  // Include egg solved state so ROS bridge can monitor it
+  int eggState = puzzleEggSolved ? 1 : 0;
   
   // Build the state string in the specified format
   String stateStr = "J:" + String(joyX) + "," + String(joyY) + "," + String(joySw);
   // stateStr += "|B:" + buttonStates;
   stateStr += "|L:" + ledMatrix;
   stateStr += "|T:" + displayText;
+  stateStr += "|E:" + String(eggState);   // egg solved flag
   stateStr += "|P:" + String(puzzleState);
   
   // Send the state via Serial
@@ -148,6 +153,7 @@ void sendPuzzleGeneration(){
   String puzzleGenStr = "CODE:" + String(generatedCode);
   puzzleGenStr += "|MAZE:" + mazeStr;
   puzzleGenStr += "|MAZE_END:" + String(mazeEndX) + "," + String(mazeEndY);
+  puzzleGenStr += "|EGG:" + getEggSequence();   // egg sequence
   Serial.println(puzzleGenStr);
 }
 
@@ -158,6 +164,7 @@ void setup(){
   button_matrix_setup();
   led_matrix_setup();
   rfid_setup();
+  egg_sorter_setup();
   pinMode(joystick_switch, INPUT_PULLUP);
   
   // Initialize timer
@@ -184,6 +191,7 @@ void loop(){
   button_matrix_work();
   led_matrix_work();
   rfid_work();
+  egg_sorter_work();  // polls serial for EGG_SOLVED confirmation
   updateState();
   
   delay(100);  // Send state update every 100ms
