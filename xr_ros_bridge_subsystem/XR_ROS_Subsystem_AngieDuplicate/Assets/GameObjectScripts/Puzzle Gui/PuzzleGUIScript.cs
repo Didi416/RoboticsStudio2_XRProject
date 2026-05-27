@@ -204,7 +204,11 @@ using UnityEngine.UI;
 using TMPro;
 using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.Std;
+<<<<<<< Updated upstream
  
+=======
+
+>>>>>>> Stashed changes
 public class PuzzleGUIScript : MonoBehaviour
 {
     [Header("Input")]
@@ -234,7 +238,16 @@ public class PuzzleGUIScript : MonoBehaviour
     private string robotCommandTopic = "/robot_gui/command";
  
     private bool isGUIOpen = false;
+<<<<<<< Updated upstream
  
+=======
+    private int currentPuzzle = 0;
+
+    // ROS
+    private ROSConnection ros;
+    private const string commandTopic = "/robot_gui/command";
+
+>>>>>>> Stashed changes
     void Start()
     {
         ros = ROSConnection.GetOrCreateInstance();
@@ -245,7 +258,16 @@ public class PuzzleGUIScript : MonoBehaviour
  
         if (singularityWarningPanel != null)
             singularityWarningPanel.SetActive(false);
+<<<<<<< Updated upstream
  
+=======
+
+        // Set up ROS publisher
+        ros = ROSConnection.GetOrCreateInstance();
+        ros.RegisterPublisher<StringMsg>(commandTopic);
+
+        // Hook up all buttons
+>>>>>>> Stashed changes
         if (closeButton != null)
             closeButton.onClick.AddListener(CloseGUI);
         if (resetRobotButton != null)
@@ -295,15 +317,35 @@ public class PuzzleGUIScript : MonoBehaviour
     }
  
     // ─────────────────────────────────────────
+<<<<<<< Updated upstream
     // ROS COMMAND
+=======
+    // ROS HELPER
+    // ─────────────────────────────────────────
+
+    private void SendCommand(string command)
+    {
+        var msg = new StringMsg(command);
+        ros.Publish(commandTopic, msg);
+        Debug.Log($"GUI: Sent ROS command → {command}");
+    }
+
+    // ─────────────────────────────────────────
+    // BUTTON FUNCTIONS
+>>>>>>> Stashed changes
     // ─────────────────────────────────────────
  
     void SendRobotCommand(string command)
     {
+<<<<<<< Updated upstream
         Debug.Log($"Robot command: {command}");
         StringMsg msg = new StringMsg();
         msg.data = command;
         ros.Publish(robotCommandTopic, msg);
+=======
+        UpdateStatus("Returning robot to hover position...");
+        SendCommand("hover");
+>>>>>>> Stashed changes
     }
  
     // ─────────────────────────────────────────
@@ -312,30 +354,68 @@ public class PuzzleGUIScript : MonoBehaviour
  
     public void OnResetRobotPressed()
     {
+<<<<<<< Updated upstream
         UpdateStatus("Returning to hover position...");
         Debug.Log("GUI: Reset → hover");
         SendRobotCommand("hover");
+=======
+        currentPuzzle = 1;
+        UpdateStatus("Puzzle 1: Moving to board...");
+        SendCommand("face_board");
+>>>>>>> Stashed changes
     }
  
     public void OnFacePuzzleBoardPressed()
     {
+<<<<<<< Updated upstream
         UpdateStatus("Moving to face Puzzle Board...");
         Debug.Log("GUI: Face Puzzle Board");
         SendRobotCommand("face_board");
+=======
+        currentPuzzle = 2;
+        UpdateStatus("Puzzle 2: Lily Pad Maze");
+        SendCommand("face_board");
+>>>>>>> Stashed changes
     }
  
     public void OnFaceEggsPressed()
     {
+<<<<<<< Updated upstream
         UpdateStatus("Moving to face Egg Puzzle...");
         Debug.Log("GUI: Face Eggs");
         SendRobotCommand("face_eggs");
+=======
+        currentPuzzle = 3;
+        UpdateStatus("Puzzle 3: Moving to eggs...");
+        SendCommand("face_eggs");
+>>>>>>> Stashed changes
     }
  
     public void OnResetPuzzlePressed()
     {
+<<<<<<< Updated upstream
         UpdateStatus("Resetting - returning to hover...");
         Debug.Log("GUI: Reset Puzzle → hover");
         SendRobotCommand("hover");
+=======
+        UpdateStatus($"Resetting Puzzle {currentPuzzle}...");
+
+        switch (currentPuzzle)
+        {
+            case 1:
+                SendCommand("hover");
+                break;
+            case 2:
+                SendCommand("hover");
+                break;
+            case 3:
+                SendCommand("hover");
+                break;
+            default:
+                UpdateStatus("No puzzle selected to reset.");
+                break;
+        }
+>>>>>>> Stashed changes
     }
  
     // ─────────────────────────────────────────
@@ -352,7 +432,12 @@ public class PuzzleGUIScript : MonoBehaviour
                     "⚠ WARNING: Singularity Detected!\nReturning to safe position...";
         }
         UpdateStatus("⚠ Singularity Warning!");
+<<<<<<< Updated upstream
         SendRobotCommand("hover");
+=======
+        SendCommand("hover");
+        Debug.Log("GUI: Singularity warning triggered");
+>>>>>>> Stashed changes
     }
  
     public void OnDismissWarning()
