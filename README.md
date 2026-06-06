@@ -1,6 +1,9 @@
 # RoboticsStudio2_XRProject
 RS2 XR Project with Unity and UR3e robot - VR Escape Room
 
+_NOTE_
+_This is a draft ReadMe of initial commands to run the system. Please refer to this GitHub's Wiki page for comprehensive instructions and information. Edits to thsi ReadMe will come soon._
+
 Commands to launch fake hardware test with ur_onrobot packages:
 - Clone repository UR_Onrobot_ROS2
 - Change the yaml file references from forward position to forward velocity controllers (in all packages, ur_onrobot_control and ur_onrobot_moveit_config)
