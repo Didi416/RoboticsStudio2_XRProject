@@ -1,4 +1,4 @@
-# Welcome to the C.I.P.H.E.R. Wiki
+# Welcome to the C.I.P.H.E.R. Project
  
 > **C.I.P.H.E.R.** — *Collaborative Intelligence for Physical and Human Escape Room*
  
